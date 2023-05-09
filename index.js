@@ -1,4 +1,5 @@
 const products = require('./products.js');
+const users = require('./users.js');
 
 
 const express = require("express");
@@ -20,11 +21,11 @@ app.get("/product/:id", (req, res) => {
 });
 
 app.get("/myAccount", (req, res) => {
-    res.render('myAccount', {user: user});
+    res.render('myAccount', {user: users[0]});
 });
 
 app.get("/shoppingCart", (req, res) => {
-    res.render('shoppingCart');
+    res.render('shoppingCart', {products: products});
 })
 
 app.listen(port, () => {

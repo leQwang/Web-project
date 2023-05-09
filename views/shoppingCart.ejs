@@ -21,23 +21,23 @@
                     <label for="action">Action</label>
                 </div>
                 <div id="item-box">
+                    <% for (let i = 0; i < products.length; i++) { %>
                     <div class="item">
                         <div id="item-display">
-                            <img src="/images/placeholder.png" alt="Item image" width="100px" height="100px">
-                            <p id="item-name">Shirt</p>
+                            <img src="/images/<%=products[i].image%>" alt="Item image" width="100px" height="100px">
+                            <p id="item-name"><%= products[i].name %></p>
                         </div>
                         <div id="quantity-display">
                             1
                         </div>
                         <div id="unit-price-display">
-                            $12.00
+                            $<%= products[i].price %>
                         </div>
                         <div id="action-display">
                             <button id="delete-button">Delete</button>
                         </div>
                     </div>
-                    <div class="item"></div>
-                    <div class="item"></div>
+                    <% } %>
                 </div>
             </div>
             <div id="purchase-box">

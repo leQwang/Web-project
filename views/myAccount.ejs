@@ -20,8 +20,18 @@
                 <button id="edit-picture-button">Edit profile picture</button>
             </div>
             <div id="info-box">
-                <label for="name">Name: </label>
-                <label for="username">Username: </label>
+                <label for="username">Username: <%= user.username %> </label>
+                <% if (user.role == 'customer') { %>
+                <label for="name">Name: <%= user.customerName %> </label>
+                <label for="address">Address: <%= user.customerAddress %></label>
+                <% } %>
+                <% if (user.role == 'vendor') { %>
+                    <label for="business-name">Business Name: <%= user.businessName %> </label>
+                    <label for="business-address">Business Address: <%= user.businessAddress %></label>
+                <% } %>
+                <% if (user.role == 'shipper') { %>
+                    <label for="dstribution-hub">Distribution Hub: <%= user.distributionHub %> </label>
+                <% } %>
                 <button id="log-out-button">Log out</button>
             </div>
         </div>

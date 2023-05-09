@@ -54,8 +54,8 @@ h1{
 }
 
 #item-box{
-    height: fit-content;
-    overflow: auto
+    height: 650px;
+    overflow-y: auto
 }
 
 .item{
