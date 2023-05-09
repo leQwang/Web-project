@@ -1,0 +1,43 @@
+/* ============= FOOTER ============================================= */
+footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+/* no decorations for entries */
+footer li,
+a {
+  list-style: none;
+  text-decoration: none;
+}
+
+/* conatiner for items */
+#navbar-footer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: lightgray;
+  padding: 12px;
+}
+
+/* items of navbart */
+#navbar-footer li a {
+  font-size: 18px;
+  color: #333333;
+  padding: 5px 10px;
+}
+
+/* when hovered over item in navbar */
+#navbar-footer li:hover a {
+  color: black;
+  background-color: palevioletred;
+  border-radius: 6px;
+}
+
+/* --------- SMARTPHONE TWEAKS ----------- */
+@media only screen and (max-width: 767px) {
+  #navbar-footer {
+    flex-direction: column;
+  }
+}
