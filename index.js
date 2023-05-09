@@ -19,6 +19,14 @@ app.get("/product/:id", (req, res) => {
     res.render('productDetail', {product});
 });
 
+app.get("/myAccount", (req, res) => {
+    res.render('myAccount');
+});
+
+app.get("/shoppingCart", (req, res) => {
+    res.render('shoppingCart');
+})
+
 app.listen(port, () => {
-    console.log(`Listining on port ${port}`);
+    console.log(`Listening on port ${port}`);
 });
