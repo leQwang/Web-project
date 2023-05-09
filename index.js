@@ -5,6 +5,8 @@ const express = require("express");
 const app = express();
 const port = 4200;
 
+app.use(express.urlencoded({ extended: true }));
+
 app.set('view engine', 'ejs');
 app.use(express.static("Public"));
 
@@ -17,6 +19,29 @@ app.get("/product/:id", (req, res) => {
     const {id} = req.params;
     const product = products.find((p)=> p.id == id);
     res.render('productDetail', {product});
+});
+
+app.get("/login", (req, res) => {
+    res.render('login', {});
+});
+
+app.get("/registerCustomer", (req, res) => {
+    res.render('registerCustomer', {});
+});
+
+app.get("/registerShipper", (req, res) => {
+    res.render('registerShipper', {});
+});
+
+app.get("/registerVendor", (req, res) => {
+    res.render('registerVendor', {});
+});
+
+app.post('/register', (req, res) => {
+        // Log the form data received from the client
+    console.log("Data received from the frontend for POST form:");
+    console.log(req.body);
+    res.render('registrationSuccesfull', {name: `${req.body.name}`});
 });
 
 app.listen(port, () => {
