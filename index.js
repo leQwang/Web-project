@@ -2,6 +2,7 @@ const products = require('./products.js');
 
 
 const express = require("express");
+const passport = require("passport");
 const app = express();
 const port = 4200;
 
@@ -20,7 +21,7 @@ app.get("/product/:id", (req, res) => {
 });
 
 app.get("/myAccount", (req, res) => {
-    res.render('myAccount');
+    res.render('myAccount', {user: user});
 });
 
 app.get("/shoppingCart", (req, res) => {
