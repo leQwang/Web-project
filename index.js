@@ -2,7 +2,6 @@ const products = require('./products.js');
 
 
 const express = require("express");
-const passport = require("passport");
 const app = express();
 const port = 4200;
 
