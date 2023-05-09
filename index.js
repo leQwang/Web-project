@@ -25,7 +25,7 @@ app.get("/myAccount", (req, res) => {
 });
 
 app.get("/shoppingCart", (req, res) => {
-    res.render('shoppingCart', {products: products});
+    res.render('shoppingCart', {products: products, user: users[0]});
 })
 
 app.listen(port, () => {
