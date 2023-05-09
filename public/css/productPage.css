@@ -1,0 +1,147 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+main {
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.search {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.search-container input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    width: 300px;
+    border: 2px solid black;
+    border-radius: 23px;
+
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 15px;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+
+
+.filter {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+
+}
+
+label {
+    display: block;
+    padding: 0px 10px;
+}
+
+input[type="number"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+input[type="number"]:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+
+.product {
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    box-shadow: 2px;
+    width: 30%;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px;
+}
+
+.product img {
+    max-width: 100%;
+    border: 2px solid green;
+}
+
+.product button a{
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .product {
+        width: 45%;
+    }
+
+    .search {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .product {
+        width: 95%;
+    }
+
+    .search-container input[type="text"] {
+        width: 200px;
+    }
+
+    .search {
+        flex-direction: column;
+    }
+    .filter {
+        flex-direction: column;
+    
+    }
+}
