@@ -7,7 +7,10 @@ const express = require("express");
 const app = express();
 const port = 4200;
 
-app.use(express.urlencoded({ extended: true }));
+const User = require('./model/User');
+const Order = require('./model/Order');
+const Product = require('./model/Product');
+const Hub = require('./model/DistributionHub');
 
 app.set('view engine', 'ejs');
 app.use(express.static("Public"));
