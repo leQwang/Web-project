@@ -1,0 +1,97 @@
+/* ____________ UTIL CLASSES __________________________________________________________________ */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+
+
+
+
+
+/* ____________ HEADER __________________________________________________________________ */
+
+/* entire header including logo and title */
+header {
+  background-color: #4CBB17;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header li {
+  list-style: none;
+}
+
+header a {
+  text-decoration: none;
+}
+
+/* left side of the header, container of logo and title */
+#header-left {
+  display: flex;
+  align-items: center;
+}
+
+/* logo at header navigation bar */
+#header-logo {
+  width: 100px;
+}
+
+/* website title */
+#header-title {
+  font-size: 42px;
+}
+
+#header-menu {
+  display: flex;
+}
+
+/* each menu entry */
+.menu-item {
+  border-radius: 42px;
+  font-size: 20px;
+  border: 2px solid black;
+  margin-right: 20px;
+  background-color: orange;
+}
+
+.menu-item:hover {
+  background-color: palevioletred;
+}
+
+/* link inside menu item */
+.menu-item a {
+  color: black;
+  display: block;
+  padding: 10px 20px;
+}
+
+.sub-menu {
+  display: none;
+  border-radius: 20px;
+  background-color: palevioletred;
+}
+
+.sub-menu li:hover {
+  border-radius: 20px;
+  background-color: rgb(169, 85, 113);
+}
+
+.sub-menu a {
+  white-space: nowrap;
+}
+
+/* show submenu when hover over menu-entry */
+.menu-item:hover .sub-menu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: auto;
+  right: 0px;
+  border: 2px solid black;
+}
