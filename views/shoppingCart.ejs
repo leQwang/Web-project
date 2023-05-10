@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/shoppingCart.css">
+    <title>Shopping Cart Page</title>
+</head>
+<body>
+    <header>
+    </header>
+    <main>
+        <h1>Shopping Cart</h1>
+        <div id="content-box">
+            <div id="cart-box">
+                <div id="label-box">
+                    <label for="display">Item</label>
+                    <label for="quantity">Quantity</label>
+                    <label for="price">Price</label>
+                    <label for="action">Action</label>
+                </div>
+                <div id="item-box">
+                    <% for (let i = 0; i < products.length; i++) { %>
+                    <div class="item">
+                        <div id="item-display">
+                            <img src="/images/<%=products[i].image%>" alt="Item image" width="100px" height="100px">
+                            <p id="item-name"><%= products[i].name %></p>
+                        </div>
+                        <div id="quantity-display">
+                            1
+                        </div>
+                        <div id="unit-price-display">
+                            $<%= products[i].price %>
+                        </div>
+                        <div id="action-display">
+                            <button id="delete-button">Delete</button>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+            <div id="purchase-box">
+                <label for="address">Deliver to: <%= user.customerAddress %></label>
+                <label for="total-price">Total price: $12</label>
+                <button id="pay-button">PAY NOW</button>
+            </div>
+        </div>
+    </main>
+    <footer>
+
+    </footer>
+</body>
+</html>

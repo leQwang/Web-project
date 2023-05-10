@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/vendorAddProduct.css">
+    <title>Add New Product</title>
+</head>
+<body>
+    <nav></nav>
+
+    <main>
+        <div class="container border">
+            <div class="title">Add Product</div>
+            <form action="/submit-product" method="POST" enctype="multipart/form-data">
+
+                <label for="product-name">Product Name:</label>
+                <input type="text" class="field-input"  name="productName" minlength="10" maxlength="20" required>
+
+                <label for="product-price">Price:</label>
+                <input type="number" class="field-input" name="productPrice" step="0.01" min="0" required>
+
+
+                <label for="product-stock">Number of Stock:</label>
+                <input type="number" class="field-input" name="productStock" min="0" required>
+
+
+                <label for="product-description"> Description:</label>
+                <textarea name="productDescription" rows="3" maxlength="500" required></textarea>
+
+
+            
+                <label for="product-images">Images:</label>
+                <input type="file" id="product-images" name="productImages" accept="image/*" multiple required>
+                
+                <button type="submit" id="submit-button">Submit</button>
+            </form>
+        </div>
+    </main>
+
+    <footer></footer>
+</body>
+</html>

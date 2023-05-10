@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/myAccount.css">
+    <title>My Account Page</title>
+</head>
+<body>
+    <header>
+    </header>
+    <main>
+        <h1>My Profile</h1>
+        <div id ="content-box">
+            <div id="picture-box">
+                <div>
+                    <img src="/images/placeholder.png" alt="User profile picture" width=300px id="profile-pic">
+                </div>
+                <button id="edit-picture-button">Edit profile picture</button>
+            </div>
+            <div id="info-box">
+                <label for="username">Username: <%= user.username %> </label>
+                <% if (user.role == 'customer') { %>
+                <label for="name">Name: <%= user.customerName %> </label>
+                <label for="address">Address: <%= user.customerAddress %></label>
+                <% } %>
+                <% if (user.role == 'vendor') { %>
+                    <label for="business-name">Business Name: <%= user.businessName %> </label>
+                    <label for="business-address">Business Address: <%= user.businessAddress %></label>
+                <% } %>
+                <% if (user.role == 'shipper') { %>
+                    <label for="dstribution-hub">Distribution Hub: <%= user.distributionHub %> </label>
+                <% } %>
+                <button id="log-out-button">Log out</button>
+            </div>
+        </div>
+    </main>
+    <footer>
+    </footer>
+</body>
+</html>
