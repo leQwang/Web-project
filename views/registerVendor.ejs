@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="..\css\registration.css">
+    <title>Vendor Registration</title>
+</head>
+<body>
+    <main>
+        <h1>Vendor Registration: </h1>
+        <section class="registration-form">
+            <form class="registration" action="/register" method="post" id="registerCustomer">
+                <fieldset>
+                    <div class="input-section">
+                        <div class="info-box">
+                            <label for="username">&#8505;&#65039; Username:
+                                <span class="tooltip">Must consist of only letters (lower and upper case) and digits.
+                                    Length from 8 to 15 characters</span>
+                            </label>
+                        </div>
+                        <input type="text" id="username" name="username" required pattern="^[A-Za-z0-9]{8,15}$">
+                    </div>
+                    <div class="input-section">
+                        <div class="info-box">
+                            <label for="password">&#8505;&#65039; Password:
+                                <span class="tooltip">Password must have at least one upper case letter, at least one
+                                    lower case letter, at least one digit, at least one special letter in the set
+                                    !@#$%^&*, NO other kind of characters. Length from 8 to 20 characters.</span>
+                            </label>
+                        </div>
+                        <input type="password" id="password" name="password" required minlength="8" maxlength="20">
+                    </div>
+                    <div class="input-section">
+                        <div class="info-box">
+                            <label for="profile-picture">&#8505;&#65039; Profile Picture:
+                                <span class="tooltip">Upload profile picture</span>
+                            </label>
+                        </div>
+                        <input type="file" id="profile-picture" name="profile-picture">
+                    </div>
+                    <div class="input-section">
+                        <div class="info-box">
+                            <label for="business-name">&#8505;&#65039; Business-Name:
+                                <span class="tooltip">Name must be of at least 5 characters.</span>
+                            </label>
+                        </div>
+                        <input type="text" id="business-name" name="business-name" required minlength="5">
+                    </div>
+                    <div class="input-section">
+                        <div class="info-box">
+                            <label for="business-address">&#8505;&#65039; Business Address:
+                                <span class="tooltip">Name must be of at least 5 characters.</span>
+                            </label>
+                        </div>
+                        <textarea id="business-address" name="business-address"></textarea>
+                    </div>
+                    <div class="input-section">
+                        <input type="submit" value="Register">
+                    </div>
+                </fieldset>
+            </form>
+        </section>
+    </main>
+    
+</body>
+</html>
