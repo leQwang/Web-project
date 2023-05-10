@@ -52,6 +52,14 @@ app.get("/registerVendor", (req, res) => {
     res.render('registerVendor', {});
 });
 
+app.get("/vendorProductView", (req, res) => {
+    res.render('vendorProductView', {users: users});
+});
+
+app.get("/vendorAddProduct", (req, res) => {
+    res.render('vendorAddProduct', {});
+});
+
 app.post('/register', (req, res) => {
         // Log the form data received from the client
     console.log("Data received from the frontend for POST form:");
