@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/css/vendorProductView.css">
+    <link rel="stylesheet" href="/css/vendorProductView.css">
     <title>Vendor Page</title>
 </head>
 <body>
@@ -12,29 +12,27 @@
 
     <main>
         <div class="add-product-container">
-            <div class="vendor-name"><h1><%=users[2].distributionHub%>></h1></div>
+            <div class="vendor-name"><h1>Vendor Name</h1></div>
             <button class="add-product-button">Add Product</button>
         </div>
 
         <div class="product-container">
-
-            <!-- <% for(let i = 0; i < products.length; i++) { %> -->
+            <% for (let i = 0; i < prod.length; i++) { %>
             <div class="card-container border">
                 <div class="product-image">
-                    <img src="/Asset/PS5.jpg" alt="PS5">
+                    <img src="images/<%= prod[i].image%>" alt="<%= prod[i].name %>">
                 </div>
+
                 <div class="product-detail">
-                    <div class="product-name">Play station 5</div>
-                    <div class="price margin-bottom"><h4>$499.99</h4></div>
-                    <div class="rating">⭐<span>4.6</span></div>
-                    <div class="stock margin-bottom">In-stock: <span>10</span></div>
+                    <div class="product-name"><%= prod[i].name %></div>
+                    <div class="price margin-bottom"><h4>$<%= prod.length %></h4></div>
                     <div class="edit-button-container">
                         <button class="edit-button">Edit</button>
                         <button class="edit-button">Delete</button>
                     </div>
                 </div>
             </div>
-            <!-- <% }; %> -->
+            <% }; %>
         </div>
         
     </main>

@@ -56,7 +56,8 @@ app.get("/registerVendor", (req, res) => {
 });
 
 app.get("/vendorProductView", (req, res) => {
-    res.render('vendorProductView', {users: users});
+    const matchedProducts = products.filter(product => product.businessName === "RMIT");
+    res.render('vendorProductView', { prod: matchedProducts });
 });
 
 app.get("/vendorAddProduct", (req, res) => {
