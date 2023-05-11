@@ -7,12 +7,9 @@ mongoose.connect('mongodb+srv://phucdoan:Phuc1234@cluster0.rxqfnek.mongodb.net/'
 const productSchema = new mongoose.Schema({
     name: String,
     price: Number,
-    businessName: String,
-    image: {
-        data: Buffer,
-        contentType: String
-    },
-    description: String
+    image: String,
+    description: String,
+    businessName: String
 });
 
 const Product = mongoose.model('Product', productSchema);

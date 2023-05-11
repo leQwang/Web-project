@@ -7,13 +7,11 @@ mongoose.connect('mongodb+srv://phucdoan:Phuc1234@cluster0.rxqfnek.mongodb.net/'
 const userSchema = new mongoose.Schema({
     username: String,
     password: String,
-    profilePic: {
-        data: Buffer,
-        contentType: String
-    },
+    profilePic: String,
     role: String,
     businessName: String,
     businessAddress: String,
+    distributionHub: String,
     customerName: String,
     customerAddress: String
 });
