@@ -56,13 +56,13 @@
     }
     
     function getImage() {
-        var reader = new FileReader();
-        var img = document.getElementById("profile-pic-upload").files;
-        reader.onloadend = function () {
-            console.log(reader.result);
-            document.getElementById("encoded-pic").value = reader.result
+        var fr = new FileReader();
+        var img = document.querySelector("#profile-pic-upload").files;
+        fr.readAsDataURL(img[0]);
+        fr.onloadend = function () {
+            console.log(fr.result);
+            document.querySelector("#encoded-pic").value = fr.result;
         }
-        reader.readAsDataURL(img[0]);
     }
 </script>
 </html>

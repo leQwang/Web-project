@@ -54,16 +54,31 @@ app.post("/registerVendor", (req, res) => {
 })
 
 app.post("/shoppingCart", (req, res) => {
+    var arr = req.body.productList.split(",");
+    req.body.productList = arr;
+    console.log(req.body.productList);
     const order = new Order(req.body);
-    console.log(req.body);
     order.save()
-    .then((order) => res.send(order))
+    .then((order) => {
+        DistributionHub.aggregate([{"$sample": {"size": 1}}])
+        .then((randHub) =>{
+            console.log(randHub);
+            DistributionHub.findByIdAndUpdate(randHub,{ $push: {orderID : order._id}})
+            .then((hub)=>{
+                    User.findById(currentUser)
+                    .then((user) => {
+                        res.render("shoppingCart", {user : user});
+                    });
+                })
+            })
+        })
     .catch((error) => res.send(error));
 })
 
 app.post("/hub", (req, res) => {
     const hub = new DistributionHub(req.body);
     console.log(req.body);
+    req.body.productList
     hub.save()
     .then((hub) => res.send(hub))
     .catch((error) => res.send(error));
@@ -84,7 +99,7 @@ app.post("/myAccount", (req, res) => {
 
 app.get("/myAccount", (req, res) => {
     User.findById(currentUser)
-    .then((user)=> {
+    .then((user)=> {   
         res.render('myAccount', { user: user });
     })
     .catch((error) => res.send(error))
@@ -111,9 +126,12 @@ app.get("/products", (req, res) =>{
     })
 })
 
-
 app.get("/shoppingCart", (req, res) => {
-    res.render('shoppingCart', { products: products, user: users[0] });
+    User.findById(currentUser)
+    .then((user) =>{
+        res.render('shoppingCart', { user: user });
+    })
+    
 });
 
 app.get('/shipper', (req, res) => {
@@ -146,3 +164,4 @@ app.post('/register', (req, res) => {
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
+

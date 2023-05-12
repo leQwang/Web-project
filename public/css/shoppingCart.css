@@ -63,21 +63,26 @@ h1{
     height: 200px;
     border-bottom: 1px solid black;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
 }
 
-#item-display, #quantity-display, #unit-price-display, #action-display{
+.item-image{
+    width: 100px;
+    height: 100px;
+}
+
+.item-display, .item-price, .action-display{
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 25%;
+    width: 33.33%;
 }
 
-#item-name{
+.item-name{
     margin-left: 25px;
 }
 
-#pay-button{
+#order-button{
     align-self: center;
     width: 80%
 }

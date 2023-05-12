@@ -42,21 +42,15 @@
                 <img src="<%= products[i].image%>" alt="Product 1 <%= products[i].image%>">
                 <h2><%= products[i].name %></h2>
                 <p class="price">$<%= products[i].price %></p>
-              
-                <button><a href="product/<%= products[i].id%>" type="button" >View</a></button>
-                
+            <form action="http://localhost:4200/product/<%= products[i]._id%>" method="get">
+                <button type="submit">View</a></button>
+            </form>
             </div>
             <% } %>
-
-            
-            
-
-         
         </div>
     </main>
     <footer>
         <p>&copy; 2023 My Store</p>
     </footer>
 </body>
-
 </html>

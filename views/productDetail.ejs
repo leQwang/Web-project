@@ -29,9 +29,17 @@
 				<h1><%= product.name%></h1>
 				<div class="price">$<%= product.price%></div>
 				<div class="description"><%= product.description%></div>
-				<button class="add-to-cart">Add to Cart</button>
+				<button class="add-to-cart" >Add to Cart</button>
 			</div>
 		</div>
 	</div>
 </body>
+<script>
+	const addToCart = document.querySelector('button');
+	addToCart.addEventListener('click', ()=>{
+		var num = localStorage.length;
+		localStorage.setItem(++num, '<%-JSON.stringify(product)%>');
+		console.log(localStorage);
+	})
+</script>
 </html>
