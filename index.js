@@ -4,23 +4,22 @@ const products = require('./products.js');
 const users = require('./users.js');
 
 const express = require("express");
+const fs = require("fs");
 const app = express();
 const port = 4200;
 
 const User = require('./model/User');
 const Order = require('./model/Order');
 const Product = require('./model/Product');
-const Hub = require('./model/DistributionHub');
 const DistributionHub = require('./model/DistributionHub');
 
 app.set('view engine', 'ejs');
 app.use(express.static("Public"));
-// Use the `express.urlencoded` middleware to parse incoming form data
-app.use(express.urlencoded({ extended: true }));
 
-app.get("/productPage", (req, res) => {
-    res.render('productPage', { products: products });
-});
+const currentUser = "645cce8b020e3bde5c979c79";
+
+// Use the `express.urlencoded` middleware to parse incoming form data
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 app.post("/vendorAddProduct", (req, res) => {
     const product = new Product(req.body);
@@ -70,15 +69,48 @@ app.post("/hub", (req, res) => {
     .catch((error) => res.send(error));
 })
 
-app.get("/product/:id", (req, res) => {
-    const { id } = req.params;
-    const product = products.find((p) => p.id == id);
-    res.render('productDetail', { product });
-});
+app.post("/myAccount", (req, res) => {
+    const user = new User(req.body);
+    console.log(req.body);
+    User.findByIdAndUpdate(currentUser, req.body)
+    .then(() => {
+        User.findById(currentUser)
+        .then((user) => {
+            res.render('myAccount', {user: user});
+        })
+    })
+    .catch((error) => res.send(error));
+})
 
 app.get("/myAccount", (req, res) => {
-    res.render('myAccount', { user: users[0] });
+    User.findById(currentUser)
+    .then((user)=> {
+        res.render('myAccount', { user: user });
+    })
+    .catch((error) => res.send(error))
+})
+
+app.get("/product/:id", (req, res) => {
+    const id = req.params.id;
+    console.log(id)
+    Product.findById(id)
+    .then((product) =>{
+        console.log(product);
+        res.render('productDetail', { product: product });
+    })
+    .catch((err) => {
+        console.log(err);
+    })
 });
+
+app.get("/products", (req, res) =>{
+    Product.find()
+    .then((products) => {
+        console.log(products);
+        res.render('productPage', { products: products });
+    })
+})
+
 
 app.get("/shoppingCart", (req, res) => {
     res.render('shoppingCart', { products: products, user: users[0] });
