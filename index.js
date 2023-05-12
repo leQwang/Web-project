@@ -85,7 +85,11 @@ app.get("/shoppingCart", (req, res) => {
 });
 
 app.get('/shipper', (req, res) => {
-    res.render('shipper', { orders: orders });
+    Order.find()
+        .then((orders) => {
+            res.render('shipper', { orders: orders });
+        })
+        .catch((error) => console.log(error.message));
 });
 
 app.get("/login", (req, res) => {
