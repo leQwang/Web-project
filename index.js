@@ -14,21 +14,17 @@ const Hub = require('./model/DistributionHub');
 const DistributionHub = require('./model/DistributionHub');
 
 app.set('view engine', 'ejs');
-app.use(express.static("Public"));
+app.use(express.static("Public"));  
+
+const vendorUser = "645b7d6b1f02c16d3bb1321a";
+
 // Use the `express.urlencoded` middleware to parse incoming form data
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(express.json());
 
 app.get("/productPage", (req, res) => {
     res.render('productPage', { products: products });
 });
-
-app.post("/vendorAddProduct", (req, res) => {
-    const product = new Product(req.body);
-    console.log(req.body);
-    product.save()
-    .then((product) => res.send(product))
-    .catch((error) => res.send(error));
-})
 
 app.post("/registerCustomer", (req, res) => {
     const user = new User(req.body);
@@ -105,12 +101,39 @@ app.get("/registerVendor", (req, res) => {
 });
 
 app.get("/vendorProductView", (req, res) => {
-    const matchedProducts = products.filter(product => product.businessName === "RMIT");
-    res.render('vendorProductView', { prod: matchedProducts });
+
+    Product.find()
+    .then((products) => {
+        //RMIT vendor product 
+        User.findById(vendorUser)
+            .then((user) => {
+                const matchedProducts = products.filter(product => product.businessName ===  user.businessName);
+                res.render("vendorProductView", {user : user, prod: matchedProducts});
+            });
+    })
+    .catch((error) => console.log(error.message));
 });
 
 app.get("/vendorAddProduct", (req, res) => {
     res.render('vendorAddProduct', {});
+});
+
+app.post("/vendorAddProduct", (req, res) => {
+    User.findById(vendorUser)
+    .then((user) => {
+        req.body.businessName = user.businessName;
+        const product = new Product(req.body);
+
+        product.save()
+          .then(Product.find()
+            .then((products) => {
+                //RMIT vendor product 
+                const matchedProducts = products.filter(product => product.businessName ===  user.businessName);
+                res.render("vendorProductView", {user : user, prod: matchedProducts});
+            }) 
+            .catch((error) => console.log(error.message)) )
+          .catch((error) => res.send(error));
+    });
 });
 
 app.post('/register', (req, res) => {
