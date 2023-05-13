@@ -12,6 +12,7 @@ const Order = require('./model/Order');
 const Product = require('./model/Product');
 const Hub = require('./model/DistributionHub');
 const DistributionHub = require('./model/DistributionHub');
+const { Schema, default: mongoose } = require('mongoose');
 
 app.set('view engine', 'ejs');
 app.use(express.static("Public"));
@@ -95,7 +96,19 @@ app.get('/shipper', (req, res) => {
 app.get("/orders/:id", (req, res) => {
     Order.findById(req.params.id)
         .then((order) => {
-            res.render('order', { order: order, products: products });
+            console.log(order)
+            const productsOfOrder = [];
+            order.productList.forEach((productId) => {
+                console.log(productId)
+                Product.findById(productId)
+                .then((product) => {
+                    console.log(product)
+                    productsOfOrder.push(product)
+                })
+                .catch((error) => error.message);
+            });
+            console.log(productsOfOrder);
+            res.render('order', { order: order, products: productsOfOrder });
         })
         .catch((error) => console.log(error.message));
 });

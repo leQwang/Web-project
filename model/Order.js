@@ -9,7 +9,10 @@ const orderSchema = new mongoose.Schema({
     address: String,
     productList: [String],
     totalPrice: Number,
-    isShipped: Boolean
+    state: {
+        type: String,
+        enum: ['active', 'shipped', 'canceled'],
+    },
 });
 
 const Order = mongoose.model('Order', orderSchema);
