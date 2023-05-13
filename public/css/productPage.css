@@ -35,8 +35,6 @@ main {
     justify-content: space-between;
 }
 
-
-
 .search-container {
     display: flex;
     justify-content: center;
@@ -64,7 +62,6 @@ button {
 button:hover {
     background-color: #45a049;
 }
-
 
 
 .filter {

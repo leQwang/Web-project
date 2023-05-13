@@ -18,9 +18,14 @@ app.use(express.static("Public"));
 // Use the `express.urlencoded` middleware to parse incoming form data
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/productPage", (req, res) => {
-    res.render('productPage', { products: products });
+app.get("/products", (req, res) => {
+    Product.find()
+    .then((products) => {
+        res.render('productPage', {products: products});
+    })
+    .catch((error) => console.log(error.message));
 });
+
 
 app.post("/vendorAddProduct", (req, res) => {
     const product = new Product(req.body);
@@ -70,10 +75,40 @@ app.post("/hub", (req, res) => {
     .catch((error) => res.send(error));
 })
 
+app.get("/products/filter", (req, res) => {
+    const minPrice = req.query['min-price'];
+    const maxPrice = req.query['max-price'];
+
+    Product.find({price: {$gte: minPrice, $lte: maxPrice}})
+    .then((products) => {
+        res.render('productPage', {products: products});
+    })
+    .catch((error) => console.log(error.message));
+
+});
+
+app.get("/products/search", (req, res) => {
+    const searchWord = req.query['search-word'];
+    const regexPattern = new RegExp(searchWord, 'i');
+  
+    Product.find({ name: { $regex: regexPattern } })
+      .then((products) => {
+        res.render('productPage', { products: products });
+      })
+      .catch((error) => console.log(error.message));
+});
+
+
+
 app.get("/product/:id", (req, res) => {
-    const { id } = req.params;
-    const product = products.find((p) => p.id == id);
-    res.render('productDetail', { product });
+    Product.findById(req.params.id)
+    .then((product) => {
+      if (!product) {
+        return res.send("Cannot find that ID!");
+      }
+      res.render('productDetail', {product: product});
+    })
+    .catch((error) => res.send(error));
 });
 
 app.get("/myAccount", (req, res) => {
