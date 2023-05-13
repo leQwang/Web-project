@@ -12,9 +12,10 @@ const Order = require('./model/Order');
 const Product = require('./model/Product');
 const Hub = require('./model/DistributionHub');
 const DistributionHub = require('./model/DistributionHub');
+const user = require('./users.js');
 
 app.set('view engine', 'ejs');
-app.use(express.static("Public"));
+app.use(express.static("public"));
 // Use the `express.urlencoded` middleware to parse incoming form data
 app.use(express.urlencoded({ extended: true }));
 
@@ -31,48 +32,57 @@ app.post("/vendorAddProduct", (req, res) => {
     const product = new Product(req.body);
     console.log(req.body);
     product.save()
-    .then((product) => res.send(product))
-    .catch((error) => res.send(error));
+        .then((product) => res.send(product))
+        .catch((error) => res.send(error));
 })
 
 app.post("/registerCustomer", (req, res) => {
-    const user = new User(req.body);
-    console.log(req.body);
+    req.body.role = 'Customer';
+    const data = req.body;
+    const user = new User({ username: data.username, password: data.password, profilePic: data['profile-picture'], customerName: data['name'], customerAddress: data['address'], role: data.role });
+
     user.save()
-    .then((user) => res.send(user))
-    .catch((error) => res.send(error));
+        .then(() => res.render('registrationSuccesfull', { name: `${req.body.username}` }))
+        .then((user) => res.send(user))
+        .catch((error) => res.send(error));
 })
 
 app.post("/registerShipper", (req, res) => {
-    const user = new User(req.body);
-    console.log(req.body);
+    req.body.role = 'Shipper';
+    const data = req.body;
+    const user = new User({ username: data.username, password: data.password, profilePic: data['profile-picture'], distributionHub: data['distribution-hub'], role: data.role });
+
     user.save()
-    .then((user) => res.send(user))
-    .catch((error) => res.send(error));
+        .then(() => res.render('registrationSuccesfull', { name: `${req.body.username}` }))
+        .then((user) => res.send(user))
+        .catch((error) => res.send(error));
 })
 
 app.post("/registerVendor", (req, res) => {
-    const user = new User(req.body);
-    console.log(req.body);
+    req.body.role = 'Vendor';
+    const data = req.body;
+    const user = new User({ username: data.username, password: data.password, profilePic: data['profile-picture'], businessName: data['business-name'], businessAddress: data['business-address'], role: data.role });
+
     user.save()
-    .then((user) => res.send(user))
-    .catch((error) => res.send(error));
+        .then(() => res.render('registrationSuccesfull', { name: `${req.body.username}` }))
+        .then((user) => res.send(user))
+        .catch((error) => res.send(error));
 })
 
 app.post("/shoppingCart", (req, res) => {
     const order = new Order(req.body);
     console.log(req.body);
     order.save()
-    .then((order) => res.send(order))
-    .catch((error) => res.send(error));
+        .then((order) => res.send(order))
+        .catch((error) => res.send(error));
 })
 
 app.post("/hub", (req, res) => {
     const hub = new DistributionHub(req.body);
     console.log(req.body);
     hub.save()
-    .then((hub) => res.send(hub))
-    .catch((error) => res.send(error));
+        .then((hub) => res.send(hub))
+        .catch((error) => res.send(error));
 })
 
 app.get("/products/filter", (req, res) => {
@@ -132,18 +142,15 @@ app.get("/registerCustomer", (req, res) => {
 });
 
 app.get("/registerShipper", (req, res) => {
-    res.render('registerShipper', {});
+    Hub.find()
+    .then((hubs) => {
+        res.render('registerShipper', {hubs: hubs})
+    })
+    .catch((error) => console.log(error))
 });
 
 app.get("/registerVendor", (req, res) => {
     res.render('registerVendor', {});
-});
-
-app.post('/register', (req, res) => {
-        // Log the form data received from the client
-    console.log("Data received from the frontend for POST form:");
-    console.log(req.body);
-    res.render('registrationSuccesfull', {name: `${req.body.name}`});
 });
 
 app.listen(port, () => {

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,11 +8,12 @@
     <link rel="stylesheet" type="text/css" href="..\css\registration.css">
     <title>Vendor Registration</title>
 </head>
+
 <body>
     <main>
         <h1>Vendor Registration: </h1>
         <section class="registration-form">
-            <form class="registration" action="/register" method="post" id="registerCustomer">
+            <form class="registration" action="/registerVendor" method="post" id="registerVendor-form">
                 <fieldset>
                     <div class="input-section">
                         <div class="info-box">
@@ -57,12 +59,14 @@
                         <textarea id="business-address" name="business-address"></textarea>
                     </div>
                     <div class="input-section">
-                        <input type="submit" value="Register">
+                        <input type="submit" value="Register" id="registerVendor-btn">
                     </div>
                 </fieldset>
             </form>
         </section>
     </main>
-    
+    <script src="..\js\valVendorReqForm.js"></script>
+
 </body>
+
 </html>
