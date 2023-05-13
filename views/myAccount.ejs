@@ -5,12 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/css/myAccount.css">
+    <link rel="stylesheet" href="/css/footer.css" type="text/css">
+    <link rel="stylesheet" href="/css/header.css" type="text/css">
     <script src ="../index.js"></script>
     <title>My Account Page</title>
 </head>
 <body>
-    <header>
-    </header>
+    <%- include ('partials/header') %>
     <main>
         <h1>My Profile</h1>
         <div id ="content-box">
@@ -37,14 +38,13 @@
                     <label for="business-address">Business Address: <%= user.businessAddress %></label>
                 <% } %>
                 <% if (user.role == 'shipper') { %>
-                    <label for="dstribution-hub">Distribution Hub: <%= user.distributionHub %> </label>
+                    <label for="distribution-hub">Distribution Hub: <%= user.distributionHub %> </label>
                 <% } %>
                 <button id="log-out-button">Log out</button>
             </div>
         </div>
     </main>
-    <footer>
-    </footer>
+    <%- include ('partials/footer') %>
 </body>
 <script>
     function showUpload() {

@@ -5,11 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/css/shoppingCart.css">
+    <link rel="stylesheet" href="/css/footer.css" type="text/css">
+    <link rel="stylesheet" href="/css/header.css" type="text/css">
     <title>Shopping Cart Page</title>
 </head>
 <body>
-    <header>
-    </header>
+    <%- include ('partials/header') %>
     <main>
         <h1>Shopping Cart</h1>
         <div id="content-box">
@@ -35,8 +36,7 @@
             </div>
         </div>
     </main>
-    <footer>
-    </footer>
+    <%- include ('partials/footer') %>
 </body>
 <script>
     window.onload = function loadData(){
@@ -85,6 +85,10 @@
         document.querySelector('#product-list').value = products;
         document.querySelector('#customer-name-field').value = "<%= user.customerName %>";
         document.querySelector('#address-field').value = "<%= user.customerAddress %>";
+    }
+
+    window.onsubmit = function clearLocalStorage(){
+        localStorage.clear();
     }
 </script>
 </html>

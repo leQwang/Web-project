@@ -27,8 +27,8 @@
                 <input type="number" id="max-price" name="max-price">
             </div>
             <div class="search-container">
-                <form action="/search">
-                    <input type="text" placeholder="Search...">
+                <form action="/product/filter" method="get">
+                    <input type="text" id="search-word" name="search-word" placeholder="Search...">
                     <button type="submit">Search</button>
                 </form>
             </div>

@@ -19,7 +19,7 @@ app.use(express.static("Public"));
 const currentUser = "645cce8b020e3bde5c979c79";
 
 // Use the `express.urlencoded` middleware to parse incoming form data
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.post("/vendorAddProduct", (req, res) => {
     const product = new Product(req.body);
@@ -64,11 +64,9 @@ app.post("/shoppingCart", (req, res) => {
         .then((randHub) =>{
             console.log(randHub);
             DistributionHub.findByIdAndUpdate(randHub,{ $push: {orderID : order._id}})
-            .then((hub)=>{
-                    User.findById(currentUser)
-                    .then((user) => {
-                        res.render("shoppingCart", {user : user});
-                    });
+            Product.find()
+            .then((products)=>{
+                    res.render("productPage", {products : products});
                 })
             })
         })
@@ -107,7 +105,7 @@ app.get("/myAccount", (req, res) => {
 
 app.get("/product/:id", (req, res) => {
     const id = req.params.id;
-    console.log(id)
+    console.log(id);
     Product.findById(id)
     .then((product) =>{
         console.log(product);
