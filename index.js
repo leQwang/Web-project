@@ -56,7 +56,7 @@ app.post("/registerVendor", (req, res) => {
 app.post("/shoppingCart", (req, res) => {
     var arr = req.body.productList.split(",");
     req.body.productList = arr;
-    console.log(req.body.productList);
+    console.log(req.body);
     const order = new Order(req.body);
     order.save()
     .then((order) => {
@@ -76,7 +76,6 @@ app.post("/shoppingCart", (req, res) => {
 app.post("/hub", (req, res) => {
     const hub = new DistributionHub(req.body);
     console.log(req.body);
-    req.body.productList
     hub.save()
     .then((hub) => res.send(hub))
     .catch((error) => res.send(error));
