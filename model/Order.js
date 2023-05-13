@@ -9,7 +9,6 @@ const orderSchema = new mongoose.Schema({
     address: String,
     productList: [String],
     totalPrice: Number,
-    isShipped: Boolean
 });
 
 const Order = mongoose.model('Order', orderSchema);
