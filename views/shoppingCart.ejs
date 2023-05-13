@@ -5,50 +5,90 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/css/shoppingCart.css">
+    <link rel="stylesheet" href="/css/footer.css" type="text/css">
+    <link rel="stylesheet" href="/css/header.css" type="text/css">
     <title>Shopping Cart Page</title>
 </head>
 <body>
-    <header>
-    </header>
+    <%- include ('partials/header') %>
     <main>
         <h1>Shopping Cart</h1>
         <div id="content-box">
             <div id="cart-box">
                 <div id="label-box">
                     <label for="display">Item</label>
-                    <label for="quantity">Quantity</label>
                     <label for="price">Price</label>
                     <label for="action">Action</label>
                 </div>
                 <div id="item-box">
-                    <% for (let i = 0; i < products.length; i++) { %>
-                    <div class="item">
-                        <div id="item-display">
-                            <img src="/images/<%=products[i].image%>" alt="Item image" width="100px" height="100px">
-                            <p id="item-name"><%= products[i].name %></p>
-                        </div>
-                        <div id="quantity-display">
-                            1
-                        </div>
-                        <div id="unit-price-display">
-                            $<%= products[i].price %>
-                        </div>
-                        <div id="action-display">
-                            <button id="delete-button">Delete</button>
-                        </div>
-                    </div>
-                    <% } %>
                 </div>
             </div>
             <div id="purchase-box">
-                <label for="address">Deliver to: <%= user.customerAddress %></label>
-                <label for="total-price">Total price: $12</label>
-                <button id="pay-button">PAY NOW</button>
+                <label id="address">Deliver to: <%= user.customerAddress %></label>
+                <label id="total-price">Total price: </label>
+                <form action="http://localhost:4200/shoppingCart" method="post">
+                    <input type="text" name="productList" style="display:none" id="product-list">
+                    <input type="text" name= "customerName" id ="customer-name-field"style="display:none">
+                    <input type="text" name= "address" id ="address-field"style="display:none">
+                    <button id="order-button" type="submit">Order</button>
+                </form>
+                
             </div>
         </div>
     </main>
-    <footer>
-
-    </footer>
+    <%- include ('partials/footer') %>
 </body>
+<script>
+    window.onload = function loadData(){
+        var totalPrice = 0;
+        var products = new Array();
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            console.log(localStorage.getItem(key));
+            const product = JSON.parse(localStorage.getItem(key));
+            totalPrice += product.price;
+            const item = document.createElement('div');
+            const itemDisplay = document.createElement('div');
+            const itemImg = document.createElement('img');
+            const itemName = document.createElement('label');
+            const itemPrice = document.createElement('div')
+            const itemActionDisplay = document.createElement('div');
+            const itemAction = document.createElement('button');
+            item.setAttribute('class','item');
+            item.setAttribute('id', i);
+            itemDisplay.setAttribute('class','item-display');
+            itemDisplay.setAttribute('id', i);
+            itemImg.setAttribute('class','item-image');
+            itemName.setAttribute('class','item-name');
+            itemPrice.setAttribute('class','item-price');
+            itemActionDisplay.setAttribute('class','action-display');
+            itemAction.setAttribute('class','delete-button');
+            itemImg.src = product.image;
+            itemName.innerText = product.name;
+            itemPrice.innerText = '$' + product.price;
+            itemAction.innerText = 'Delete';
+            itemAction.addEventListener('click', () =>{
+                localStorage.removeItem(key);
+                window.location.reload();
+            })
+            document.querySelector('#item-box').appendChild(item);
+            document.querySelectorAll('.item').item(i).appendChild(itemDisplay);
+            document.querySelectorAll('.item-display').item(i).appendChild(itemImg);
+            document.querySelectorAll('.item-display').item(i).appendChild(itemName);
+            document.querySelectorAll('.item').item(i).appendChild(itemPrice);
+            document.querySelectorAll('.item').item(i).appendChild(itemActionDisplay);
+            document.querySelectorAll('.action-display').item(i).appendChild(itemAction);
+            products.push(product._id);
+            
+        }
+        document.querySelector('#total-price').innerText = 'Total price: $' + totalPrice.toFixed(2); 
+        document.querySelector('#product-list').value = products;
+        document.querySelector('#customer-name-field').value = "<%= user.customerName %>";
+        document.querySelector('#address-field').value = "<%= user.customerAddress %>";
+    }
+
+    window.onsubmit = function clearLocalStorage(){
+        localStorage.clear();
+    }
+</script>
 </html>

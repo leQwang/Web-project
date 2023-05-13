@@ -5,19 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/css/myAccount.css">
+    <link rel="stylesheet" href="/css/footer.css" type="text/css">
+    <link rel="stylesheet" href="/css/header.css" type="text/css">
+    <script src ="../index.js"></script>
     <title>My Account Page</title>
 </head>
 <body>
-    <header>
-    </header>
+    <%- include ('partials/header') %>
     <main>
         <h1>My Profile</h1>
         <div id ="content-box">
             <div id="picture-box">
                 <div>
-                    <img src="/images/placeholder.png" alt="User profile picture" width=300px id="profile-pic">
+                    <img src="<%= user.profilePic%>" alt="User profile picture" width=300px id="profile-pic">
                 </div>
-                <button id="edit-picture-button">Edit profile picture</button>
+                <button id="edit-picture-button" onclick="showUpload()">Edit profile picture</button>
+                <form action="http://localhost:4200/myAccount" id="edit-profile-pic-box" style="display:none;" method="post" >
+                    <input type="file" id="profile-pic-upload" accept="image" required onchange="getImage()">
+                    <input type="text" id="encoded-pic" style="display:none" name="profilePic">
+                    <button id="submit-profile-pic">Submit new profile pic</button>
+                </form>
+                
             </div>
             <div id="info-box">
                 <label for="username">Username: <%= user.username %> </label>
@@ -30,13 +38,31 @@
                     <label for="business-address">Business Address: <%= user.businessAddress %></label>
                 <% } %>
                 <% if (user.role == 'shipper') { %>
-                    <label for="dstribution-hub">Distribution Hub: <%= user.distributionHub %> </label>
+                    <label for="distribution-hub">Distribution Hub: <%= user.distributionHub %> </label>
                 <% } %>
                 <button id="log-out-button">Log out</button>
             </div>
         </div>
     </main>
-    <footer>
-    </footer>
+    <%- include ('partials/footer') %>
 </body>
+<script>
+    function showUpload() {
+        if(document.getElementById("edit-profile-pic-box").style.display == 'none'){
+            document.getElementById("edit-profile-pic-box").style.display='flex';
+        } else{
+            document.getElementById("edit-profile-pic-box").style.display='none';
+        }
+    }
+    
+    function getImage() {
+        var fr = new FileReader();
+        var img = document.querySelector("#profile-pic-upload").files;
+        fr.readAsDataURL(img[0]);
+        fr.onloadend = function () {
+            console.log(fr.result);
+            document.querySelector("#encoded-pic").value = fr.result;
+        }
+    }
+</script>
 </html>

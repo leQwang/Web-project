@@ -35,8 +35,6 @@ main {
     justify-content: space-between;
 }
 
-
-
 .search-container {
     display: flex;
     justify-content: center;
@@ -61,10 +59,13 @@ button {
     margin: 5px;
 }
 
+.product button{
+    width: 100%;
+}
+
 button:hover {
     background-color: #45a049;
 }
-
 
 
 .filter {
