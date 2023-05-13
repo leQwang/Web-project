@@ -13,7 +13,7 @@
     <main>
         <h1>Shipper Registration: </h1>
         <section class="registration-form">
-            <form class="registration" action="/register" method="post" id="registerCustomer">
+            <form class="registration" action="/registerShipper" method="post" id="registerShipper-form">
                 <fieldset>
                     <div class="input-section">
                         <div class="info-box">
@@ -50,18 +50,19 @@
                         </div>
                         <select id="distribution-hub" name="distribution-hub" required>
                             <option value="" disabled selected>Select a hub</option>
-                            <option value="hub1">Hub 1</option>
-                            <option value="hub2">Hub 2</option>
-                            <option value="hub3">Hub 3</option>
+                            <% for (let i=0; i< hubs.length; i++) { %>
+                                <option value="<%= hubs[i].shipperID%>"><%= hubs[i].name %>, <%= hubs[i].address %></option>
+                            <% } %>
                         </select>
                     </div>
                     <div class="input-section">
-                        <input type="submit" value="Register">
+                        <input type="submit" value="Register" id="registerShipper-btn">
                     </div>
                 </fieldset>
             </form>
         </section>
     </main>
+    <script src="..\js\valShipperReqForm.js"></script>
 
 </body>
 
