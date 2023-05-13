@@ -14,7 +14,7 @@ const Hub = require('./model/DistributionHub');
 const DistributionHub = require('./model/DistributionHub');
 
 app.set('view engine', 'ejs');
-app.use(express.static("Public"));
+app.use(express.static("public"));
 // Use the `express.urlencoded` middleware to parse incoming form data
 app.use(express.urlencoded({ extended: true }));
 

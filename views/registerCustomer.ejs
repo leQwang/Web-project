@@ -13,7 +13,7 @@
     <main>
         <h1>Customer Registration: </h1>
         <section class="registration-form">
-            <form class="registration" action="/register" method="post" id="registerCustomer">
+            <form class="registration" action="/register" method="post" id="registerCustomer-form">
                 <fieldset>
                     <div class="input-section">
                         <div class="info-box">
@@ -59,12 +59,14 @@
                         <textarea id="address" name="address"></textarea>
                     </div>
                     <div class="input-section">
-                        <input type="submit" value="Register">
+                        <input type="submit" value="Register" id="registerCustomer-btn">
                     </div>
                 </fieldset>
             </form>
         </section>
     </main>
+    <script src="..\js\valCustomerReqForm.js"></script>
+
 </body>
 
 </html>
