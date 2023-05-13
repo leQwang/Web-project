@@ -75,17 +75,30 @@ app.post("/hub", (req, res) => {
     .catch((error) => res.send(error));
 })
 
-app.get("/product/filter", (req, res) => {
-    //Product.f
-    console.log("hej" + req.body)
-   /*  .then((product) => {
-      if (!product) {
-        return res.send("Cannot find any products with that price!");
-      }
-      res.render('productDetail', {product: product});
+app.get("/products/filter", (req, res) => {
+    const minPrice = req.query['min-price'];
+    const maxPrice = req.query['max-price'];
+
+    Product.find({price: {$gte: minPrice, $lte: maxPrice}})
+    .then((products) => {
+        res.render('productPage', {products: products});
     })
-    .catch((error) => res.send(error)); */
+    .catch((error) => console.log(error.message));
+
 });
+
+app.get("/products/search", (req, res) => {
+    const searchWord = req.query['search-word'];
+    const regexPattern = new RegExp(searchWord, 'i');
+  
+    Product.find({ name: { $regex: regexPattern } })
+      .then((products) => {
+        res.render('productPage', { products: products });
+      })
+      .catch((error) => console.log(error.message));
+});
+
+
 
 app.get("/product/:id", (req, res) => {
     Product.findById(req.params.id)

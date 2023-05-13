@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="css/productPage.css">
+    <link rel="stylesheet" href="..\css\productPage.css">
 
     <title>Product page</title>
 
@@ -19,17 +19,18 @@
     <main>
 
         <div class="search">
-            <form action="/product/filter" class="filter">
+            <form action="/products/filter" method="get" class="filter">
                 <label for="min-price">Minimum Price:</label>
                 <input type="number" id="min-price" name="min-price">
 
                 <label for="max-price">Maximum Price:</label>
                 <input type="number" id="max-price" name="max-price">
+
                 <button type="submit">Filter</button>
             </form>
             <div class="search-container">
-                <form action="/search">
-                    <input type="text" id="search-word" name="searh-word" placeholder="Search...">
+                <form action="/products/search" method="get">
+                    <input type="text" id="search-word" name="search-word" placeholder="Search...">
                     <button type="submit">Search</button>
                 </form>
             </div>
