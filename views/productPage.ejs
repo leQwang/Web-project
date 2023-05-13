@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="css/productPage.css">
+    <link rel="stylesheet" href="..\css\productPage.css">
 
     <title>Product page</title>
 
@@ -19,16 +19,18 @@
     <main>
 
         <div class="search">
-            <div class="filter">
+            <form action="/products/filter" method="get" class="filter">
                 <label for="min-price">Minimum Price:</label>
                 <input type="number" id="min-price" name="min-price">
 
                 <label for="max-price">Maximum Price:</label>
                 <input type="number" id="max-price" name="max-price">
-            </div>
+
+                <button type="submit">Filter</button>
+            </form>
             <div class="search-container">
-                <form action="/search">
-                    <input type="text" placeholder="Search...">
+                <form action="/products/search" method="get">
+                    <input type="text" id="search-word" name="search-word" placeholder="Search...">
                     <button type="submit">Search</button>
                 </form>
             </div>
@@ -36,22 +38,18 @@
 
         <div class="container">
 
-            <% for (let i = 0; i < products.length; i++) { %>
+            <% for (let i=0; i < products.length; i++) { %>
 
-            <div class="product">
-                <img src="images/<%= products[i].image%>" alt="Product 1 <%= products[i].image%>">
-                <h2><%= products[i].name %></h2>
-                <p class="price">$<%= products[i].price %></p>
-              
-                <button><a href="product/<%= products[i].id%>" type="button" >View</a></button>
-                
-            </div>
-            <% } %>
+                <div class="product">
+                    <img src="<%= products[i].image%>" alt="Product 1 <%= products[i].image%>">
+                    <h2>
+                        <%= products[i].name %>
+                    </h2>
+                    <p class="price">$<%= products[i].price %></p>
 
-            
-            
-
-         
+                    <button><a href="product/<%= products[i].id%>" type="button">View</a></button>
+                </div>
+                <% } %>
         </div>
     </main>
     <footer>
