@@ -26,48 +26,48 @@ app.post("/vendorAddProduct", (req, res) => {
     const product = new Product(req.body);
     console.log(req.body);
     product.save()
-    .then((product) => res.send(product))
-    .catch((error) => res.send(error));
+        .then((product) => res.send(product))
+        .catch((error) => res.send(error));
 })
 
 app.post("/registerCustomer", (req, res) => {
     const user = new User(req.body);
     console.log(req.body);
     user.save()
-    .then((user) => res.send(user))
-    .catch((error) => res.send(error));
+        .then((user) => res.send(user))
+        .catch((error) => res.send(error));
 })
 
 app.post("/registerShipper", (req, res) => {
     const user = new User(req.body);
     console.log(req.body);
     user.save()
-    .then((user) => res.send(user))
-    .catch((error) => res.send(error));
+        .then((user) => res.send(user))
+        .catch((error) => res.send(error));
 })
 
 app.post("/registerVendor", (req, res) => {
     const user = new User(req.body);
     console.log(req.body);
     user.save()
-    .then((user) => res.send(user))
-    .catch((error) => res.send(error));
+        .then((user) => res.send(user))
+        .catch((error) => res.send(error));
 })
 
 app.post("/shoppingCart", (req, res) => {
     const order = new Order(req.body);
     console.log(req.body);
     order.save()
-    .then((order) => res.send(order))
-    .catch((error) => res.send(error));
+        .then((order) => res.send(order))
+        .catch((error) => res.send(error));
 })
 
 app.post("/hub", (req, res) => {
     const hub = new DistributionHub(req.body);
     console.log(req.body);
     hub.save()
-    .then((hub) => res.send(hub))
-    .catch((error) => res.send(error));
+        .then((hub) => res.send(hub))
+        .catch((error) => res.send(error));
 })
 
 app.get("/product/:id", (req, res) => {
@@ -92,6 +92,14 @@ app.get('/shipper', (req, res) => {
         .catch((error) => console.log(error.message));
 });
 
+app.get("/orders/:id", (req, res) => {
+    Order.findById(req.params.id)
+        .then((order) => {
+            res.render('order', { order: order, products: products });
+        })
+        .catch((error) => console.log(error.message));
+});
+
 app.get("/login", (req, res) => {
     res.render('login', {});
 });
@@ -109,10 +117,10 @@ app.get("/registerVendor", (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-        // Log the form data received from the client
+    // Log the form data received from the client
     console.log("Data received from the frontend for POST form:");
     console.log(req.body);
-    res.render('registrationSuccesfull', {name: `${req.body.name}`});
+    res.render('registrationSuccesfull', { name: `${req.body.name}` });
 });
 
 app.listen(port, () => {
