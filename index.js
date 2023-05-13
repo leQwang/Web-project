@@ -12,6 +12,7 @@ const User = require('./model/User');
 const Order = require('./model/Order');
 const Product = require('./model/Product');
 const DistributionHub = require('./model/DistributionHub');
+const { Schema, default: mongoose } = require('mongoose');
 const user = require('./users.js');
 
 app.set('view engine', 'ejs');
@@ -186,7 +187,30 @@ app.get("/shoppingCart", (req, res) => {
 });
 
 app.get('/shipper', (req, res) => {
-    res.render('shipper', { orders: orders });
+    Order.find()
+        .then((orders) => {
+            res.render('shipper', { orders: orders });
+        })
+        .catch((error) => console.log(error.message));
+});
+
+app.get("/orders/:id", async (req, res) => {
+    let productsOfOrder = [];
+    let orderData;
+    await Order.findById(req.params.id)
+        .then((order) => {
+            orderData = order;
+            order.productList.forEach((productId, index) => {
+                Product.findById(productId)
+                    .then((product) => {
+                        productsOfOrder.push(product)
+                    })
+                    .catch((error) => error.message);
+            });
+        })
+        .catch((error) => console.log(error.message));
+        console.log(productsOfOrder)
+    res.render('order', { order: orderData, products: productsOfOrder });
 });
 
 app.get("/login", (req, res) => {
@@ -246,10 +270,10 @@ app.post("/vendorAddProduct", (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-        // Log the form data received from the client
+    // Log the form data received from the client
     console.log("Data received from the frontend for POST form:");
     console.log(req.body);
-    res.render('registrationSuccesfull', {name: `${req.body.name}`});
+    res.render('registrationSuccesfull', { name: `${req.body.name}` });
 });
 
 app.listen(port, () => {

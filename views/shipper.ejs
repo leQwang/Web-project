@@ -29,9 +29,9 @@
       <div id="overview">
         <% orders.forEach((order)=> { %>
         <div class="order-card">
-          <div>OrderID: <%= order.id %></div>
-          <div>Customer: <%= order.customer %></div>
-          <div>Vendor: <%= order.vendor %></div>
+          <div>OrderID: <%= order._id %></div>
+          <div>Customer: <%= order.customerName %></div>
+          <div>Price: <%= order.price %></div>
         </div>
         <% }); %>
       </div>
