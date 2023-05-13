@@ -93,24 +93,23 @@ app.get('/shipper', (req, res) => {
         .catch((error) => console.log(error.message));
 });
 
-app.get("/orders/:id", (req, res) => {
-    Order.findById(req.params.id)
+app.get("/orders/:id", async (req, res) => {
+    let productsOfOrder = [];
+    let orderData;
+    await Order.findById(req.params.id)
         .then((order) => {
-            console.log(order)
-            const productsOfOrder = [];
-            order.productList.forEach((productId) => {
-                console.log(productId)
+            orderData = order;
+            order.productList.forEach((productId, index) => {
                 Product.findById(productId)
-                .then((product) => {
-                    console.log(product)
-                    productsOfOrder.push(product)
-                })
-                .catch((error) => error.message);
+                    .then((product) => {
+                        productsOfOrder.push(product)
+                    })
+                    .catch((error) => error.message);
             });
-            console.log(productsOfOrder);
-            res.render('order', { order: order, products: productsOfOrder });
         })
         .catch((error) => console.log(error.message));
+        console.log(productsOfOrder)
+    res.render('order', { order: orderData, products: productsOfOrder });
 });
 
 app.get("/login", (req, res) => {
