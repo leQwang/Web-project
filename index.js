@@ -16,12 +16,16 @@ const user = require('./users.js');
 
 app.set('view engine', 'ejs');
 
-app.use(express.static("Public"));
+app.use(express.static("Public"));  
+
+const vendorUser = "645b7d6b1f02c16d3bb1321a";
+
 
 const currentUser = "645cce8b020e3bde5c979c79";
 
 // Use the `express.urlencoded` middleware to parse incoming form data
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(express.json());
 
 app.get("/products", (req, res) => {
     Product.find()
@@ -203,6 +207,49 @@ app.get("/registerShipper", (req, res) => {
 
 app.get("/registerVendor", (req, res) => {
     res.render('registerVendor', {});
+});
+
+app.get("/vendorProductView", (req, res) => {
+
+    Product.find()
+    .then((products) => {
+        //RMIT vendor product 
+        User.findById(vendorUser)
+            .then((user) => {
+                const matchedProducts = products.filter(product => product.businessName ===  user.businessName);
+                res.render("vendorProductView", {user : user, prod: matchedProducts});
+            });
+    })
+    .catch((error) => console.log(error.message));
+});
+
+app.get("/vendorAddProduct", (req, res) => {
+    res.render('vendorAddProduct', {});
+});
+
+app.post("/vendorAddProduct", (req, res) => {
+    User.findById(vendorUser)
+    .then((user) => {
+        req.body.businessName = user.businessName;
+        const product = new Product(req.body);
+
+        product.save()
+          .then(Product.find()
+            .then((products) => {
+                //RMIT vendor product 
+                const matchedProducts = products.filter(product => product.businessName ===  user.businessName);
+                res.render("vendorProductView", {user : user, prod: matchedProducts});
+            }) 
+            .catch((error) => console.log(error.message)) )
+          .catch((error) => res.send(error));
+    });
+});
+
+app.post('/register', (req, res) => {
+        // Log the form data received from the client
+    console.log("Data received from the frontend for POST form:");
+    console.log(req.body);
+    res.render('registrationSuccesfull', {name: `${req.body.name}`});
 });
 
 app.listen(port, () => {

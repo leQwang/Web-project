@@ -4,41 +4,52 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/css/vendorAddProduct.css">
+    <link rel="stylesheet" href="/css/vendorAddProduct.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
     <title>Add New Product</title>
 </head>
 <body>
-    <nav></nav>
+    <%- include ('partials/header') %>
 
     <main>
         <div class="container border">
             <div class="title">Add Product</div>
-            <form action="/submit-product" method="POST" enctype="multipart/form-data">
+            <form action="/vendorAddProduct" method="POST"">
 
-                <label for="product-name">Product Name:</label>
-                <input type="text" class="field-input"  name="productName" minlength="10" maxlength="20" required>
+                <label for="name">Product Name:</label>
+                <input type="text" class="field-input" id="name"  name="name" minlength="10" maxlength="20" required>
 
-                <label for="product-price">Price:</label>
-                <input type="number" class="field-input" name="productPrice" step="0.01" min="0" required>
-
-
-                <label for="product-stock">Number of Stock:</label>
-                <input type="number" class="field-input" name="productStock" min="0" required>
+                <label for="price">Price (in $):</label>
+                <input type="number" class="field-input" id="price" name="price" step="0.01" min="0" required>
 
 
-                <label for="product-description"> Description:</label>
-                <textarea name="productDescription" rows="3" maxlength="500" required></textarea>
+                <label for="description"> Description:</label>
+                <textarea id="description" name="description" rows="3" maxlength="500" required></textarea>
 
 
             
-                <label for="product-images">Images:</label>
-                <input type="file" id="product-images" name="productImages" accept="image/*" multiple required>
+                <label for="profile-pic-upload">Image:</label>
+                <input type="file" id="profile-pic-upload" accept="image" required onchange="getImage()">
+                <input type="text" id="encoded-pic" style="display:none" name="image">
                 
                 <button type="submit" id="submit-button">Submit</button>
             </form>
         </div>
     </main>
 
-    <footer></footer>
+    <%- include ('partials/footer') %>
+
+    <script>      
+        function getImage() {
+            var fr = new FileReader();
+            var img = document.querySelector("#profile-pic-upload").files;
+            fr.readAsDataURL(img[0]);
+            fr.onloadend = function () {
+                console.log(fr.result);
+                document.querySelector("#encoded-pic").value = fr.result;
+            }
+        }
+    </script>
 </body>
 </html>

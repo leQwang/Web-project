@@ -1,5 +1,5 @@
 //This is a temporary file, should be mongoo
-const user = [
+const users = [
     {
         id: 1,
         username: 'Phuc',
@@ -23,4 +23,4 @@ const user = [
 ];
 
 
-module.exports = user;
+module.exports = users;
