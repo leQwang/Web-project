@@ -44,8 +44,6 @@ app.post("/vendorAddProduct", (req, res) => {
     product.save()
         .then((product) => res.send(product))
         .catch((error) => res.send(error));
-        .then((product) => res.send(product))
-        .catch((error) => res.send(error));
 })
 
 app.post("/registerCustomer", (req, res) => {
@@ -105,8 +103,6 @@ app.post("/hub", (req, res) => {
     const hub = new DistributionHub(req.body);
     console.log(req.body);
     hub.save()
-        .then((hub) => res.send(hub))
-        .catch((error) => res.send(error));
         .then((hub) => res.send(hub))
         .catch((error) => res.send(error));
 })
