@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="stylesheet" href="/css/default.css" type="text/css">
+  <link rel="stylesheet" href="/css/order.css" type="text/css">
   <link rel="stylesheet" href="/css/header.css" type="text/css">
   <link rel="stylesheet" href="/css/footer.css" type="text/css">
   <title>Order Details</title>
@@ -19,38 +21,37 @@
 
 
   <!--========== MAIN =========================-->
-  <div class="container">
-    <div class="pair">
-      <div class="key">Order ID</div>
-      <div class="value">ID</div>
-    </div>
-    <div class="pair">
-      <div class="key">Customer Name</div>
-      <div class="value">Name</div>
-    </div>
-    <div class="pair">
-      <div class="key">Adress</div>
-      <div class="value">street 123</div>
-    </div>
-    <div class="pair">
-      <div class="key">Total price</div>
-      <div class="value">123€</div>
-    </div>
-    <div>
-      <div class="key">Products:</div>
-      <div class="product">
-        <div class="container">
-          <% for (let i = 0; i < products.length; i++) { %>
-          <div class="product">
-            <img src="images/<%= products[i].image%>" alt="Image of product <%= products[i] %> <%= products[i].image%>">
-            <h2><%= products[i].name %></h2>
-            <p class="price">$<%= products[i].price %></p>
-          </div>
-          <% } %>
-        </div>
+  <main>
+    <h1 class="center-content">Order Details</h1>
+    <div class="container-data">
+      <div class="pair">
+        <div class="key">Order ID:</div>
+        <div class="value"><%= order._id %></div>
+      </div>
+      <div class="pair">
+        <div class="key">Customer Name:</div>
+        <div class="value"><%= order.customerName %></div>
+      </div>
+      <div class="pair">
+        <div class="key">Adress:</div>
+        <div class="value"><%= order.address %></div>
+      </div>
+      <div class="pair">
+        <div class="key">Total price:</div>
+        <div class="value"><%= order.totalPrice %>$</div>
       </div>
     </div>
-  </div>
+    <div class="key center-content font-size-20">Products:</div>
+    <div class="container-products">
+      <% for (let i = 0; i < products.length; i++) { %>
+      <div class="card">
+        <img class="img" src="<%= products[i].image%>" alt="Image of product <%= products[i] %> <%= products[i].image%>">
+        <h3 class="two-line-heading"><%= products[i].name %></h3>
+        <p class="price">$<%= products[i].price %></p>
+      </div>
+      <% } %>
+    </div>
+  </main>
   <!--========== MAIN =========================-->
 
 

@@ -1,22 +1,5 @@
-/* ____________ BASE CONFIG __________________________________________________________________ */
-
-body,
-html {
-  padding: 0px;
-  margin: 0px;
-}
-
-body * {
-  padding: 0px;
-  margin: 0px;
-}
-
 
 /* ____________ MAIN SHIPPER __________________________________________________________________ */
-#page_container {
-  position: relative;
-  min-height: 100vh;
-}
 
 #overview-headline {
   margin-top: 20px;

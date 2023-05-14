@@ -17,7 +17,7 @@ const user = require('./users.js');
 
 app.set('view engine', 'ejs');
 
-app.use(express.static("Public"));  
+app.use(express.static("Public"));
 
 const vendorUser = "645b7d6b1f02c16d3bb1321a";
 
@@ -30,10 +30,10 @@ app.use(express.json());
 
 app.get("/products", (req, res) => {
     Product.find()
-    .then((products) => {
-        res.render('productPage', {products: products});
-    })
-    .catch((error) => console.log(error.message));
+        .then((products) => {
+            res.render('productPage', { products: products });
+        })
+        .catch((error) => console.log(error.message));
 });
 
 
@@ -85,18 +85,18 @@ app.post("/shoppingCart", (req, res) => {
     console.log(req.body);
     const order = new Order(req.body);
     order.save()
-    .then((order) => {
-        DistributionHub.aggregate([{"$sample": {"size": 1}}])
-        .then((randHub) =>{
-            console.log(randHub);
-            DistributionHub.findByIdAndUpdate(randHub,{ $push: {orderID : order._id}})
-            Product.find()
-            .then((products)=>{
-                    res.render("productPage", {products : products});
+        .then((order) => {
+            DistributionHub.aggregate([{ "$sample": { "size": 1 } }])
+                .then((randHub) => {
+                    console.log(randHub);
+                    DistributionHub.findByIdAndUpdate(randHub, { $push: { orderID: order._id } })
+                    Product.find()
+                        .then((products) => {
+                            res.render("productPage", { products: products });
+                        })
                 })
-            })
         })
-    .catch((error) => res.send(error));
+        .catch((error) => res.send(error));
 })
 
 app.post("/hub", (req, res) => {
@@ -111,79 +111,79 @@ app.post("/myAccount", (req, res) => {
     const user = new User(req.body);
     console.log(req.body);
     User.findByIdAndUpdate(currentUser, req.body)
-    .then(() => {
-        User.findById(currentUser)
-        .then((user) => {
-            res.render('myAccount', {user: user});
+        .then(() => {
+            User.findById(currentUser)
+                .then((user) => {
+                    res.render('myAccount', { user: user });
+                })
         })
-    })
-    .catch((error) => res.send(error));
+        .catch((error) => res.send(error));
 })
 
 app.get("/products/filter", (req, res) => {
     const minPrice = req.query['min-price'];
     const maxPrice = req.query['max-price'];
 
-    Product.find({price: {$gte: minPrice, $lte: maxPrice}})
-    .then((products) => {
-        res.render('productPage', {products: products});
-    })
-    .catch((error) => console.log(error.message));
+    Product.find({ price: { $gte: minPrice, $lte: maxPrice } })
+        .then((products) => {
+            res.render('productPage', { products: products });
+        })
+        .catch((error) => console.log(error.message));
 
 });
 
 app.get("/products/search", (req, res) => {
     const searchWord = req.query['search-word'];
     const regexPattern = new RegExp(searchWord, 'i');
-  
+
     Product.find({ name: { $regex: regexPattern } })
-      .then((products) => {
-        res.render('productPage', { products: products });
-      })
-      .catch((error) => console.log(error.message));
+        .then((products) => {
+            res.render('productPage', { products: products });
+        })
+        .catch((error) => console.log(error.message));
 });
 
 
 
 app.get("/product/:id", (req, res) => {
     Product.findById(req.params.id)
-    .then((product) => {
-      if (!product) {
-        return res.send("Cannot find that ID!");
-      }
-      res.render('productDetail', {product: product});
-    })
-    .catch((error) => res.send(error));
+        .then((product) => {
+            if (!product) {
+                return res.send("Cannot find that ID!");
+            }
+            res.render('productDetail', { product: product });
+        })
+        .catch((error) => res.send(error));
 });
 
 
 app.get("/myAccount", (req, res) => {
     User.findById(currentUser)
-    .then((user)=> {   
-        res.render('myAccount', { user: user });
-    })
-    .catch((error) => res.send(error))
+        .then((user) => {
+            res.render('myAccount', { user: user });
+        })
+        .catch((error) => res.send(error))
 })
 
 app.get("/product/:id", (req, res) => {
     const id = req.params.id;
     console.log(id);
     Product.findById(id)
-    .then((product) =>{
-        console.log(product);
-        res.render('productDetail', { product: product });
-    })
-    .catch((err) => {
-        console.log(err);
-    })
+        .then((product) => {
+            console.log(product);
+            res.render('productDetail', { product: product });
+        })
+        .catch((err) => {
+            console.log(err);
+        })
 });
 
 app.get("/shoppingCart", (req, res) => {
     User.findById(currentUser)
-    .then((user) =>{
-        res.render('shoppingCart', { user: user });
-    })
-    
+        .then((user) => {
+            res.render('shoppingCart', { user: user });
+        })
+
 });
 
 app.get('/shipper', (req, res) => {
@@ -194,23 +194,23 @@ app.get('/shipper', (req, res) => {
         .catch((error) => console.log(error.message));
 });
 
-app.get("/orders/:id", async (req, res) => {
-    let productsOfOrder = [];
-    let orderData;
-    await Order.findById(req.params.id)
+app.get("/orders/:id", (req, res) => {
+    console.log('');
+    Order.findById(req.params.id)
         .then((order) => {
-            orderData = order;
-            order.productList.forEach((productId, index) => {
-                Product.findById(productId)
-                    .then((product) => {
-                        productsOfOrder.push(product)
-                    })
-                    .catch((error) => error.message);
-            });
+            if(order == null) res.send("ERROR: Cannot find that ID");
+            console.log('then 1');
+            Product.find({
+                '_id': { $in: order.productList }
+            })
+                .then((products) => {
+                    console.log('then 2');
+                    console.log(products);
+                    res.render('order', { order: order, products: products });
+                })
+                .catch((error) => error.message);
         })
         .catch((error) => console.log(error.message));
-        console.log(productsOfOrder)
-    res.render('order', { order: orderData, products: productsOfOrder });
 });
 
 app.get("/login", (req, res) => {
@@ -223,10 +223,10 @@ app.get("/registerCustomer", (req, res) => {
 
 app.get("/registerShipper", (req, res) => {
     Hub.find()
-    .then((hubs) => {
-        res.render('registerShipper', {hubs: hubs})
-    })
-    .catch((error) => console.log(error))
+        .then((hubs) => {
+            res.render('registerShipper', { hubs: hubs })
+        })
+        .catch((error) => console.log(error))
 });
 
 app.get("/registerVendor", (req, res) => {
@@ -236,15 +236,15 @@ app.get("/registerVendor", (req, res) => {
 app.get("/vendorProductView", (req, res) => {
 
     Product.find()
-    .then((products) => {
-        //RMIT vendor product 
-        User.findById(vendorUser)
-            .then((user) => {
-                const matchedProducts = products.filter(product => product.businessName ===  user.businessName);
-                res.render("vendorProductView", {user : user, prod: matchedProducts});
-            });
-    })
-    .catch((error) => console.log(error.message));
+        .then((products) => {
+            //RMIT vendor product 
+            User.findById(vendorUser)
+                .then((user) => {
+                    const matchedProducts = products.filter(product => product.businessName === user.businessName);
+                    res.render("vendorProductView", { user: user, prod: matchedProducts });
+                });
+        })
+        .catch((error) => console.log(error.message));
 });
 
 app.get("/vendorAddProduct", (req, res) => {
@@ -253,20 +253,20 @@ app.get("/vendorAddProduct", (req, res) => {
 
 app.post("/vendorAddProduct", (req, res) => {
     User.findById(vendorUser)
-    .then((user) => {
-        req.body.businessName = user.businessName;
-        const product = new Product(req.body);
+        .then((user) => {
+            req.body.businessName = user.businessName;
+            const product = new Product(req.body);
 
-        product.save()
-          .then(Product.find()
-            .then((products) => {
-                //RMIT vendor product 
-                const matchedProducts = products.filter(product => product.businessName ===  user.businessName);
-                res.render("vendorProductView", {user : user, prod: matchedProducts});
-            }) 
-            .catch((error) => console.log(error.message)) )
-          .catch((error) => res.send(error));
-    });
+            product.save()
+                .then(Product.find()
+                    .then((products) => {
+                        //RMIT vendor product 
+                        const matchedProducts = products.filter(product => product.businessName === user.businessName);
+                        res.render("vendorProductView", { user: user, prod: matchedProducts });
+                    })
+                    .catch((error) => console.log(error.message)))
+                .catch((error) => res.send(error));
+        });
 });
 
 app.post('/register', (req, res) => {

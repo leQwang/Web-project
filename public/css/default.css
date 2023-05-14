@@ -1,0 +1,14 @@
+/* Default file with basic styles for all pages */
+
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  margin: 100px 0px;
+}
+
+a {
+  color: black;
+}
