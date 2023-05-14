@@ -72,6 +72,7 @@ h1 {
 
 #error-message{
     text-align: center;
+    white-space: pre;
 }
 
 @media (max-width: 768px) {
