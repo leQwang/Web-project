@@ -5,6 +5,7 @@ const users = require('./users.js');
 
 const express = require("express");
 const fs = require("fs");
+const session = require('express-session');
 const app = express();
 const port = 4200;
 
@@ -14,6 +15,8 @@ const Product = require('./model/Product');
 const DistributionHub = require('./model/DistributionHub');
 const { Schema, default: mongoose } = require('mongoose');
 const user = require('./users.js');
+const { error } = require('console');
+const {hashPassword, decryptHashedPassword} = require('./public/js/hashing');
 
 app.set('view engine', 'ejs');
 
@@ -27,6 +30,31 @@ const currentUser = "645cce8b020e3bde5c979c79";
 // Use the `express.urlencoded` middleware to parse incoming form data
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+//Middleware session
+app.use(session({
+    secret: 'my-secret-key',
+    resave: false,
+    saveUninitialized: false
+  }));
+  
+// Apply middleware to all routes except for login and registration
+app.use((req, res, next) => {
+    if (req.path === '/login' || req.path === '/registerCustomer' || req.path === '/registerVendor' || req.path === '/registerShipper' || req.path === '/login-processing' || req.path === '/registrationSuccesfull') {
+      next();
+    } else {
+      isAuthenticated(req, res, next);
+    }
+  });
+
+const isAuthenticated = (req, res, next) => {
+    if (req.session.userId) {
+      next();
+    } else {
+      res.redirect('/login');
+    }
+  };
+
 
 app.get("/products", (req, res) => {
     Product.find()
@@ -46,10 +74,38 @@ app.post("/vendorAddProduct", (req, res) => {
         .catch((error) => res.send(error));
 })
 
-app.post("/registerCustomer", (req, res) => {
+app.post("/login-processing", async (req, res) => {
+    const username = req.body.username;
+    const passwordPlain = req.body.password;
+    
+    try {
+        const user = await User.findOne({ username: username })
+        console.log(user);
+        if (!user) {
+          return res.status(400).send('Invalid credentials (Username)');
+        }
+
+       const isMatch = await decryptHashedPassword(passwordPlain, user.password);
+        if (!isMatch) {
+            return res.status(400).send('Invalid credentials (Password)');
+          }
+    
+        // Passwords match, so create a session and redirect to product page
+        req.session.userId = user._id;
+        res.redirect('/products');
+      } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal Server Error');
+      }
+})
+
+app.post("/registerCustomer", async (req, res) => {
     req.body.role = 'Customer';
     const data = req.body;
-    const user = new User({ username: data.username, password: data.password, profilePic: data['profile-picture'], customerName: data['name'], customerAddress: data['address'], role: data.role });
+    const password = req.body.password;
+    const hashedPassword = await hashPassword(password);
+    console.log(hashedPassword);
+    const user = new User({ username: data.username, password: hashedPassword, profilePic: data['profile-picture'], customerName: data['name'], customerAddress: data['address'], role: data.role });
 
     user.save()
         .then(() => res.render('registrationSuccesfull', { name: `${req.body.username}` }))
@@ -142,8 +198,6 @@ app.get("/products/search", (req, res) => {
         })
         .catch((error) => console.log(error.message));
 });
-
-
 
 app.get("/product/:id", (req, res) => {
     Product.findById(req.params.id)
