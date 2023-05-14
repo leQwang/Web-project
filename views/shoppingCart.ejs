@@ -32,7 +32,6 @@
                     <input type="text" name= "address" id ="address-field"style="display:none">
                     <button id="order-button" type="submit">Order</button>
                 </form>
-                
             </div>
         </div>
     </main>
@@ -42,6 +41,10 @@
     window.onload = function loadData(){
         var totalPrice = 0;
         var products = new Array();
+        if(localStorage.length == 0){
+            document.querySelector('#item-box').innerText = "Your cart is empty";
+            document.querySelector('#order-button').disabled = true;
+        }
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             console.log(localStorage.getItem(key));
@@ -89,6 +92,7 @@
 
     window.onsubmit = function clearLocalStorage(){
         localStorage.clear();
+        window.alert("Order successful!");
     }
 </script>
 </html>

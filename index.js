@@ -115,11 +115,9 @@ app.post("/registerCustomer", async (req, res) => {
                 .catch((error) => res.send(error));
         } else {
             res.render("registerCustomer",{ error : "Server-side password validation failed!"})
-            .catch((error) => res.send(error));
         }
     } else {
         res.render("registerCustomer", {error : "Username is taken"})
-        .catch((error) => res.send(error));
     }
 })
 
@@ -142,11 +140,9 @@ app.post("/registerShipper", async (req, res) => {
                 .catch((error) => res.send(error));
         } else {
             res.render('registerShipper', {hubs: hubs, error : "Server-side password validation failed!"})
-            .catch((error) => res.send(error));
         }
     } else {
             res.render('registerShipper', {hubs: hubs, error : "Username is taken"})
-            .catch((error) => res.send(error));
     }
 })
 
@@ -184,37 +180,29 @@ app.post("/registerVendor", async (req, res) => {
                 .then((user) => res.send(user))
                 .catch((error) => res.send(error));
         } else {
-            console.log("Server-side password validation failed!");
             res.render("registerVendor", {error: "Server-side password validation failed!"})
-            .catch((error) => res.send(error));
         }
     } else {
         res.render("registerVendor", {error: errorMessage})
-        .catch((error) => res.send(error));
     }
 
 })
 
-app.post("/shoppingCart", (req, res) => {
+app.post("/shoppingCart", async (req, res) => {
     var arr = req.body.productList.split(",");
     req.body.productList = arr;
     console.log(req.body);
     req.body.state = 'active';
     const order = new Order(req.body);
     order.save()
-    .then((order) => {
-        DistributionHub.aggregate([{"$sample": {"size": 1}}])
-        .then((randHub) =>{
-            console.log(randHub);
-            DistributionHub.findByIdAndUpdate(randHub,{ $push: {orderID : order._id}})
-            Product.find()
-            .then((products)=>{
-                    res.render("productPage", {products : products});
-                })
-            })
-        })
-    .catch((error) => res.send(error));
+    randHub = await DistributionHub.aggregate([{"$sample": {"size": 1}}])
+    console.log(randHub);
+    await DistributionHub.findByIdAndUpdate(randHub,{ $push: {orderID : order._id}})
+    var products = await Product.find()
+    res.render("productPage", {products : products})
 })
+    
+
 
 app.post("/hub", (req, res) => {
     const hub = new DistributionHub(req.body);
