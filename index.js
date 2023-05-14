@@ -164,27 +164,35 @@ app.post("/registerVendor", async (req, res) => {
     .then((u) =>{
         console.log(u)
         if(u == null){
-            User.findOne({businessAddress : data['business-address']})
+            User.findOne({businessName : data['business-name']})
             .then((u2) => {
                 console.log(u2)
                 if(u2 == null){
-                    if(regex.test(password)){
+                    User.findOne({businessAddress : data['business-address']})
+                    .then((u3) => {
+                        if(u3 == null){
+                            if(regex.test(password)){
+                                
+                                console.log(hashedPassword);
+                                console.log(req.body);
+                                const user = new User({ username: data.username, password: hashedPassword, profilePic: data['profile-picture'], businessName: data['business-name'], businessAddress: data['business-address'], role: data.role });
                 
-                        console.log(hashedPassword);
-                        console.log(req.body);
-                        const user = new User({ username: data.username, password: hashedPassword, profilePic: data['profile-picture'], businessName: data['business-name'], businessAddress: data['business-address'], role: data.role });
-        
-                        user.save()
-                            .then(() => res.render('registrationSuccesfull', { name: `${req.body.username}` }))
-                            .then((user) => res.send(user))
-                            .catch((error) => res.send(error));
-                    } else {
-                        console.log("Server-side password validation failed!");
-                        res.render("registerVendor", {error: "Server-side password validation failed!"});
-                    }
+                                user.save()
+                                    .then(() => res.render('registrationSuccesfull', { name: `${req.body.username}` }))
+                                    .then((user) => res.send(user))
+                                    .catch((error) => res.send(error));
+                            } else {
+                                console.log("Server-side password validation failed!");
+                                res.render("registerVendor", {error: "Server-side password validation failed!"});
+                            }
+                        } else {
+                            console.log("This business address is already registered")
+                            res.render("registerVendor", {error : "This business address is already registered"});
+                        }
+                    })
                 } else {
-                    console.log("This business address is already registered")
-                    res.render("registerVendor", {error : "This business address is already registered"});
+                    console.log("This business name is already registered")
+                    res.render("registerVendor", {error : "This business name is already registered"});
                 }
             })
         } else {
