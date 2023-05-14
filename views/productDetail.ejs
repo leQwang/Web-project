@@ -35,9 +35,9 @@
 	</div>
 </body>
 <script>
-	const addToCart = document.querySelector('button');
+	const addToCart = document.querySelector('.add-to-cart');
 	addToCart.addEventListener('click', ()=>{
-		var num = localStorage.length;
+		var num = localStorage.length + 1;
 		localStorage.setItem(++num, '<%-JSON.stringify(product)%>');
 		console.log(localStorage);
 	})

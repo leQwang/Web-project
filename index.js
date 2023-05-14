@@ -4,7 +4,6 @@ const products = require('./products.js');
 const users = require('./users.js');
 
 const express = require("express");
-const fs = require("fs");
 const session = require('express-session');
 const app = express();
 const port = 4200;
@@ -30,7 +29,6 @@ const currentUser = "645cce8b020e3bde5c979c79";
 // Use the `express.urlencoded` middleware to parse incoming form data
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 //Middleware session
 app.use(session({
     secret: 'my-secret-key',
@@ -103,42 +101,104 @@ app.post("/registerCustomer", async (req, res) => {
     req.body.role = 'Customer';
     const data = req.body;
     const password = req.body.password;
+    const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,20}/;
     const hashedPassword = await hashPassword(password);
-    console.log(hashedPassword);
-    const user = new User({ username: data.username, password: hashedPassword, profilePic: data['profile-picture'], customerName: data['name'], customerAddress: data['address'], role: data.role });
-
-    user.save()
-        .then(() => res.render('registrationSuccesfull', { name: `${req.body.username}` }))
-        .then((user) => res.send(user))
-        .catch((error) => res.send(error));
+    User.findOne({username : data.username})
+    .then((u) =>{
+        if(u == null){
+            if(regex.test(password)){
+                console.log(hashedPassword);
+                const user = new User({ username: data.username, password: hashedPassword, profilePic: data['profile-picture'], customerName: data['name'], customerAddress: data['address'], role: data.role });
+                console.log(user)
+                user.save()
+                    .then(() => res.render('registrationSuccesfull', { name: `${req.body.username}` }))
+                    .then((user) => res.send(user))
+                    .catch((error) => res.send(error));
+            } else {
+                console.log("Server-side password validation failed!");
+                res.render("registerCustomer",{ error : "Server-side password validation failed!"});
+            }
+        } else {
+            console.log("Username is taken")
+            res.render("registerCustomer", {error : "Username is taken"});
+        }
+    })
 })
 
-app.post("/registerShipper", (req, res) => {
+app.post("/registerShipper", async (req, res) => {
     req.body.role = 'Shipper';
     const data = req.body;
-    const user = new User({ username: data.username, password: data.password, profilePic: data['profile-picture'], distributionHub: data['distribution-hub'], role: data.role });
+    const password = req.body.password;
+    const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,20}/;
+    const hashedPassword = await hashPassword(password);
+    User.findOne({username : data.username})
+    .then((u) =>{
+        if(u == null){
+            if(regex.test(password)){
+                
+                console.log(hashedPassword);
+                const user = new User({ username: data.username, password: hashedPassword, profilePic: data['profile-picture'], distributionHub: data['distribution-hub'], role: data.role });
 
-    user.save()
-        .then(() => res.render('registrationSuccesfull', { name: `${req.body.username}` }))
-        .then((user) => res.send(user))
-        .catch((error) => res.send(error));
+                user.save()
+                    .then(() => res.render('registrationSuccesfull', { name: `${req.body.username}` }))
+                    .then((user) => res.send(user))
+                    .catch((error) => res.send(error));
+            } else {
+                console.log("Server-side password validation failed!");
+                res.render("registerShipper", {error : "Server-side password validation failed!"});
+            }
+        } else {
+            console.log("Username is taken")
+            res.render("registerShipper", {error : "Username is taken"});
+        }
+    })
 })
 
-app.post("/registerVendor", (req, res) => {
+app.post("/registerVendor", async (req, res) => {
     req.body.role = 'Vendor';
     const data = req.body;
-    const user = new User({ username: data.username, password: data.password, profilePic: data['profile-picture'], businessName: data['business-name'], businessAddress: data['business-address'], role: data.role });
-
-    user.save()
-        .then(() => res.render('registrationSuccesfull', { name: `${req.body.username}` }))
-        .then((user) => res.send(user))
-        .catch((error) => res.send(error));
+    const password = req.body.password;
+    const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,20}/;
+    const hashedPassword = await hashPassword(password);
+    User.findOne({username : data.username})
+    .then((u) =>{
+        console.log(u)
+        if(u == null){
+            User.findOne({businessAddress : data['business-address']})
+            .then((u2) => {
+                console.log(u2)
+                if(u2 == null){
+                    if(regex.test(password)){
+                
+                        console.log(hashedPassword);
+                        console.log(req.body);
+                        const user = new User({ username: data.username, password: hashedPassword, profilePic: data['profile-picture'], businessName: data['business-name'], businessAddress: data['business-address'], role: data.role });
+        
+                        user.save()
+                            .then(() => res.render('registrationSuccesfull', { name: `${req.body.username}` }))
+                            .then((user) => res.send(user))
+                            .catch((error) => res.send(error));
+                    } else {
+                        console.log("Server-side password validation failed!");
+                        res.render("registerVendor", {error: "Server-side password validation failed!"});
+                    }
+                } else {
+                    console.log("This business address is already registered")
+                    res.render("registerVendor", {error : "This business address is already registered"});
+                }
+            })
+        } else {
+            console.log("Username is taken")
+            res.render("registerVendor", {error : "Username is taken"});
+        }
+    })
 })
 
 app.post("/shoppingCart", (req, res) => {
     var arr = req.body.productList.split(",");
     req.body.productList = arr;
     console.log(req.body);
+    req.body.state = 'active';
     const order = new Order(req.body);
     order.save()
     .then((order) => {
@@ -272,19 +332,19 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/registerCustomer", (req, res) => {
-    res.render('registerCustomer', {});
+    res.render('registerCustomer', {error : ""});
 });
 
 app.get("/registerShipper", (req, res) => {
-    Hub.find()
+    DistributionHub.find()
     .then((hubs) => {
-        res.render('registerShipper', {hubs: hubs})
+        res.render('registerShipper', {hubs: hubs, error : ""})
     })
     .catch((error) => console.log(error))
 });
 
 app.get("/registerVendor", (req, res) => {
-    res.render('registerVendor', {});
+    res.render('registerVendor', {error : ""});
 });
 
 app.get("/vendorProductView", (req, res) => {
