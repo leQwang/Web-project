@@ -20,7 +20,7 @@
                     <img src="<%= user.profilePic%>" alt="User profile picture" width=250px id="profile-pic">
                 </div>
                 <button id="edit-picture-button" onclick="showUpload()">Edit profile picture</button>
-                <form action="http://localhost:4200/myAccount" id="edit-profile-pic-box" style="display:none;" method="post" >
+                <form action="/myAccount" id="edit-profile-pic-box" style="display:none;" method="post" >
                     <input type="file" id="profile-pic-upload" accept="image" required onchange="getImage()">
                     <input type="text" id="encoded-pic" style="display:none" name="profilePic">
                     <button id="submit-profile-pic">Submit new profile pic</button>
@@ -29,18 +29,20 @@
             </div>
             <div id="info-box">
                 <label for="username">Username: <%= user.username %> </label>
-                <% if (user.role == 'customer') { %>
+                <% if (user.role == 'Customer') { %>
                 <label for="name">Name: <%= user.customerName %> </label>
                 <label for="address">Address: <%= user.customerAddress %></label>
                 <% } %>
-                <% if (user.role == 'vendor') { %>
+                <% if (user.role == 'Vendor') { %>
                     <label for="business-name">Business Name: <%= user.businessName %> </label>
                     <label for="business-address">Business Address: <%= user.businessAddress %></label>
                 <% } %>
-                <% if (user.role == 'shipper') { %>
+                <% if (user.role == 'Shipper') { %>
                     <label for="distribution-hub">Distribution Hub: <%= user.distributionHub %> </label>
                 <% } %>
-                <button id="log-out-button">Log out</button>
+                <form action="/logout" method="get">
+                    <button id="log-out-button">Log out</button>
+                </form>
             </div>
         </div>
     </main>

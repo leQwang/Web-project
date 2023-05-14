@@ -215,7 +215,7 @@ app.post("/hub", (req, res) => {
 app.post("/myAccount", (req, res) => {
     const user = new User(req.body);
     console.log(req.body);
-    User.findByIdAndUpdate(currentUser, req.body)
+    User.findByIdAndUpdate(req.session.userId, req.body)
     .then(() => {
         User.findById(currentUser)
         .then((user) => {
@@ -261,7 +261,7 @@ app.get("/product/:id", (req, res) => {
 
 
 app.get("/myAccount", (req, res) => {
-    User.findById(currentUser)
+    User.findById(req.session.userId)
     .then((user)=> {   
         res.render('myAccount', { user: user });
     })
@@ -282,7 +282,7 @@ app.get("/product/:id", (req, res) => {
 });
 
 app.get("/shoppingCart", (req, res) => {
-    User.findById(currentUser)
+    User.findById(req.session.userId)
     .then((user) =>{
         res.render('shoppingCart', { user: user });
     })
@@ -378,6 +378,11 @@ app.post('/register', (req, res) => {
     console.log(req.body);
     res.render('registrationSuccesfull', { name: `${req.body.name}` });
 });
+
+app.get('/logout', (req, res) => {
+    delete req.session.userId
+    res.redirect('/login');
+})
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);

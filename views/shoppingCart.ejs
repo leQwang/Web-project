@@ -26,10 +26,10 @@
             <div id="purchase-box">
                 <label id="address">Deliver to: <%= user.customerAddress %></label>
                 <label id="total-price">Total price: </label>
-                <form action="http://localhost:4200/shoppingCart" method="post">
+                <form action="/shoppingCart" method="post">
                     <input type="text" name="productList" style="display:none" id="product-list">
                     <input type="text" name= "customerName" id ="customer-name-field"style="display:none">
-                    <input type="text" name= "address" id ="address-field"style="display:none">
+                    <input type="text" name= "address" id ="address-field" style="display:none">
                     <button id="order-button" type="submit">Order</button>
                 </form>
             </div>
