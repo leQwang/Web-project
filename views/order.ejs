@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/header.css" type="text/css">
+  <link rel="stylesheet" href="/css/footer.css" type="text/css">
+  <title>Order Details</title>
+</head>
+
+<body>
+
+  <!--========== HEADER =========================-->
+  <%- include ('partials/header') %>
+  <!--========== HEADER =========================-->
+
+
+
+  <!--========== MAIN =========================-->
+  <div class="container">
+    <div class="pair">
+      <div class="key">Order ID</div>
+      <div class="value">ID</div>
+    </div>
+    <div class="pair">
+      <div class="key">Customer Name</div>
+      <div class="value">Name</div>
+    </div>
+    <div class="pair">
+      <div class="key">Adress</div>
+      <div class="value">street 123</div>
+    </div>
+    <div class="pair">
+      <div class="key">Total price</div>
+      <div class="value">123€</div>
+    </div>
+    <div>
+      <div class="key">Products:</div>
+      <div class="product">
+        <div class="container">
+          <% for (let i = 0; i < products.length; i++) { %>
+          <div class="product">
+            <img src="images/<%= products[i].image%>" alt="Image of product <%= products[i] %> <%= products[i].image%>">
+            <h2><%= products[i].name %></h2>
+            <p class="price">$<%= products[i].price %></p>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--========== MAIN =========================-->
+
+
+
+  <!--========== FOOTER =========================-->
+  <%- include ('partials/footer') %>
+  <!--========== FOOTER =========================-->
+</body>
+
+</html>

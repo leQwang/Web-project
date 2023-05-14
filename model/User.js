@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 mongoose.connect('mongodb+srv://phucdoan:Phuc1234@cluster0.rxqfnek.mongodb.net/')
-.then(() => console.log('Connected to MongoDB Atlas'))
+.then(() => console.log('Connected to MongoDB Atlas User'))
 .catch((error) => console.log(error.message))
 
 const userSchema = new mongoose.Schema({

@@ -7,6 +7,10 @@ body{
     border-radius: 5px;
 }
 
+main{
+    margin-top: 100px;
+}
+
 .add-product-container{
     display: flex;
     justify-content: space-between;
