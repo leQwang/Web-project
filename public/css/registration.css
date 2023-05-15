@@ -73,6 +73,11 @@
     margin: 5px;
 } */
 
+#error-message{
+    text-align: center;
+    white-space: pre;
+}
+
 @media (max-width: 768px) {
     .input-section {
         display: flex;

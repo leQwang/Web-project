@@ -30,15 +30,17 @@
 				<h2>$<%= product.price%></h2>
 				<p><%= product.description%></p>
 				<button class="add-to-cart" >Add to Cart</button>
+				<div class="add-to-cart-confirm" style="display: none;">Successfully added to cart</div>
 			</div>
 		</div>
 	</div>
 </main>
 <%- include ('partials/footer') %>
 <script>
-	const addToCart = document.querySelector('button');
+	const addToCart = document.querySelector('.add-to-cart');
 	addToCart.addEventListener('click', ()=>{
-		var num = localStorage.length;
+		document.querySelector('.add-to-cart-confirm').style = "display:block";
+		var num = localStorage.length + 1;
 		localStorage.setItem(++num, '<%-JSON.stringify(product)%>');
 		console.log(localStorage);
 	})
