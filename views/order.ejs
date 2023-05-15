@@ -19,7 +19,7 @@
   <!--========== HEADER =========================-->
 
 
-
+  <!-- TODO add button for shipped and canceled -->
   <!--========== MAIN =========================-->
   <main>
     <h1 class="center-content">Order Details</h1>
@@ -38,7 +38,11 @@
       </div>
       <div class="pair">
         <div class="key">Total price:</div>
-        <div class="value"><%= order.totalPrice %>$</div>
+        <div class="value"><%= totalPrice %>$</div>
+      </div>
+      <div class="pair">
+        <div class="key">Status:</div>
+        <div class="value"><%= order.state %></div>
       </div>
     </div>
     <div class="key center-content font-size-20">Products:</div>
@@ -50,6 +54,10 @@
         <p class="price">$<%= products[i].price %></p>
       </div>
       <% } %>
+    </div>
+    <div class="center-content padding-top-20 wrap">
+      <a class="btn danger bold" href="/orders/<%= order._id %>/cancel">Cancel Order</a>
+      <a class="btn success bold" href="/orders/<%= order._id %>/shipped">Shipped Order</a>
     </div>
   </main>
   <!--========== MAIN =========================-->

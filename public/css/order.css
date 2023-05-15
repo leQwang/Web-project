@@ -82,4 +82,18 @@
     min-width: 180px;
     height: 270px
   }
+
+  .pair {
+    flex-direction: column;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+
+  .key {
+    width: auto;
+  }
+
+  .value {
+    width: auto
+  }; 
 }

@@ -16,7 +16,7 @@ const DistributionHub = require('./model/DistributionHub');
 const { Schema, default: mongoose } = require('mongoose');
 const user = require('./users.js');
 const { error } = require('console');
-const {hashPassword, decryptHashedPassword} = require('./public/js/hashing');
+const { hashPassword, decryptHashedPassword } = require('./public/js/hashing');
 
 app.set('view engine', 'ejs');
 
@@ -36,24 +36,24 @@ app.use(session({
     secret: 'my-secret-key',
     resave: false,
     saveUninitialized: false
-  }));
-  
+}));
+
 // Apply middleware to all routes except for login and registration
 app.use((req, res, next) => {
     if (req.path === '/login' || req.path === '/registerCustomer' || req.path === '/registerVendor' || req.path === '/registerShipper' || req.path === '/login-processing' || req.path === '/registrationSuccesfull') {
-      next();
+        next();
     } else {
-      isAuthenticated(req, res, next);
+        isAuthenticated(req, res, next);
     }
-  });
+});
 
 const isAuthenticated = (req, res, next) => {
     if (req.session.userId) {
-      next();
+        next();
     } else {
-      res.redirect('/login');
+        res.redirect('/login');
     }
-  };
+};
 
 
 app.get("/products", (req, res) => {
@@ -77,26 +77,26 @@ app.post("/vendorAddProduct", (req, res) => {
 app.post("/login-processing", async (req, res) => {
     const username = req.body.username;
     const passwordPlain = req.body.password;
-    
+
     try {
         const user = await User.findOne({ username: username })
         console.log(user);
         if (!user) {
-          return res.status(400).send('Invalid credentials (Username)');
+            return res.status(400).send('Invalid credentials (Username)');
         }
 
-       const isMatch = await decryptHashedPassword(passwordPlain, user.password);
+        const isMatch = await decryptHashedPassword(passwordPlain, user.password);
         if (!isMatch) {
             return res.status(400).send('Invalid credentials (Password)');
-          }
-    
+        }
+
         // Passwords match, so create a session and redirect to product page
         req.session.userId = user._id;
         res.redirect('/products');
-      } catch (error) {
+    } catch (error) {
         console.log(error);
         res.status(500).send('Internal Server Error');
-      }
+    }
 })
 
 app.post("/registerCustomer", async (req, res) => {
@@ -241,7 +241,7 @@ app.get("/shoppingCart", (req, res) => {
 });
 
 app.get('/shipper', (req, res) => {
-    Order.find()
+    Order.find({ state: 'active' })
         .then((orders) => {
             res.render('shipper', { orders: orders });
         })
@@ -249,18 +249,15 @@ app.get('/shipper', (req, res) => {
 });
 
 app.get("/orders/:id", (req, res) => {
-    console.log('');
     Order.findById(req.params.id)
         .then((order) => {
-            if(order == null) res.send("ERROR: Cannot find that ID");
-            console.log('then 1');
+            if (order == null) res.send("ERROR: Cannot find that ID");
             Product.find({
                 '_id': { $in: order.productList }
             })
                 .then((products) => {
-                    console.log('then 2');
-                    console.log(products);
-                    res.render('order', { order: order, products: products });
+                    const totalPrice = products.reduce((acc, cur) => acc + cur.price, 0);
+                    res.render('order', { order: order, products: products, totalPrice: totalPrice });
                 })
                 .catch((error) => error.message);
         })
@@ -321,6 +318,32 @@ app.post("/vendorAddProduct", (req, res) => {
                     .catch((error) => console.log(error.message)))
                 .catch((error) => res.send(error));
         });
+});
+
+function updateOrder(id, updates, res) {
+    Order.findByIdAndUpdate(id, updates, { new: true })
+        .then((order) => {
+            if (!order) {
+                res.send('This order does not exist');
+            }
+            Product.find({
+                '_id': { $in: order.productList }
+            })
+                .then((products) => {
+                    const totalPrice = products.reduce((acc, cur) => acc + cur.price, 0);
+                    res.render('order', { order: order, products: products, totalPrice: totalPrice });
+                })
+                .catch((error) => error.message);
+        })
+        .catch((error) => res.send(error));
+}
+
+app.get('/orders/:id/cancel', (req, res) => {
+    updateOrder(req.params.id, { state: 'canceled' }, res);
+});
+
+app.get('/orders/:id/shipped', (req, res) => {
+    updateOrder(req.params.id, { state: 'shipped' }, res);
 });
 
 app.post('/register', (req, res) => {

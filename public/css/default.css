@@ -12,3 +12,42 @@ body {
 a {
   color: black;
 }
+
+.btn {
+  display: inline-block;
+  min-width: 120px;
+  padding: 10px;
+  margin: 5px;
+  border: 2px solid black;
+  border-radius: 12px;
+}
+.btn:hover {
+  box-shadow: 0px 2px 4px;
+}
+
+.padding-top-20 {
+  padding-top: 20px;
+}
+
+.danger {
+  background-color: #ff0800;
+}
+
+.success {
+  background-color: #4CBB17;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+/* --------- SMARTPHONE TWEAKS ----------- */
+@media only screen and (max-width: 767px) {
+  body {
+    margin-bottom: 200px;
+  }
+}
