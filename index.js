@@ -21,9 +21,6 @@ app.set('view engine', 'ejs');
 
 app.use(express.static("Public"));  
 
-const vendorUser = "645b7d6b1f02c16d3bb1321a";
-
-
 const currentUser = "645cce8b020e3bde5c979c79";
 
 // Use the `express.urlencoded` middleware to parse incoming form data
@@ -62,16 +59,6 @@ app.get("/products", (req, res) => {
     .catch((error) => console.log(error.message));
 });
 
-
-
-app.post("/vendorAddProduct", (req, res) => {
-    const product = new Product(req.body);
-    console.log(req.body);
-    product.save()
-        .then((product) => res.send(product))
-        .catch((error) => res.send(error));
-})
-
 app.post("/login-processing", async (req, res) => {
     const username = req.body.username;
     const passwordPlain = req.body.password;
@@ -90,7 +77,14 @@ app.post("/login-processing", async (req, res) => {
     
         // Passwords match, so create a session and redirect to product page
         req.session.userId = user._id;
-        res.redirect('/products');
+        if(user.role == "Vendor"){
+            res.redirect('/vendorProductView');
+        }else if(user.role == "Customer"){
+            res.redirect('/products');
+        }else if(user.role == "Shipper"){
+            res.redirect('/shipper');
+        }
+
       } catch (error) {
         console.log(error);
         res.status(500).send('Internal Server Error');
@@ -217,7 +211,7 @@ app.post("/myAccount", (req, res) => {
     console.log(req.body);
     User.findByIdAndUpdate(req.session.userId, req.body)
     .then(() => {
-        User.findById(currentUser)
+        User.findById(req.session.userId)
         .then((user) => {
             res.render('myAccount', {user: user});
         })
@@ -326,17 +320,28 @@ app.get("/registerVendor", (req, res) => {
 });
 
 app.get("/vendorProductView", (req, res) => {
-
     Product.find()
     .then((products) => {
         //RMIT vendor product 
-        User.findById(vendorUser)
+        User.findById(req.session.userId)
             .then((user) => {
                 const matchedProducts = products.filter(product => product.businessName ===  user.businessName);
                 res.render("vendorProductView", {user : user, prod: matchedProducts});
-            });
+            })
+            .catch((error) => console.log(error.message));;
     })
     .catch((error) => console.log(error.message));
+});
+
+app.get('/:id/delete', (req, res) => {
+    Product.findByIdAndDelete(req.params.id)
+    .then((product) => {
+        if (!product) {
+        return res.send();
+        }
+        res.redirect("/vendorProductView");
+    })
+    .catch((error) => res.send(error));
 });
 
 app.get("/vendorAddProduct", (req, res) => {
@@ -344,19 +349,16 @@ app.get("/vendorAddProduct", (req, res) => {
 });
 
 app.post("/vendorAddProduct", (req, res) => {
-    User.findById(vendorUser)
+    User.findById(req.session.userId)
     .then((user) => {
         req.body.businessName = user.businessName;
         const product = new Product(req.body);
+        console.log(req.body.businessName);
 
         product.save()
-          .then(Product.find()
-            .then((products) => {
-                //RMIT vendor product 
-                const matchedProducts = products.filter(product => product.businessName ===  user.businessName);
-                res.render("vendorProductView", {user : user, prod: matchedProducts});
-            }) 
-            .catch((error) => console.log(error.message)) )
+        .then(() => {
+            res.redirect("/vendorProductView");
+        })
           .catch((error) => res.send(error));
     });
 });
