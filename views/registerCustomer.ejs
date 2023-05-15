@@ -40,7 +40,8 @@
                                 <span class="tooltip">Upload profile picture</span>
                             </label>
                         </div>
-                        <input type="file" id="profile-picture" name="profile-picture">
+                        <input type="file" id="profile-pic-upload" onchange="getImage()">
+                        <input type="text" id="profile-picture" name="profile-picture" style="display:none">
                     </div>
                     <div class="input-section">
                         <div class="info-box">
@@ -61,12 +62,23 @@
                     <div class="input-section">
                         <input type="submit" value="Register" id="registerCustomer-btn">
                     </div>
+                    <div id="error-message"><%= error %></div>
                 </fieldset>
             </form>
         </section>
     </main>
     <script src="..\js\valCustomerReqForm.js"></script>
-
+    <script>
+        function getImage() {
+        var fr = new FileReader();
+        var img = document.querySelector("#profile-pic-upload").files;
+        fr.readAsDataURL(img[0]);
+        fr.onloadend = function () {
+            document.querySelector("#profile-picture").value = fr.result;
+            console.log(document.querySelector("#profile-picture").value);
+        }
+    }
+    </script>
 </body>
 
 </html>
