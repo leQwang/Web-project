@@ -30,6 +30,7 @@
                     <input type="text" name="productList" style="display:none" id="product-list">
                     <input type="text" name= "customerName" id ="customer-name-field"style="display:none">
                     <input type="text" name= "address" id ="address-field" style="display:none">
+                    <input type="number" name="totalPrice" id ="total-price-field" style="display:none">
                     <button id="order-button" type="submit">Order</button>
                 </form>
             </div>
@@ -85,6 +86,7 @@
             
         }
         document.querySelector('#total-price').innerText = 'Total price: $' + totalPrice.toFixed(2); 
+        document.querySelector('#total-price-field').value = totalPrice.toFixed(2);
         document.querySelector('#product-list').value = products;
         document.querySelector('#customer-name-field').value = "<%= user.customerName %>";
         document.querySelector('#address-field').value = "<%= user.customerAddress %>";
