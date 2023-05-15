@@ -165,18 +165,7 @@ app.get("/myAccount", (req, res) => {
     .catch((error) => res.send(error))
 })
 
-app.get("/product/:id", (req, res) => {
-    const id = req.params.id;
-    console.log(id);
-    Product.findById(id)
-    .then((product) =>{
-        console.log(product);
-        res.render('productDetail', { product: product });
-    })
-    .catch((err) => {
-        console.log(err);
-    })
-});
+
 
 app.get("/shoppingCart", (req, res) => {
     User.findById(currentUser)
