@@ -36,16 +36,6 @@ app.get("/products", (req, res) => {
     .catch((error) => console.log(error.message));
 });
 
-
-
-app.post("/vendorAddProduct", (req, res) => {
-    const product = new Product(req.body);
-    console.log(req.body);
-    product.save()
-        .then((product) => res.send(product))
-        .catch((error) => res.send(error));
-})
-
 app.post("/registerCustomer", (req, res) => {
     req.body.role = 'Customer';
     const data = req.body;
@@ -234,7 +224,6 @@ app.get("/registerVendor", (req, res) => {
 });
 
 app.get("/vendorProductView", (req, res) => {
-
     Product.find()
     .then((products) => {
         //RMIT vendor product 
@@ -242,9 +231,21 @@ app.get("/vendorProductView", (req, res) => {
             .then((user) => {
                 const matchedProducts = products.filter(product => product.businessName ===  user.businessName);
                 res.render("vendorProductView", {user : user, prod: matchedProducts});
-            });
+            })
+            .catch((error) => console.log(error.message));;
     })
     .catch((error) => console.log(error.message));
+});
+
+app.get('/:id/delete', (req, res) => {
+    Product.findByIdAndDelete(req.params.id)
+    .then((product) => {
+        if (!product) {
+        return res.send();
+        }
+        res.redirect("/vendorProductView");
+    })
+    .catch((error) => res.send(error));
 });
 
 app.get("/vendorAddProduct", (req, res) => {
@@ -256,15 +257,12 @@ app.post("/vendorAddProduct", (req, res) => {
     .then((user) => {
         req.body.businessName = user.businessName;
         const product = new Product(req.body);
+        console.log(req.body.businessName);
 
         product.save()
-          .then(Product.find()
-            .then((products) => {
-                //RMIT vendor product 
-                const matchedProducts = products.filter(product => product.businessName ===  user.businessName);
-                res.render("vendorProductView", {user : user, prod: matchedProducts});
-            }) 
-            .catch((error) => console.log(error.message)) )
+        .then(() => {
+            res.redirect("/vendorProductView");
+        })
           .catch((error) => res.send(error));
     });
 });
