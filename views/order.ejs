@@ -19,9 +19,9 @@
   <!--========== HEADER =========================-->
 
 
-  <!-- TODO add button for shipped and canceled -->
   <!--========== MAIN =========================-->
   <main>
+    <a class="btn bold" href="/shipper">Back</a>
     <h1 class="center-content">Order Details</h1>
     <div class="container-data">
       <div class="pair">
@@ -56,8 +56,8 @@
       <% } %>
     </div>
     <div class="center-content padding-top-20 wrap">
-      <a class="btn danger bold" href="/orders/<%= order._id %>/cancel">Cancel Order</a>
-      <a class="btn success bold" href="/orders/<%= order._id %>/shipped">Shipped Order</a>
+      <a class="btn danger bold width-120" href="/orders/<%= order._id %>/cancel">Cancel Order</a>
+      <a class="btn success bold width-120" href="/orders/<%= order._id %>/shipped">Shipped Order</a>
     </div>
   </main>
   <!--========== MAIN =========================-->
