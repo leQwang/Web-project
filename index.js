@@ -1,6 +1,6 @@
 // static data for testing
-const orders = require('./orders');
-const products = require('./products.js');
+//const orders = require('./orders');
+//const products = require('./products.js');
 const users = require('./users.js');
 
 const express = require("express");
@@ -129,7 +129,10 @@ app.post("/registerShipper", async (req, res) => {
             const user = new User({ username: data.username, password: hashedPassword, profilePic: data['profile-picture'], distributionHub: data['distribution-hub'], role: data.role });
             console.log(user)
             user.save()
-                .then(() => res.render('registrationSuccesfull', { name: `${req.body.username}` }))
+                .then(async (user) => {
+                    selectedHub = await DistributionHub.findOneAndUpdate({ name: user.distributionHub }, { $push: { shipperID: user._id } }, { new: true });
+                    res.render('registrationSuccesfull', { name: `${req.body.username}` })
+                })
                 .then((user) => res.send(user))
                 .catch((error) => res.send(error));
         } else {
@@ -273,11 +276,29 @@ app.get("/shoppingCart", (req, res) => {
 });
 
 app.get('/shipper', (req, res) => {
-    Order.find({ state: 'active' })
-        .then((orders) => {
-            res.render('shipper', { orders: orders });
+    shipperID = req.session.userId;
+    DistributionHub.findOne({ 'shipperID': shipperID, },)
+        .then((hub) => {
+            if (hub == null) return res.send('ERROR: No hub associated with shipper');
+            Order.find({ state: 'active', '_id': { $in: hub.orderID } })
+                .then((orders) => {
+                    orders.forEach((order, index) => {
+                        Product.find({
+                            '_id': { $in: order.productList }
+                        })
+                            .then((products) => {
+                                const totalPrice = products.reduce((acc, cur) => acc + cur.price, 0);
+                                orders[index].totalPrice = totalPrice;
+                                if (index == orders.length - 1) {
+                                    res.render('shipper', { orders: orders });
+                                }
+                            })
+                            .catch((error) => error.message);
+                    })
+                })
+                .catch((error) => res.send(error));
         })
-        .catch((error) => console.log(error.message));
+        .catch((error) => res.send(error));
 });
 
 app.get("/orders/:id", (req, res) => {
