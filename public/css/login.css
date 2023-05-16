@@ -1,0 +1,16 @@
+
+
+
+
+@media screen and (max-width: 767px) {
+ 
+.registration-navbar{
+    display: flex;
+    flex-direction: column;
+}
+
+.registration-navbar button{
+    margin: 5px;
+}
+
+}
