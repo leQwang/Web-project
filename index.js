@@ -196,7 +196,7 @@ app.post("/shoppingCart", async (req, res) => {
     console.log(randHub);
     await DistributionHub.findByIdAndUpdate(randHub, { $push: { orderID: order._id } })
     var products = await Product.find()
-    res.render("productPage", { products: products })
+    res.redirect("productPage", {})
 })
 
 
@@ -282,23 +282,10 @@ app.get('/shipper', (req, res) => {
             if (hub == null) return res.send('ERROR: No hub associated with shipper');
             Order.find({ state: 'active', '_id': { $in: hub.orderID } })
                 .then((orders) => {
-                    orders.forEach((order, index) => {
-                        Product.find({
-                            '_id': { $in: order.productList }
-                        })
-                            .then((products) => {
-                                const totalPrice = products.reduce((acc, cur) => acc + cur.price, 0);
-                                orders[index].totalPrice = totalPrice;
-                                if (index == orders.length - 1) {
-                                    res.render('shipper', { orders: orders });
-                                }
-                            })
-                            .catch((error) => error.message);
-                    })
+                    res.render('shipper', { orders: orders });
                 })
-                .catch((error) => res.send(error));
-        })
         .catch((error) => res.send(error));
+    });
 });
 
 app.get("/orders/:id", (req, res) => {
@@ -309,10 +296,8 @@ app.get("/orders/:id", (req, res) => {
                 '_id': { $in: order.productList }
             })
                 .then((products) => {
-                    const totalPrice = products.reduce((acc, cur) => acc + cur.price, 0);
-                    res.render('order', { order: order, products: products, totalPrice: totalPrice });
+                    res.render('order', { order: order, products: products});
                 })
-                .catch((error) => error.message);
         })
         .catch((error) => console.log(error.message));
 });
