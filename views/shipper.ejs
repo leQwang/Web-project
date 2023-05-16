@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/default.css" type="text/css">
   <link rel="stylesheet" href="/css/header.css" type="text/css">
   <link rel="stylesheet" href="/css/footer.css" type="text/css">
   <link rel="stylesheet" href="/css/shipper.css" type="text/css">
@@ -13,39 +14,39 @@
 </head>
 
 <body>
-  <div id="page_container">
-
-    <!--========== HEADER =========================-->
-    <%- include ('partials/header') %>
-    <!--========== HEADER =========================-->
+  <!--========== HEADER =========================-->
+  <%- include ('partials/header') %>
+  <!--========== HEADER =========================-->
 
 
 
-    <!--========== MAIN =========================-->
-    <main>
-      <div id="overview-headline" class="center">
-        <h1>Overview of all Orders</h1>
-      </div>
-      <div id="overview">
-        <% orders.forEach((order)=> { %>
-        <div class="order-card">
+  <!--========== MAIN =========================-->
+  <main>
+    <div id="overview-headline" class="center">
+      <h1>Overview of all Orders</h1>
+    </div>
+    <div id="overview">
+      <% orders.forEach((order)=> { %>
+      <a class="order-card" href="orders/<%= order._id %>">
+        <div>
           <div>OrderID: <%= order._id %></div>
           <div>Customer: <%= order.customerName %></div>
-          <div>Price: <%= order.price %></div>
+          <div>Adress: <%= order.address %></div>
+          <div>Price: <%= order.totalPrice %>$</div>
         </div>
-        <% }); %>
-      </div>
-    </main>
-    <!--========== MAIN =========================-->
+      </a>
+      <% }); %>
+    </div>
+  </main>
+  <!--========== MAIN =========================-->
 
 
 
-    <!--========== FOOTER =========================-->
-    <%- include ('partials/footer') %>
-    <!--========== FOOTER =========================-->
+  <!--========== FOOTER =========================-->
+  <%- include ('partials/footer') %>
+  <!--========== FOOTER =========================-->
 
 
-  </div>
 </body>
 
 </html>

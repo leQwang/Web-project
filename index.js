@@ -15,11 +15,11 @@ const DistributionHub = require('./model/DistributionHub');
 const { Schema, default: mongoose } = require('mongoose');
 const user = require('./users.js');
 const { error } = require('console');
-const {hashPassword, decryptHashedPassword} = require('./public/js/hashing');
+const { hashPassword, decryptHashedPassword } = require('./public/js/hashing');
 
 app.set('view engine', 'ejs');
 
-app.use(express.static("Public"));  
+app.use(express.static("Public"));
 
 const currentUser = "645cce8b020e3bde5c979c79";
 
@@ -31,64 +31,64 @@ app.use(session({
     secret: 'my-secret-key',
     resave: false,
     saveUninitialized: false
-  }));
-  
+}));
+
 // Apply middleware to all routes except for login and registration
 app.use((req, res, next) => {
     if (req.path === '/login' || req.path === '/registerCustomer' || req.path === '/registerVendor' || req.path === '/registerShipper' || req.path === '/login-processing' || req.path === '/registrationSuccesfull') {
-      next();
+        next();
     } else {
-      isAuthenticated(req, res, next);
+        isAuthenticated(req, res, next);
     }
-  });
+});
 
 const isAuthenticated = (req, res, next) => {
     if (req.session.userId) {
-      next();
+        next();
     } else {
-      res.redirect('/login');
+        res.redirect('/login');
     }
-  };
+};
 
 
 app.get("/products", (req, res) => {
     Product.find()
-    .then((products) => {
-        res.render('productPage', {products: products});
-    })
-    .catch((error) => console.log(error.message));
+        .then((products) => {
+            res.render('productPage', { products: products });
+        })
+        .catch((error) => console.log(error.message));
 });
 
 app.post("/login-processing", async (req, res) => {
     const username = req.body.username;
     const passwordPlain = req.body.password;
-    
+
     try {
         const user = await User.findOne({ username: username })
         console.log(user);
         if (!user) {
-          return res.status(400).send('Invalid credentials (Username)');
+            return res.status(400).send('Invalid credentials (Username)');
         }
 
-       const isMatch = await decryptHashedPassword(passwordPlain, user.password);
+        const isMatch = await decryptHashedPassword(passwordPlain, user.password);
         if (!isMatch) {
             return res.status(400).send('Invalid credentials (Password)');
-          }
-    
+        }
+
         // Passwords match, so create a session and redirect to product page
         req.session.userId = user._id;
-        if(user.role == "Vendor"){
+        if (user.role == "Vendor") {
             res.redirect('/vendorProductView');
-        }else if(user.role == "Customer"){
+        } else if (user.role == "Customer") {
             res.redirect('/products');
-        }else if(user.role == "Shipper"){
+        } else if (user.role == "Shipper") {
             res.redirect('/shipper');
         }
 
-      } catch (error) {
+    } catch (error) {
         console.log(error);
         res.status(500).send('Internal Server Error');
-      }
+    }
 })
 
 app.post("/registerCustomer", async (req, res) => {
@@ -97,9 +97,9 @@ app.post("/registerCustomer", async (req, res) => {
     const password = req.body.password;
     const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,20}/;
     const hashedPassword = await hashPassword(password);
-    const dupUsername = await User.findOne({username : data.username});
-    if(dupUsername === null){
-        if(regex.test(password)){
+    const dupUsername = await User.findOne({ username: data.username });
+    if (dupUsername === null) {
+        if (regex.test(password)) {
             console.log(hashedPassword);
             const user = new User({ username: data.username, password: hashedPassword, profilePic: data['profile-picture'], customerName: data['name'], customerAddress: data['address'], role: data.role });
             console.log(user)
@@ -108,10 +108,10 @@ app.post("/registerCustomer", async (req, res) => {
                 .then((user) => res.send(user))
                 .catch((error) => res.send(error));
         } else {
-            res.render("registerCustomer",{ error : "Server-side password validation failed!"})
+            res.render("registerCustomer", { error: "Server-side password validation failed!" })
         }
     } else {
-        res.render("registerCustomer", {error : "Username is taken"})
+        res.render("registerCustomer", { error: "Username is taken" })
     }
 })
 
@@ -121,10 +121,10 @@ app.post("/registerShipper", async (req, res) => {
     const password = req.body.password;
     const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,20}/;
     const hashedPassword = await hashPassword(password);
-    const dupUsername = await User.findOne({username : data.username});
+    const dupUsername = await User.findOne({ username: data.username });
     const hubs = await DistributionHub.find();
-    if(dupUsername === null){
-        if(regex.test(password)){
+    if (dupUsername === null) {
+        if (regex.test(password)) {
             console.log(hashedPassword);
             const user = new User({ username: data.username, password: hashedPassword, profilePic: data['profile-picture'], distributionHub: data['distribution-hub'], role: data.role });
             console.log(user)
@@ -133,10 +133,10 @@ app.post("/registerShipper", async (req, res) => {
                 .then((user) => res.send(user))
                 .catch((error) => res.send(error));
         } else {
-            res.render('registerShipper', {hubs: hubs, error : "Server-side password validation failed!"})
+            res.render('registerShipper', { hubs: hubs, error: "Server-side password validation failed!" })
         }
     } else {
-            res.render('registerShipper', {hubs: hubs, error : "Username is taken"})
+        res.render('registerShipper', { hubs: hubs, error: "Username is taken" })
     }
 })
 
@@ -146,25 +146,25 @@ app.post("/registerVendor", async (req, res) => {
     const password = req.body.password;
     const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,20}/;
     const hashedPassword = await hashPassword(password);
-    const dupUsername = await User.findOne({username : data.username});
-    const dupBusinessName = await User.findOne({businessName : data['business-name']});
-    const dupBusinessAddress = await User.findOne({businessAddress : data['business-address']});
+    const dupUsername = await User.findOne({ username: data.username });
+    const dupBusinessName = await User.findOne({ businessName: data['business-name'] });
+    const dupBusinessAddress = await User.findOne({ businessAddress: data['business-address'] });
     var error = 0;
     var errorMessage = "";
-    if(dupUsername !== null){
+    if (dupUsername !== null) {
         error++;
         errorMessage += "Username taken\n"
     }
-    if(dupBusinessName !== null){
+    if (dupBusinessName !== null) {
         error++;
         errorMessage += " This business name is already registered\n"
     }
-    if(dupBusinessAddress !== null){
+    if (dupBusinessAddress !== null) {
         error++;
         errorMessage += " This business address is already registered"
     }
-    if (error == 0){
-        if(regex.test(password)){ 
+    if (error == 0) {
+        if (regex.test(password)) {
             console.log(hashedPassword);
             console.log(req.body);
             const user = new User({ username: data.username, password: hashedPassword, profilePic: data['profile-picture'], businessName: data['business-name'], businessAddress: data['business-address'], role: data.role });
@@ -174,10 +174,10 @@ app.post("/registerVendor", async (req, res) => {
                 .then((user) => res.send(user))
                 .catch((error) => res.send(error));
         } else {
-            res.render("registerVendor", {error: "Server-side password validation failed!"})
+            res.render("registerVendor", { error: "Server-side password validation failed!" })
         }
     } else {
-        res.render("registerVendor", {error: errorMessage})
+        res.render("registerVendor", { error: errorMessage })
     }
 
 })
@@ -189,13 +189,13 @@ app.post("/shoppingCart", async (req, res) => {
     req.body.state = 'active';
     const order = new Order(req.body);
     order.save()
-    randHub = await DistributionHub.aggregate([{"$sample": {"size": 1}}])
+    randHub = await DistributionHub.aggregate([{ "$sample": { "size": 1 } }])
     console.log(randHub);
-    await DistributionHub.findByIdAndUpdate(randHub,{ $push: {orderID : order._id}})
+    await DistributionHub.findByIdAndUpdate(randHub, { $push: { orderID: order._id } })
     var products = await Product.find()
-    res.render("productPage", {products : products})
+    res.render("productPage", { products: products })
 })
-    
+
 
 
 app.post("/hub", (req, res) => {
@@ -210,93 +210,90 @@ app.post("/myAccount", (req, res) => {
     const user = new User(req.body);
     console.log(req.body);
     User.findByIdAndUpdate(req.session.userId, req.body)
-    .then(() => {
-        User.findById(req.session.userId)
-        .then((user) => {
-            res.render('myAccount', {user: user});
+        .then(() => {
+            User.findById(req.session.userId)
+                .then((user) => {
+                    res.render('myAccount', { user: user });
+                })
+                .catch((error) => res.send(error));
         })
-    })
-    .catch((error) => res.send(error));
-})
+});
 
 app.get("/products/filter", (req, res) => {
     const minPrice = req.query['min-price'];
     const maxPrice = req.query['max-price'];
 
-    Product.find({price: {$gte: minPrice, $lte: maxPrice}})
-    .then((products) => {
-        res.render('productPage', {products: products});
-    })
-    .catch((error) => console.log(error.message));
+    Product.find({ price: { $gte: minPrice, $lte: maxPrice } })
+        .then((products) => {
+            res.render('productPage', { products: products });
+        })
+        .catch((error) => console.log(error.message));
 
 });
 
 app.get("/products/search", (req, res) => {
     const searchWord = req.query['search-word'];
     const regexPattern = new RegExp(searchWord, 'i');
-  
+
     Product.find({ name: { $regex: regexPattern } })
-      .then((products) => {
-        res.render('productPage', { products: products });
-      })
-      .catch((error) => console.log(error.message));
+        .then((products) => {
+            res.render('productPage', { products: products });
+        })
+        .catch((error) => console.log(error.message));
 });
 
 app.get("/product/:id", (req, res) => {
     Product.findById(req.params.id)
-    .then((product) => {
-      if (!product) {
-        return res.send("Cannot find that ID!");
-      }
-      res.render('productDetail', {product: product});
-    })
-    .catch((error) => res.send(error));
+        .then((product) => {
+            if (!product) {
+                return res.send("Cannot find that ID!");
+            }
+            res.render('productDetail', { product: product });
+        })
+        .catch((error) => res.send(error));
 });
 
 
 app.get("/myAccount", (req, res) => {
     User.findById(req.session.userId)
-    .then((user)=> {   
-        res.render('myAccount', { user: user });
-    })
-    .catch((error) => res.send(error))
+        .then((user) => {
+            res.render('myAccount', { user: user });
+        })
+        .catch((error) => res.send(error))
 })
 
 
 
 app.get("/shoppingCart", (req, res) => {
     User.findById(req.session.userId)
-    .then((user) =>{
-        res.render('shoppingCart', { user: user });
-    })
-    
+        .then((user) => {
+            res.render('shoppingCart', { user: user });
+        })
+
 });
 
 app.get('/shipper', (req, res) => {
-    Order.find()
+    Order.find({ state: 'active' })
         .then((orders) => {
             res.render('shipper', { orders: orders });
         })
         .catch((error) => console.log(error.message));
 });
 
-app.get("/orders/:id", async (req, res) => {
-    let productsOfOrder = [];
-    let orderData;
-    await Order.findById(req.params.id)
+app.get("/orders/:id", (req, res) => {
+    Order.findById(req.params.id)
         .then((order) => {
-            orderData = order;
-            order.productList.forEach((productId, index) => {
-                Product.findById(productId)
-                    .then((product) => {
-                        productsOfOrder.push(product)
-                    })
-                    .catch((error) => error.message);
-            });
+            if (order == null) res.send("ERROR: Cannot find that ID");
+            Product.find({
+                '_id': { $in: order.productList }
+            })
+                .then((products) => {
+                    const totalPrice = products.reduce((acc, cur) => acc + cur.price, 0);
+                    res.render('order', { order: order, products: products, totalPrice: totalPrice });
+                })
+                .catch((error) => error.message);
         })
         .catch((error) => console.log(error.message));
-        console.log(productsOfOrder)
-    res.render('order', { order: orderData, products: productsOfOrder });
 });
 
 app.get("/login", (req, res) => {
@@ -304,44 +301,44 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/registerCustomer", (req, res) => {
-    res.render('registerCustomer', {error : ""});
+    res.render('registerCustomer', { error: "" });
 });
 
 app.get("/registerShipper", (req, res) => {
     DistributionHub.find()
-    .then((hubs) => {
-        res.render('registerShipper', {hubs: hubs, error : ""})
-    })
-    .catch((error) => console.log(error))
+        .then((hubs) => {
+            res.render('registerShipper', { hubs: hubs, error: "" })
+        })
+        .catch((error) => console.log(error))
 });
 
 app.get("/registerVendor", (req, res) => {
-    res.render('registerVendor', {error : ""});
+    res.render('registerVendor', { error: "" });
 });
 
 app.get("/vendorProductView", (req, res) => {
     Product.find()
-    .then((products) => {
-        //RMIT vendor product 
-        User.findById(req.session.userId)
-            .then((user) => {
-                const matchedProducts = products.filter(product => product.businessName ===  user.businessName);
-                res.render("vendorProductView", {user : user, prod: matchedProducts});
-            })
-            .catch((error) => console.log(error.message));;
-    })
-    .catch((error) => console.log(error.message));
+        .then((products) => {
+            //RMIT vendor product 
+            User.findById(req.session.userId)
+                .then((user) => {
+                    const matchedProducts = products.filter(product => product.businessName === user.businessName);
+                    res.render("vendorProductView", { user: user, prod: matchedProducts });
+                })
+                .catch((error) => console.log(error.message));;
+        })
+        .catch((error) => console.log(error.message));
 });
 
 app.get('/:id/delete', (req, res) => {
     Product.findByIdAndDelete(req.params.id)
-    .then((product) => {
-        if (!product) {
-        return res.send();
-        }
-        res.redirect("/vendorProductView");
-    })
-    .catch((error) => res.send(error));
+        .then((product) => {
+            if (!product) {
+                return res.send();
+            }
+            res.redirect("/vendorProductView");
+        })
+        .catch((error) => res.send(error));
 });
 
 app.get("/vendorAddProduct", (req, res) => {
@@ -350,17 +347,43 @@ app.get("/vendorAddProduct", (req, res) => {
 
 app.post("/vendorAddProduct", (req, res) => {
     User.findById(req.session.userId)
-    .then((user) => {
-        req.body.businessName = user.businessName;
-        const product = new Product(req.body);
-        console.log(req.body.businessName);
+        .then((user) => {
+            req.body.businessName = user.businessName;
+            const product = new Product(req.body);
+            console.log(req.body.businessName);
 
-        product.save()
-        .then(() => {
-            res.redirect("/vendorProductView");
+            product.save()
+                .then(() => {
+                    res.redirect("/vendorProductView");
+                })
+                .catch((error) => res.send(error));
+        });
+});
+
+function updateOrder(id, updates, res) {
+    Order.findByIdAndUpdate(id, updates, { new: true })
+        .then((order) => {
+            if (!order) {
+                res.send('This order does not exist');
+            }
+            Product.find({
+                '_id': { $in: order.productList }
+            })
+                .then((products) => {
+                    const totalPrice = products.reduce((acc, cur) => acc + cur.price, 0);
+                    res.render('order', { order: order, products: products, totalPrice: totalPrice });
+                })
+                .catch((error) => error.message);
         })
-          .catch((error) => res.send(error));
-    });
+        .catch((error) => res.send(error));
+}
+
+app.get('/orders/:id/cancel', (req, res) => {
+    updateOrder(req.params.id, { state: 'canceled' }, res);
+});
+
+app.get('/orders/:id/shipped', (req, res) => {
+    updateOrder(req.params.id, { state: 'shipped' }, res);
 });
 
 app.post('/register', (req, res) => {
@@ -378,4 +401,3 @@ app.get('/logout', (req, res) => {
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
-
