@@ -1,100 +1,123 @@
-/* ____________ UTIL CLASSES __________________________________________________________________ */
-.center {
+
+
+nav{
+  background-color: rgb(8, 8, 41);
+  position: relative;
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-
-
-
-
-
-
-
-
-/* ____________ HEADER __________________________________________________________________ */
-
-/* entire header including logo and title */
-header {
-  background-color: #4CBB17;
-  display: flex;
-  align-items: center;
   justify-content: space-between;
-  width: 100%;
-  position: fixed;
+  align-items: center;
+  color: white;
+
+  
+}
+
+header{
   top: 0;
+  position: sticky;
+  z-index: 50;
+
 }
 
-header li {
-  list-style: none;
+.logo{
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  margin: 5px;
+
 }
 
-header a {
+.navigation-links{
+  padding: 24px 0;
+  margin-right: 150px;
+  
+}
+
+.navigation-links li {
+  display: inline-block;
+  margin: 0 15px;
+}
+
+.navigation-links li a{
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 5px 0;
+  position: relative;
   text-decoration: none;
 }
 
-/* left side of the header, container of logo and title */
-#header-left {
-  display: flex;
-  align-items: center;
-}
-
-/* logo at header navigation bar */
-#header-logo {
-  width: 100px;
-}
-
-/* website title */
-#header-title {
-  font-size: 42px;
-}
-
-#header-menu {
-  display: flex;
-}
-
-/* each menu entry */
-.menu-item {
-  border-radius: 42px;
-  font-size: 20px;
-  border: 2px solid black;
-  margin-right: 20px;
-  background-color: orange;
-}
-
-.menu-item:hover {
-  background-color: palevioletred;
-}
-
-/* link inside menu item */
-.menu-item a {
-  color: black;
-  display: block;
-  padding: 10px 20px;
-}
-
-.sub-menu {
-  display: none;
-  border-radius: 20px;
-  background-color: palevioletred;
-}
-
-.sub-menu li:hover {
-  border-radius: 20px;
-  background-color: rgb(169, 85, 113);
-}
-
-.sub-menu a {
-  white-space: nowrap;
-}
-
-/* show submenu when hover over menu-entry */
-.menu-item:hover .sub-menu {
-  display: flex;
-  flex-direction: column;
+.navigation-links li a::after{
+  content: '';
+  background: white;
+  width: 0;
+  height: 2px;
   position: absolute;
-  top: auto;
-  right: 0px;
-  border: 2px solid black;
+  bottom: 0;
+  left: 0;
+  transition: 0.4s;
+}
+
+.navigation-links li a:hover::after{
+  width: 100%;
+}
+
+
+.toggle-button{
+position: absolute;
+top: 1.75rem;
+right: 2rem;
+display: none;
+flex-direction: column;
+justify-content: space-between;
+width: 40px;
+height: 31px;
+}
+
+.toggle-button .line{
+height: 4px;
+width: 100%;
+background-color: white;
+border-radius: 10px;
+
+}
+
+@media (max-width: 960px) {
+  .toggle-button{
+    display: flex;
+  }
+
+
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+
+  .navigation-links {
+    padding-top: 0;
+    padding-bottom: 20px;
+    width: 100%;
+    flex-direction: column;
+    display: none;
+  }
+
+  .navbar ul {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    
+  }
+
+
+  .navigation-links li {
+    text-align: center;
+    padding-top: .5rem;
+
+  }
+
+    .navigation-links.active {
+      display: flex;
+  }
+
 }
