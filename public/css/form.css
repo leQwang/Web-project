@@ -1,0 +1,128 @@
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.btn-class {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 5px;
+  }
+  
+  a:hover {
+    background-color: #0069d9;
+  }
+
+button {
+    padding: 4px;
+    margin: 10px;
+}
+
+.login-fields {
+    margin-top: 20px;
+    align-items: center;
+}
+
+.input-section {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    margin: 0 auto;
+}
+
+.registration-navbar {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+} */
+
+
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card{
+    background-color: rgb(220, 212, 212);
+    width: 60%;
+    margin: 0 auto;
+    border-radius: 5px;
+    padding: 8px;
+
+}
+
+h1{
+    font-size: 50px;
+    margin: 20px auto;
+}
+
+fieldset{
+    border: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-fields{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 40px;
+}
+
+.input-section{
+    margin: 5px;
+    display: flex;
+    flex-direction: column;   
+    width: 60%;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px; 
+    font-weight: bold; 
+  }
+  
+  input {
+    width: 100%; 
+    padding: 8px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    box-sizing: border-box; 
+  }
+  
+  input:required:invalid {
+    border-color: red;
+  }
+
+  @media (max-width: 768px) {
+
+    .input-section{
+        width: 100%;
+    }
+  }
+  
+  
