@@ -16,3 +16,14 @@
       </article>
   </nav>
 </header>
+
+<script>   
+
+  const toggleButton = document.querySelector(".toggle-button");
+  const navbarLinks = document.getElementsByClassName('navigation-links')[0];
+
+  toggleButton.addEventListener('click', () => {
+    navbarLinks.classList.toggle('active');
+  });
+  
+  </script>
