@@ -5,13 +5,17 @@
     font-family: Arial, sans-serif;
 }
 
-main {
-    padding: 20px;
-    margin-top: 50px;
+body{
+    min-height: 100vh;
+    padding-bottom: 58px;
+
+    position: relative;
+
 }
 
+
 button {
-    background-color: #4CAF50;
+    background-color: #2f312f;
     color: white;
     border: none;
     border-radius: 4px;
@@ -26,7 +30,7 @@ button.red{
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: silver;
 }
 
 .details h2{
