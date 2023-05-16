@@ -376,8 +376,7 @@ function updateOrder(id, updates, res) {
                 '_id': { $in: order.productList }
             })
                 .then((products) => {
-                    const totalPrice = products.reduce((acc, cur) => acc + cur.price, 0);
-                    res.render('order', { order: order, products: products, totalPrice: totalPrice });
+                    res.render('order', { order: order, products: products });
                 })
                 .catch((error) => error.message);
         })
