@@ -7,6 +7,7 @@
 
 main {
     padding: 20px;
+    margin-top: 50px;
 }
 
 button {
@@ -18,6 +19,10 @@ button {
     padding: 15px;
     margin: 0px 0px;
     font-size: 20px;
+}
+
+button.red{
+    background-color: red !important;
 }
 
 button:hover {

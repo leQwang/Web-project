@@ -280,7 +280,7 @@ app.get('/shipper', (req, res) => {
         .catch((error) => console.log(error.message));
 });
 
-app.get("/orders/:id", async (req, res) => {
+app.get("   ", async (req, res) => {
     let productsOfOrder = [];
     let orderData;
     await Order.findById(req.params.id)

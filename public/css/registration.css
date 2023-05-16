@@ -1,37 +1,5 @@
-/* h1 {
-    text-align: center;
-}
 
-.registration-form {
-    display: flex;
-    justify-content: center;
-    height: 100vh;
-}
-
-.registration {
-    margin-top: 20px;
-    margin: 10px;
-}
-
-.registration label {
-    display: inline-block;
-    text-align: left;
-    width: 170px;
-    padding: 4px;
-    margin: 5px;
-}
-
-.registration input,
-.registration textarea {
-    display: inline-block;
-    padding: 4px;
-    margin: 5px;
-    width: 100%;
-}
-
-*/
-
-.registration .info-box {
+.info-box {
     display: inline-block;
     padding: 1px;
     position: relative;
@@ -60,18 +28,6 @@
     width: 250px;
 }
 
-/* 
-
-.input-section {
-    display: flex;
-    flex-direction: row;
-}
-
-.input-section select {
-    width: 100%;
-    padding: 4px;
-    margin: 5px;
-} */
 
 #error-message{
     text-align: center;

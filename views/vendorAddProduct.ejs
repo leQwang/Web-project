@@ -1,55 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/vendorAddProduct.css">
+<!--     <link rel="stylesheet" href="/css/vendorAddProduct.css"> -->    
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
     <title>Add New Product</title>
 </head>
+
 <body>
     <%- include ('partials/header') %>
 
-    <main>
-        <div class="container border">
-            <div class="title">Add Product</div>
-            <form action="/vendorAddProduct" method="POST"">
+        <main>
 
-                <label for="name">Product Name:</label>
-                <input type="text" class="field-input" id="name"  name="name" minlength="10" maxlength="20" required>
+            <h1>Add product</h1>
+            <div class="card">
+                <form action="/vendorAddProduct" method="POST"">
+                        <fieldset>
+                <div class=" input-section">
+                    <label for="name">Product Name:</label>
+                    <input type="text" class="field-input" id="name" name="name" minlength="10" maxlength="20" required>
+            </div>
+
+            <div class="input-section">
 
                 <label for="price">Price (in $):</label>
                 <input type="number" class="field-input" id="price" name="price" step="0.01" min="0" required>
+            </div>
 
-
+            <div class="input-section">
                 <label for="description"> Description:</label>
-                <textarea id="description" name="description" rows="3" maxlength="500" required></textarea>
+                <textarea name="description" rows="3" maxlength="500" required></textarea>
+            </div>
 
 
-            
+            <div class="input-section">
                 <label for="profile-pic-upload">Image:</label>
                 <input type="file" id="profile-pic-upload" accept="image" required onchange="getImage()">
                 <input type="text" id="encoded-pic" style="display:none" name="image">
-                
-                <button type="submit" id="submit-button">Submit</button>
+            </div>
+
+
+            <div class="input-section">
+                <button type="submit">Submit</button>
+            </div>
+
+            </fieldset>
             </form>
-        </div>
-    </main>
+            </div>
+        </main>
 
-    <%- include ('partials/footer') %>
+        <%- include ('partials/footer') %>
 
-    <script>      
-        function getImage() {
-            var fr = new FileReader();
-            var img = document.querySelector("#profile-pic-upload").files;
-            fr.readAsDataURL(img[0]);
-            fr.onloadend = function () {
-                console.log(fr.result);
-                document.querySelector("#encoded-pic").value = fr.result;
-            }
-        }
-    </script>
+            <script>
+                function getImage() {
+                    var fr = new FileReader();
+                    var img = document.querySelector("#profile-pic-upload").files;
+                    fr.readAsDataURL(img[0]);
+                    fr.onloadend = function () {
+                        console.log(fr.result);
+                        document.querySelector("#encoded-pic").value = fr.result;
+                    }
+                }
+            </script>
 </body>
+
 </html>
