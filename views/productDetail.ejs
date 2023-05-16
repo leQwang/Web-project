@@ -6,40 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" href="../css/productDetail.css">
+    <link rel="stylesheet" href="../css/style.css">
+	<link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
 
 
 
     <title>Product detail</title>
 </head>
 <body>
-    <header>
-        <h1>View Products</h1>
-    </header>
 
+	<%- include ('partials/header') %>
+
+  
+<main>
     <div class="container">
 		<div class="product">
-			<div class="images">
+			<div class="image">
 				<img src="<%= product.image %>" alt="Product Image <%= product.image%>">
-				<div class="thumbnails">
-					<img src="<%= product.image %>" alt="Product Thumbnail">
-					<img src="<%= product.image %>" alt="Product Thumbnail">
-				</div>
 			</div>
 			<div class="details">
 				<h1><%= product.name%></h1>
-				<div class="price">$<%= product.price%></div>
-				<div class="description"><%= product.description%></div>
+				<h2>$<%= product.price%></h2>
+				<p><%= product.description%></p>
 				<button class="add-to-cart" >Add to Cart</button>
+				<div class="add-to-cart-confirm" style="display: none;">Successfully added to cart</div>
 			</div>
 		</div>
 	</div>
-</body>
+</main>
+<%- include ('partials/footer') %>
 <script>
-	const addToCart = document.querySelector('button');
+	const addToCart = document.querySelector('.add-to-cart');
 	addToCart.addEventListener('click', ()=>{
-		var num = localStorage.length;
+		document.querySelector('.add-to-cart-confirm').style = "display:block";
+		var num = localStorage.length + 1;
 		localStorage.setItem(++num, '<%-JSON.stringify(product)%>');
 		console.log(localStorage);
 	})
 </script>
+</body>
+
 </html>

@@ -15,7 +15,6 @@
     <main>
         <div class="add-product-container">
             <div class="vendor-name"><h1><%= user.businessName %></h1></div>
-            <!-- <button href="/vendorAddProduct" class="add-product-button">Add Product</button> -->
             <button class="add-product-button" onclick="window.location.href='/vendorAddProduct'">Add Product</button>
         </div>
 
@@ -28,9 +27,9 @@
 
                 <div class="product-detail">
                     <div class="product-name"><%= prod[i].name %></div>
-                    <div class="price margin-bottom"><h4>$<%= prod.length %></h4></div>
+                    <div class="price margin-bottom"><h4>$<%= prod[i].price %></h4></div>
                     <div class="edit-button-container">
-                        <button class="edit-button">Delete</button>
+                        <a href="/<%= prod[i].id %>/delete" type="button" class="edit-button">Delete</a>
                     </div>
                 </div>
             </div>

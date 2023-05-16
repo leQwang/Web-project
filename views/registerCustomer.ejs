@@ -6,18 +6,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="..\css\registration.css">
+    <link rel="stylesheet" type="text/css" href="..\css\form.css">
+    <link rel="stylesheet" type="text/css" href="..\css\style.css">
+
+
     <title>Register Customer</title>
 </head>
 
 <body>
     <main>
-        <h1>Customer Registration: </h1>
-        <section class="registration-form">
+        <h1>Customer Registration </h1>
+        <section class="registration-form card">
             <form class="registration" action="/registerCustomer" method="post" id="registerCustomer-form">
                 <fieldset>
                     <div class="input-section">
                         <div class="info-box">
-                            <label for="username">&#8505;&#65039; Username:
+                            <label for="username">&#8505;&#65039; Username
                                 <span class="tooltip">Must consist of only letters (lower and upper case) and digits.
                                     Length from 8 to 15 characters</span>
                             </label>
@@ -26,7 +30,7 @@
                     </div>
                     <div class="input-section">
                         <div class="info-box">
-                            <label for="password">&#8505;&#65039; Password:
+                            <label for="password">&#8505;&#65039; Password
                                 <span class="tooltip">Password must have at least one upper case letter, at least one
                                     lower case letter, at least one digit, at least one special letter in the set
                                     !@#$%^&*, NO other kind of characters. Length from 8 to 20 characters.</span>
@@ -36,15 +40,16 @@
                     </div>
                     <div class="input-section">
                         <div class="info-box">
-                            <label for="profile-picture">&#8505;&#65039; Profile Picture:
+                            <label for="profile-picture">&#8505;&#65039; Profile Picture
                                 <span class="tooltip">Upload profile picture</span>
                             </label>
                         </div>
-                        <input type="file" id="profile-picture" name="profile-picture">
+                        <input type="file" id="profile-pic-upload" onchange="getImage()">
+                        <input type="text" id="profile-picture" name="profile-picture" style="display:none">
                     </div>
                     <div class="input-section">
                         <div class="info-box">
-                            <label for="name">&#8505;&#65039; Name:
+                            <label for="name">&#8505;&#65039; Name
                                 <span class="tooltip">Name must be of at least 5 characters.</span>
                             </label>
                         </div>
@@ -52,7 +57,7 @@
                     </div>
                     <div class="input-section">
                         <div class="info-box">
-                            <label for="address">&#8505;&#65039; Address:
+                            <label for="address">&#8505;&#65039; Address
                                 <span class="tooltip">Name must be of at least 5 characters.</span>
                             </label>
                         </div>
@@ -61,12 +66,23 @@
                     <div class="input-section">
                         <input type="submit" value="Register" id="registerCustomer-btn">
                     </div>
+                    <div id="error-message"><%= error %></div>
                 </fieldset>
             </form>
         </section>
     </main>
     <script src="..\js\valCustomerReqForm.js"></script>
-
+    <script>
+        function getImage() {
+        var fr = new FileReader();
+        var img = document.querySelector("#profile-pic-upload").files;
+        fr.readAsDataURL(img[0]);
+        fr.onloadend = function () {
+            document.querySelector("#profile-picture").value = fr.result;
+            console.log(document.querySelector("#profile-picture").value);
+        }
+    }
+    </script>
 </body>
 
 </html>
