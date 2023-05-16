@@ -16,7 +16,7 @@
 <body>
     <main>
         <h1>Vendor Registration </h1>
-        <section class="registration-form card">
+        <section class="card">
             <form class="registration" action="/registerVendor" method="post" id="registerVendor-form">
                 <fieldset>
                     <div class="input-section">
@@ -64,7 +64,7 @@
                         <textarea id="business-address" name="business-address"></textarea>
                     </div>
                     <div class="input-section">
-                        <input type="submit" value="Register" id="registerVendor-btn">
+                        <button type="submit" value="Register" id="registerVendor-btn">Submit</button>
                     </div>
                     <div id="error-message"><%= error %></div>
                 </fieldset>

@@ -16,7 +16,7 @@
 <body>
     <main>
         <h1>Customer Registration </h1>
-        <section class="registration-form card">
+        <section class="card">
             <form class="registration" action="/registerCustomer" method="post" id="registerCustomer-form">
                 <fieldset>
                     <div class="input-section">
@@ -64,7 +64,7 @@
                         <textarea id="address" name="address"></textarea>
                     </div>
                     <div class="input-section">
-                        <input type="submit" value="Register" id="registerCustomer-btn">
+                        <button type="submit" value="Register" id="registerCustomer-btn">Submit</button>
                     </div>
                     <div id="error-message"><%= error %></div>
                 </fieldset>

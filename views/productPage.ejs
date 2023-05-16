@@ -9,12 +9,15 @@
     <link rel="stylesheet" href="..\css\productPage.css">
     <link rel="stylesheet" href="..\css\style.css">
 
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
 
     <title>Product page</title>
 
 </head>
 
 <body>
+    <%- include ('partials/header') %>
   
     <main>
         <div class="search">
@@ -50,6 +53,7 @@
                 <% } %>
         </div>
     </main>
-   
+    <%- include ('partials/footer') %>
+
 </body>
 </html>
