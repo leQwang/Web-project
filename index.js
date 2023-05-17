@@ -43,10 +43,19 @@ app.use((req, res, next) => {
 });
 
 const isAuthenticated = (req, res, next) => {
-    if (req.session.userId) {
-        next();
-    } else {
+    if (!req.session.userId ) {
         res.redirect('/login');
+    } else if(req.session.userId && req.session.role !== "Vendor" && (req.path=== '/vendorAddProduct' || req.path=== '/vendorProductView')) {
+        //if you are not a vendor user, you can't access vendorAddProduct page
+        res.send("<center><h1>Access Denied! Please go back.</h1></center>")
+    }else if(req.session.userId && req.session.role !== "Customer" && (req.path=== '/shoppingCart')){
+        res.send("<center><h1>Access Denied! Please go back.</h1></center>")
+    }else if(req.session.userId && req.session.role !== "Shipper" && (req.path=== '/shipper' || req.path.startsWith('/orders/'))){
+        res.send("<center><h1>Access Denied! Please go back.</h1></center>")
+    }else if(req.session.userId){
+        next();
+    }else{
+        res.redirect('*');
     }
 };
 
@@ -65,7 +74,6 @@ app.post("/login-processing", async (req, res) => {
 
     try {
         const user = await User.findOne({ username: username })
-        console.log(user);
         if (!user) {
             return res.status(400).send('Invalid credentials (Username)');
         }
@@ -88,6 +96,7 @@ app.post("/login-processing", async (req, res) => {
 
     } catch (error) {
         console.log(error);
+        console.log("Error login process");
         res.status(500).send('Internal Server Error');
     }
 })
@@ -204,7 +213,6 @@ app.post("/shoppingCart", async (req, res) => {
 
 app.post("/hub", (req, res) => {
     const hub = new DistributionHub(req.body);
-    console.log(req.body);
     hub.save()
         .then((hub) => res.send(hub))
         .catch((error) => res.send(error));
@@ -212,7 +220,6 @@ app.post("/hub", (req, res) => {
 
 app.post("/myAccount", (req, res) => {
     const user = new User(req.body);
-    console.log(req.body);
     User.findByIdAndUpdate(req.session.userId, req.body)
         .then(() => {
             User.findById(req.session.userId)
@@ -343,7 +350,7 @@ app.get('/:id/delete', (req, res) => {
             if (!product) {
                 return res.send();
             }
-            res.redirect("/vendorProductView", {role: req.session.role});
+            res.redirect("/vendorProductView");
         })
         .catch((error) => res.send(error));
 });
@@ -361,7 +368,7 @@ app.post("/vendorAddProduct", (req, res) => {
 
             product.save()
                 .then(() => {
-                    res.redirect("/vendorProductView", {role: req.session.role} );
+                    res.redirect("/vendorProductView");
                 })
                 .catch((error) => res.send(error));
         });
@@ -414,6 +421,11 @@ app.get('/about', (req, res) => {
 app.get('/privacy', (req, res) => {
     res.render('privacy.ejs');
 })
+
+//The 404 Route when user enter a route that is not available
+app.get('*', function(req, res){
+    res.status(404).send('<center><h1>404 NOT FOUND</h1></center>');
+});
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
