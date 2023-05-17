@@ -1,43 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/vendorProductView.css">
+    <link rel="stylesheet" href="..\css\style.css">
+    <link rel="stylesheet" href="..\css\form.css">
+    <link rel="stylesheet" href="..\css\productPage.css">
+
+
+
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
+
     <title>Vendor Page</title>
 </head>
+
 <body>
     <%- include ('partials/header') %>
 
-    <main>
-        <div class="add-product-container">
-            <div class="vendor-name"><h1><%= user.businessName %></h1></div>
-            <button class="add-product-button" onclick="window.location.href='/vendorAddProduct'">Add Product</button>
-        </div>
+        <main>
+            <div class="filter">
+                
+                <h1><%= user.businessName %></h1>
+                <button onclick="window.location.href='/vendorAddProduct'">Add Product</button>
 
-        <div class="product-container">
-            <% for (let i = 0; i < prod.length; i++) { %>
-            <div class="card-container border">
-                <div class="product-image">
-                    <img src="<%= prod[i].image %>" alt="<%= prod[i].name %>">
-                </div>  
-
-                <div class="product-detail">
-                    <div class="product-name"><%= prod[i].name %></div>
-                    <div class="price margin-bottom"><h4>$<%= prod[i].price %></h4></div>
-                    <div class="edit-button-container">
-                        <a href="/<%= prod[i].id %>/delete" type="button" class="edit-button">Delete</a>
-                    </div>
-                </div>
             </div>
-            <% }; %>
-        </div>
-        
-    </main>
 
-    <%- include ('partials/footer') %>
+            <div class="product-container">
+                <% for (let i=0; i < prod.length; i++) { %>
+                    <div class="product">
+
+                        <img src="<%= prod[i].image %>" alt="<%= prod[i].name %>">
+
+
+                      
+                            <h2>
+                                <%= prod[i].name %>
+                            </h2>
+                            <p class="price">$<%= prod[i].price %>
+                            </p>
+                            <button class="red"
+                                onclick="window.location.href='/<%= prod[i].id %>/delete'">Delete</button>
+                    </div>
+                    <% }; %>
+            </div>
+
+        </main>
+
+        <%- include ('partials/footer') %>
 </body>
+
 </html>
