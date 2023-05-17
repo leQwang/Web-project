@@ -5,6 +5,7 @@ mongoose.connect('mongodb+srv://phucdoan:Phuc1234@cluster0.rxqfnek.mongodb.net/'
 .catch((error) => console.log(error.message));
 
 const orderSchema = new mongoose.Schema({
+    username: String,
     customerName: String,
     address: String,
     productList: [String],
