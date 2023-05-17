@@ -196,7 +196,7 @@ app.post("/shoppingCart", async (req, res) => {
     console.log(randHub);
     await DistributionHub.findByIdAndUpdate(randHub, { $push: { orderID: order._id } })
     var products = await Product.find()
-    res.redirect("productPage")
+    res.redirect("/products")
 })
 
 
