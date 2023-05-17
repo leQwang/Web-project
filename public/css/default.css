@@ -5,12 +5,9 @@
   padding: 0px;
 }
 
-body {
-  margin: 100px 0px;
-}
-
 a {
   color: black;
+  text-decoration: none;
 }
 
 .btn {
@@ -23,6 +20,10 @@ a {
 }
 .btn:hover {
   box-shadow: 0px 2px 4px;
+}
+
+.center-text {
+  text-align: center;
 }
 
 .width-120 {
@@ -51,7 +52,5 @@ a {
 
 /* --------- SMARTPHONE TWEAKS ----------- */
 @media only screen and (max-width: 767px) {
-  body {
-    margin-bottom: 200px;
-  }
+
 }
