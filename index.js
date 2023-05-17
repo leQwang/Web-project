@@ -403,6 +403,17 @@ app.get('/logout', (req, res) => {
     res.redirect('/login');
 })
 
+
+//STATIC PAGES
+
+app.get('/about', (req, res) => {
+    res.render('about.ejs');
+})
+
+app.get('/privacy', (req, res) => {
+    res.render('privacy.ejs');
+})
+
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
