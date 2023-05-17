@@ -14,6 +14,7 @@ h1{
     width: 100%;
     height: 75%;
     display: flex;
+    padding: 20px;
 }
 
 #cart-box{
@@ -29,6 +30,8 @@ h1{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    padding: 15px;
+    
 }
 
 #purchase-box label{
@@ -46,7 +49,8 @@ h1{
 
 #item-box{
     height: 95%;
-    overflow-y: auto
+    overflow-y: auto;
+    text-align: center;
 }
 
 .item{
@@ -81,6 +85,7 @@ h1{
 header, footer{
     position: fixed;
 }
+
 
 
 

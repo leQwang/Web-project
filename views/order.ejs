@@ -21,7 +21,7 @@
 
   <!--========== MAIN =========================-->
   <main>
-    <a class="btn bold" href="/shipper">Back</a>
+    <a class="btn bold" href="<% if(role === 'Shipper'){%>/shipper<%} else {%>/customerOrders<%}%>">Back</a>
     <h1 class="center-content">Order Details</h1>
     <div class="container-data">
       <div class="pair">
@@ -33,7 +33,7 @@
         <div class="value"><%= order.customerName %></div>
       </div>
       <div class="pair">
-        <div class="key">Adress:</div>
+        <div class="key">Address:</div>
         <div class="value"><%= order.address %></div>
       </div>
       <div class="pair">
@@ -55,10 +55,12 @@
       </div>
       <% } %>
     </div>
+    <% if(role === 'Shipper'){ %>
     <div class="center-content padding-top-20 wrap">
       <a class="btn danger bold width-120" href="/orders/<%= order._id %>/cancel">Cancel Order</a>
       <a class="btn success bold width-120" href="/orders/<%= order._id %>/shipped">Shipped Order</a>
     </div>
+    <% } %>
   </main>
   <!--========== MAIN =========================-->
 

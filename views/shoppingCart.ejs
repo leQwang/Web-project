@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/css/shoppingCart.css">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 
+    
     <link rel="stylesheet" href="/css/footer.css" type="text/css">
     <link rel="stylesheet" href="/css/header.css" type="text/css">
     <title>Shopping Cart Page</title>
@@ -31,6 +32,7 @@
                 <form action="/shoppingCart" method="post">
                     <input type="text" name="productList" style="display:none" id="product-list">
                     <input type="text" name= "customerName" id ="customer-name-field"style="display:none">
+                    <input type="text" name="username" id="username-field" style="display:none">
                     <input type="text" name= "address" id ="address-field" style="display:none">
                     <input type="number" name="totalPrice" id ="total-price-field" style="display:none">
                     <button id="order-button" type="submit">Order</button>
@@ -46,6 +48,7 @@
         var products = new Array();
         if(localStorage.length == 0){
             document.querySelector('#item-box').innerText = "Your cart is empty";
+            document.querySelector('#item-box').style ="padding-top : 200px";
             document.querySelector('#order-button').disabled = true;
         }
         for (let i = 0; i < localStorage.length; i++) {
@@ -68,7 +71,7 @@
             itemName.setAttribute('class','item-name');
             itemPrice.setAttribute('class','item-price');
             itemActionDisplay.setAttribute('class','action-display');
-            itemAction.setAttribute('class','delete-button');
+            itemAction.setAttribute('class','delete-button red');
             itemImg.src = product.image;
             itemName.innerText = product.name;
             itemPrice.innerText = '$' + product.price;
@@ -92,6 +95,7 @@
         document.querySelector('#product-list').value = products;
         document.querySelector('#customer-name-field').value = "<%= user.customerName %>";
         document.querySelector('#address-field').value = "<%= user.customerAddress %>";
+        document.querySelector('#username-field').value = "<%= user.username %>"
     }
 
     window.onsubmit = function clearLocalStorage(){

@@ -29,6 +29,11 @@ button.red{
     background-color: red !important;
 }
 
+button.red:hover{
+    background-color: rgb(189, 75, 75) !important;
+
+}
+
 button:hover {
     background-color: silver;
 }
