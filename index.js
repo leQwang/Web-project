@@ -196,7 +196,6 @@ app.post("/shoppingCart", async (req, res) => {
     randHub = await DistributionHub.aggregate([{ "$sample": { "size": 1 } }])
     console.log(randHub);
     await DistributionHub.findByIdAndUpdate(randHub, { $push: { orderID: order._id } })
-    var products = await Product.find()
     res.redirect("/products")
 })
 
@@ -274,6 +273,15 @@ app.get("/shoppingCart", (req, res) => {
             res.render('shoppingCart', { user: user, role: req.session.role  });
         })
 
+});
+
+app.get('/customerOrders', async (req, res) => {
+    const current = await User.findById(req.session.userId);
+    Order.find({username : current.username})
+        .then((orders) => {
+            res.render('customerOrders', {orders: orders, role: req.session.role });
+        })
+    .catch((error) => res.send(error));
 });
 
 app.get('/shipper', (req, res) => {
@@ -373,13 +381,7 @@ function updateOrder(id, updates, res) {
             if (!order) {
                 res.send('This order does not exist');
             }
-            Product.find({
-                '_id': { $in: order.productList }
-            })
-                .then((products) => {
-                    res.render('order', { order: order, products: products, role: req.session.role});
-                })
-                .catch((error) => error.message);
+            res.redirect('/shipper');
         })
         .catch((error) => res.send(error));
 }
@@ -408,11 +410,11 @@ app.get('/logout', (req, res) => {
 //STATIC PAGES
 
 app.get('/about', (req, res) => {
-    res.render('about.ejs');
+    res.render('about.ejs', {role: req.session.role} );
 })
 
 app.get('/privacy', (req, res) => {
-    res.render('privacy.ejs');
+    res.render('privacy.ejs', {role: req.session.role});
 })
 
 app.listen(port, () => {
