@@ -5,8 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <link rel="stylesheet" href="/css/style.css" type="text/css"> -->
-  <link rel="stylesheet" href="/css/default.css" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
   <link rel="stylesheet" href="/css/header.css" type="text/css">
   <link rel="stylesheet" href="/css/footer.css" type="text/css">
   <link rel="stylesheet" href="/css/shipper.css" type="text/css">
@@ -29,7 +28,7 @@
       <div id="overview">
         <% orders.forEach((order)=> { %>
 
-          <a class="order-card" href="orders/<%= order._id %>">
+          <a class="order-card" href="/orders/<%= order._id %>">
             <div class="pair">
               <div class="key center-text">OrderID:</div>
               <div class="value center-text">

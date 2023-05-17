@@ -4,8 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <link rel="stylesheet" href="/css/default.css" type="text/css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/css/style.css" type="text/css">
   <link rel="stylesheet" href="/css/order.css" type="text/css">
   <link rel="stylesheet" href="/css/header.css" type="text/css">
@@ -17,57 +16,71 @@
 
   <!--========== HEADER =========================-->
   <%- include ('partials/header') %>
-  <!--========== HEADER =========================-->
+    <!--========== HEADER =========================-->
 
 
-  <!--========== MAIN =========================-->
-  <main>
-    <a class="btn bold" href="/shipper">Back</a>
-    <h1 class="center-content">Order Details</h1>
-    <div class="container-data">
-      <div class="pair">
-        <div class="key">Order ID:</div>
-        <div class="value"><%= order._id %></div>
+    <!--========== MAIN =========================-->
+    <main>
+      <button onclick="window.location.href='/shipper/'">Back</button>
+      <h1 class="center-content">Order Details</h1>
+      <div class="container-data">
+        <div class="pair">
+          <div class="key bold">Order ID:</div>
+          <div class="value">
+            <%= order._id %>
+          </div>
+        </div>
+        <div class="pair">
+          <div class="key bold">Name:</div>
+          <div class="value">
+            <%= order.customerName %>
+          </div>
+        </div>
+        <div class="pair">
+          <div class="key bold">Adress:</div>
+          <div class="value">
+            <%= order.address %>
+          </div>
+        </div>
+        <div class="pair">
+          <div class="key bold">Total price:</div>
+          <div class="value">
+            <%= order.totalPrice %>$
+          </div>
+        </div>
+        <div class="pair">
+          <div class="key bold">Status:</div>
+          <div class="value">
+            <%= order.state %>
+          </div>
+        </div>
       </div>
-      <div class="pair">
-        <div class="key">Customer Name:</div>
-        <div class="value"><%= order.customerName %></div>
+      <div class="key center-content font-size-20 bold">Products:</div>
+      <div class="container-products">
+        <% for (let i=0; i < products.length; i++) { %>
+          <div class="card">
+            <img class="img" src="<%= products[i].image%>"
+              alt="Image of product <%= products[i] %> <%= products[i].image%>">
+            <h3 class="two-line-heading">
+              <%= products[i].name %>
+            </h3>
+            <p class="price">$<%= products[i].price %>
+            </p>
+          </div>
+          <% } %>
       </div>
-      <div class="pair">
-        <div class="key">Adress:</div>
-        <div class="value"><%= order.address %></div>
+      <div class="center-content padding-top-20 wrap">
+        <button class="red bold" onclick="window.location.href='/orders/<%= order._id %>/cancel'">Cancel Order</button>
+        <button class="green bold" onclick="window.location.href='/orders/<%= order._id %>/shipped'">Shipped order</button>
       </div>
-      <div class="pair">
-        <div class="key">Total price:</div>
-        <div class="value"><%= order.totalPrice %>$</div>
-      </div>
-      <div class="pair">
-        <div class="key">Status:</div>
-        <div class="value"><%= order.state %></div>
-      </div>
-    </div>
-    <div class="key center-content font-size-20">Products:</div>
-    <div class="container-products">
-      <% for (let i = 0; i < products.length; i++) { %>
-      <div class="card">
-        <img class="img" src="<%= products[i].image%>" alt="Image of product <%= products[i] %> <%= products[i].image%>">
-        <h3 class="two-line-heading"><%= products[i].name %></h3>
-        <p class="price">$<%= products[i].price %></p>
-      </div>
-      <% } %>
-    </div>
-    <div class="center-content padding-top-20 wrap">
-      <a class="btn danger bold width-120" href="/orders/<%= order._id %>/cancel">Cancel Order</a>
-      <a class="btn success bold width-120" href="/orders/<%= order._id %>/shipped">Shipped Order</a>
-    </div>
-  </main>
-  <!--========== MAIN =========================-->
+    </main>
+    <!--========== MAIN =========================-->
 
 
 
-  <!--========== FOOTER =========================-->
-  <%- include ('partials/footer') %>
-  <!--========== FOOTER =========================-->
+    <!--========== FOOTER =========================-->
+    <%- include ('partials/footer') %>
+      <!--========== FOOTER =========================-->
 </body>
 
 </html>

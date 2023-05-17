@@ -5,7 +5,7 @@
     font-family: Arial, sans-serif;
 }
 
-body{
+body {
     min-height: 100vh;
     padding-bottom: 58px;
 
@@ -13,6 +13,10 @@ body{
 
 }
 
+a {
+    color: black;
+    text-decoration: none;
+}
 
 button {
     background-color: #2f312f;
@@ -25,23 +29,48 @@ button {
     font-size: 20px;
 }
 
-button.red{
+button.red {
     background-color: red !important;
+}
+
+button.green {
+    background-color: #4CBB17;
 }
 
 button:hover {
     background-color: silver;
 }
 
-.details h2{
+.details h2 {
     margin: 10px 0px;
 }
-.details p{
+
+.details p {
     margin: 10px 0px;
 }
 
 .margin-bottom-5 {
     margin-bottom: 25px;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.width-120 {
+    width: 120;
+}
+
+.padding-top-20 {
+    padding-top: 20px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.wrap {
+    flex-wrap: wrap;
 }
 
 /* --------- SMARTPHONE TWEAKS ----------- */
