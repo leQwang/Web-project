@@ -30,12 +30,9 @@ h1{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    padding: 15px;
+    align-items: center;
+    padding: 5px;
     
-}
-
-#purchase-box label{
-    margin-left: 25px;
 }
 
 #label-box{
@@ -79,7 +76,7 @@ h1{
 
 #order-button{
     align-self: center;
-    width: 80%
+    width: fit-content;
 }
 
 header, footer{
