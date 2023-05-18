@@ -45,12 +45,14 @@ app.use((req, res, next) => {
 const isAuthenticated = (req, res, next) => {
     if (!req.session.userId ) {
         res.redirect('/login');
-    } else if(req.session.userId && req.session.role !== "Vendor" && (req.path=== '/vendorAddProduct' || req.path=== '/vendorProductView')) {
-        //if you are not a vendor user, you can't access vendorAddProduct page
+    }else if(req.session.userId && req.session.role === "Customer" && req.path.startsWith('/orders/')){
+        next();
+    }else if(req.session.userId && req.session.role !== "Customer" && (req.path=== '/customerOrders' ||req.path=== '/shoppingCart')){
         res.send("<center><h1>Access Denied! Please go back.</h1></center>")
-    }else if(req.session.userId && req.session.role !== "Customer" && (req.path=== '/shoppingCart')){
+    }else if(req.session.userId && req.session.role !== "Vendor" && (req.path=== '/vendorAddProduct' || req.path=== '/vendorProductView')) {
+        //if you are not a vendor user, you can't access vendorProductView and vendorAddProduct page
         res.send("<center><h1>Access Denied! Please go back.</h1></center>")
-    }else if(req.session.userId && req.session.role !== "Shipper" && (req.path=== '/shipper' || req.path.startsWith('/orders/'))){
+    }else if(req.session.userId && (req.session.role !== "Shipper") && (req.path=== '/shipper' || req.path.startsWith('/orders/'))){
         res.send("<center><h1>Access Denied! Please go back.</h1></center>")
     }else if(req.session.userId){
         next();
@@ -372,7 +374,6 @@ app.post("/vendorAddProduct", (req, res) => {
         .then((user) => {
             req.body.businessName = user.businessName;
             const product = new Product(req.body);
-            console.log(req.body.businessName);
 
             product.save()
                 .then(() => {

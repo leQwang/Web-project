@@ -41,7 +41,7 @@
 <script>
 	const addToCart = document.querySelector('.add-to-cart');
 	addToCart.addEventListener('click', ()=>{
-		document.querySelector('.add-to-cart-confirm').style = "display:block";
+		document.querySelector('.add-to-cart-confirm').style = "display:flex";
 		var added = false;
 		for (let i = 0; i < localStorage.length; i++) {
             var key = localStorage.key(i);
