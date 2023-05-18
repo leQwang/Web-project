@@ -24,11 +24,11 @@
                     <div>
                         <img class="border-color" src="<%= user.profilePic%>" alt="User profile picture" width=250px>
                     </div>
-                    <button onclick="showUpload()">Edit profile picture</button>
+                    <button id="open-edit-menu-button"onclick="showUpload()">Edit profile picture</button>
                     <form action="/myAccount" id="edit-profile-pic-box" style="display:none;" method="post">
                         <input type="file" id="profile-pic-upload" accept="image" required onchange="getImage()">
                         <input type="text" id="encoded-pic" style="display:none" name="profilePic">
-                        <button>Submit new profile pic</button>
+                        <button>Submit</button>
                     </form>
 
                 </div>
