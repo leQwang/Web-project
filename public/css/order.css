@@ -33,7 +33,6 @@
 
 .card {
   width: 240px;
-  height: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -100,5 +99,7 @@
 
   .value {
     width: auto
-  }; 
+  }
+
+  ;
 }
