@@ -22,64 +22,67 @@
 
     <!--========== MAIN =========================-->
     <main>
-      <% let shipperRole = 'Shipper' %>
-      <button onclick="window.location.href='<% if(role === shipperRole) {%>/shipper<% } else { %>/customerOrders<% } %>'">Back</button>
-      <h1 class="center-content">Order Details</h1>
-      <div class="container-data">
-        <div class="pair">
-          <div class="key bold">Order ID:</div>
-          <div class="value">
-            <%= order._id %>
+      <% let shipperRole='Shipper' %>
+        <button
+          onclick="window.location.href='<% if(role === shipperRole) {%>/shipper<% } else { %>/customerOrders<% } %>'">Back</button>
+        <h1 class="center-content">Order Details</h1>
+        <div class="container-data">
+          <div class="pair">
+            <div class="key bold">Order ID:</div>
+            <div class="value">
+              <%= order._id %>
+            </div>
+          </div>
+          <div class="pair">
+            <div class="key bold">Name:</div>
+            <div class="value">
+              <%= order.customerName %>
+            </div>
+          </div>
+          <div class="pair">
+            <div class="key bold">Address:</div>
+            <div class="value">
+              <%= order.address %>
+            </div>
+          </div>
+          <div class="pair">
+            <div class="key bold">Total price:</div>
+            <div class="value">
+              <%= order.totalPrice %>$
+            </div>
+          </div>
+          <div class="pair">
+            <div class="key bold">Status:</div>
+            <div class="value">
+              <%= order.state %>
+            </div>
           </div>
         </div>
-        <div class="pair">
-          <div class="key bold">Name:</div>
-          <div class="value">
-            <%= order.customerName %>
-          </div>
-        </div>
-        <div class="pair">
-          <div class="key bold">Address:</div>
-          <div class="value">
-            <%= order.address %>
-          </div>
-        </div>
-        <div class="pair">
-          <div class="key bold">Total price:</div>
-          <div class="value">
-            <%= order.totalPrice %>$
-          </div>
-        </div>
-        <div class="pair">
-          <div class="key bold">Status:</div>
-          <div class="value">
-            <%= order.state %>
-          </div>
-        </div>
-      </div>
 
-      <div class="key bold center-content font-size-20">Products:</div>
-      <div class="container-products">
-        <% for (let i=0; i < products.length; i++) { %>
-          <div class="card">
-            <img class="img" src="<%= products[i].image%>" alt="Image of product <%= products[i].name %>">
-            <h3 class="two-line-heading">
-              <%= products[i].name %>
-            </h3>
-            <p class="price">$<%= products[i].price %>
-            </p>
+        <div class="key bold center-content font-size-20">Products:</div>
+        <div class="container-products">
+          <% for (let i=0; i < products.length; i++) { %>
+            <div class="card">
+              <img class="img" src="<%= products[i].image%>" alt="Image of product <%= products[i].name %>">
+              <h3 class="two-line-heading">
+                <%= products[i].name %>
+              </h3>
+              <p class="price">$<%= products[i].price %>
+              </p>
+            </div>
+            <% } %>
+        </div>
+
+        <% if(role==='Shipper' ){ %>
+          <div class="center-content padding-top-20 wrap">
+            <form class="inline-block margin-bottom-10" method="POST" action="/orders/<%= order._id %>/cancel">
+              <button class="red bold" type="submit">Cancel Order</button>
+            </form>
+            <form  class="inline-block" method="POST" action="/orders/<%= order._id %>/shipped">
+              <button class="green bold" type="submit">Order Shipped</button>
+            </form>
           </div>
           <% } %>
-      </div>
-
-      <% if(role==='Shipper' ){ %>
-        <div class="center-content padding-top-20 wrap">
-          <button class="red bold" onclick="window.location.href='/orders/<%= order._id %>/cancel'">Cancel
-            Order</button>
-          <button class="green bold" onclick="window.location.href='/orders/<%= order._id %>/shipped'">Shipped
-            order</button>
-        </div>
-        <% } %>
     </main>
     <!--========== MAIN =========================-->
 
