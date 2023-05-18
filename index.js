@@ -54,7 +54,7 @@ const isAuthenticated = (req, res, next) => {
 app.get("/products", (req, res) => {
     Product.find()
         .then((products) => {
-            res.render('productPage', { products: products });
+            res.render('productPage', { products: products, role: req.session.role });
         })
         .catch((error) => console.log(error.message));
 });
@@ -77,6 +77,7 @@ app.post("/login-processing", async (req, res) => {
 
         // Passwords match, so create a session and redirect to product page
         req.session.userId = user._id;
+        req.session.role = user.role;
         if (user.role == "Vendor") {
             res.redirect('/vendorProductView');
         } else if (user.role == "Customer") {
@@ -195,8 +196,7 @@ app.post("/shoppingCart", async (req, res) => {
     randHub = await DistributionHub.aggregate([{ "$sample": { "size": 1 } }])
     console.log(randHub);
     await DistributionHub.findByIdAndUpdate(randHub, { $push: { orderID: order._id } })
-    var products = await Product.find()
-    res.redirect("productPage", {})
+    res.redirect("/products")
 })
 
 
@@ -216,7 +216,7 @@ app.post("/myAccount", (req, res) => {
         .then(() => {
             User.findById(req.session.userId)
                 .then((user) => {
-                    res.render('myAccount', { user: user });
+                    res.render('myAccount', { user: user, role: req.session.role  });
                 })
                 .catch((error) => res.send(error));
         })
@@ -228,7 +228,7 @@ app.get("/products/filter", (req, res) => {
 
     Product.find({ price: { $gte: minPrice, $lte: maxPrice } })
         .then((products) => {
-            res.render('productPage', { products: products });
+            res.render('productPage', { products: products, role: req.session.role  });
         })
         .catch((error) => console.log(error.message));
 
@@ -240,7 +240,7 @@ app.get("/products/search", (req, res) => {
 
     Product.find({ name: { $regex: regexPattern } })
         .then((products) => {
-            res.render('productPage', { products: products });
+            res.render('productPage', { products: products, role: req.session.role  });
         })
         .catch((error) => console.log(error.message));
 });
@@ -251,7 +251,7 @@ app.get("/product/:id", (req, res) => {
             if (!product) {
                 return res.send("Cannot find that ID!");
             }
-            res.render('productDetail', { product: product });
+            res.render('productDetail', { product: product, role: req.session.role  });
         })
         .catch((error) => res.send(error));
 });
@@ -260,7 +260,7 @@ app.get("/product/:id", (req, res) => {
 app.get("/myAccount", (req, res) => {
     User.findById(req.session.userId)
         .then((user) => {
-            res.render('myAccount', { user: user });
+            res.render('myAccount', { user: user, role: req.session.role  });
         })
         .catch((error) => res.send(error))
 })
@@ -270,9 +270,18 @@ app.get("/myAccount", (req, res) => {
 app.get("/shoppingCart", (req, res) => {
     User.findById(req.session.userId)
         .then((user) => {
-            res.render('shoppingCart', { user: user });
+            res.render('shoppingCart', { user: user, role: req.session.role  });
         })
 
+});
+
+app.get('/customerOrders', async (req, res) => {
+    const current = await User.findById(req.session.userId);
+    Order.find({username : current.username})
+        .then((orders) => {
+            res.render('customerOrders', {orders: orders, role: req.session.role });
+        })
+    .catch((error) => res.send(error));
 });
 
 app.get('/shipper', (req, res) => {
@@ -282,7 +291,7 @@ app.get('/shipper', (req, res) => {
             if (hub == null) return res.send('ERROR: No hub associated with shipper');
             Order.find({ state: 'active', '_id': { $in: hub.orderID } })
                 .then((orders) => {
-                    res.render('shipper', { orders: orders });
+                    res.render('shipper', { orders: orders, role: req.session.role, hub: hub  });
                 })
         .catch((error) => res.send(error));
     });
@@ -296,7 +305,7 @@ app.get("/orders/:id", (req, res) => {
                 '_id': { $in: order.productList }
             })
                 .then((products) => {
-                    res.render('order', { order: order, products: products});
+                    res.render('order', { order: order, products: products, role: req.session.role });
                 })
         })
         .catch((error) => console.log(error.message));
@@ -329,7 +338,7 @@ app.get("/vendorProductView", (req, res) => {
             User.findById(req.session.userId)
                 .then((user) => {
                     const matchedProducts = products.filter(product => product.businessName === user.businessName);
-                    res.render("vendorProductView", { user: user, prod: matchedProducts });
+                    res.render("vendorProductView", { user: user, prod: matchedProducts, role: req.session.role });
                 })
                 .catch((error) => console.log(error.message));;
         })
@@ -342,13 +351,13 @@ app.get('/:id/delete', (req, res) => {
             if (!product) {
                 return res.send();
             }
-            res.redirect("/vendorProductView");
+            res.redirect("/vendorProductView", {role: req.session.role});
         })
         .catch((error) => res.send(error));
 });
 
 app.get("/vendorAddProduct", (req, res) => {
-    res.render('vendorAddProduct', {});
+    res.render('vendorAddProduct', {role: req.session.role});
 });
 
 app.post("/vendorAddProduct", (req, res) => {
@@ -360,7 +369,7 @@ app.post("/vendorAddProduct", (req, res) => {
 
             product.save()
                 .then(() => {
-                    res.redirect("/vendorProductView");
+                    res.redirect("/vendorProductView", {role: req.session.role} );
                 })
                 .catch((error) => res.send(error));
         });
@@ -372,13 +381,7 @@ function updateOrder(id, updates, res) {
             if (!order) {
                 res.send('This order does not exist');
             }
-            Product.find({
-                '_id': { $in: order.productList }
-            })
-                .then((products) => {
-                    res.render('order', { order: order, products: products });
-                })
-                .catch((error) => error.message);
+            res.redirect('/shipper');
         })
         .catch((error) => res.send(error));
 }
@@ -401,6 +404,17 @@ app.post('/register', (req, res) => {
 app.get('/logout', (req, res) => {
     delete req.session.userId
     res.redirect('/login');
+})
+
+
+//STATIC PAGES
+
+app.get('/about', (req, res) => {
+    res.render('about.ejs', {role: req.session.role} );
+})
+
+app.get('/privacy', (req, res) => {
+    res.render('privacy.ejs', {role: req.session.role});
 })
 
 app.listen(port, () => {

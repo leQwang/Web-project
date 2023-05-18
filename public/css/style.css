@@ -7,7 +7,7 @@
 
 body {
     min-height: 100vh;
-    padding-bottom: 58px;
+    padding-bottom: 64px;
 
     position: relative;
 
@@ -71,6 +71,18 @@ button:hover {
 
 .wrap {
     flex-wrap: wrap;
+}
+
+.info {
+    background-color: #2f312f;
+
+}
+
+.info p {
+    padding: 40px;
+    text-align: center;
+    line-height: 2;
+    color: silver;
 }
 
 /* --------- SMARTPHONE TWEAKS ----------- */

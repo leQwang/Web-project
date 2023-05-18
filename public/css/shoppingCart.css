@@ -46,7 +46,8 @@ h1{
 
 #item-box{
     height: 95%;
-    overflow-y: auto
+    overflow-y: auto;
+    text-align: center;
 }
 
 .item{
@@ -81,6 +82,7 @@ h1{
 header, footer{
     position: fixed;
 }
+
 
 
 

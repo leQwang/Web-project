@@ -19,9 +19,11 @@
     <!--========== HEADER =========================-->
 
 
+
     <!--========== MAIN =========================-->
     <main>
-      <button onclick="window.location.href='/shipper/'">Back</button>
+      <% let shipperRole = 'Shipper' %>
+      <button onclick="window.location.href='<% if(role === shipperRole) {%>/shipper<% } else { %>/customerOrders<% } %>'">Back</button>
       <h1 class="center-content">Order Details</h1>
       <div class="container-data">
         <div class="pair">
@@ -37,7 +39,7 @@
           </div>
         </div>
         <div class="pair">
-          <div class="key bold">Adress:</div>
+          <div class="key bold">Address:</div>
           <div class="value">
             <%= order.address %>
           </div>
@@ -55,12 +57,12 @@
           </div>
         </div>
       </div>
-      <div class="key center-content font-size-20 bold">Products:</div>
+
+      <div class="key bold center-content font-size-20">Products:</div>
       <div class="container-products">
         <% for (let i=0; i < products.length; i++) { %>
           <div class="card">
-            <img class="img" src="<%= products[i].image%>"
-              alt="Image of product <%= products[i] %> <%= products[i].image%>">
+            <img class="img" src="<%= products[i].image%>" alt="Image of product <%= products[i].name %>">
             <h3 class="two-line-heading">
               <%= products[i].name %>
             </h3>
@@ -69,10 +71,15 @@
           </div>
           <% } %>
       </div>
-      <div class="center-content padding-top-20 wrap">
-        <button class="red bold" onclick="window.location.href='/orders/<%= order._id %>/cancel'">Cancel Order</button>
-        <button class="green bold" onclick="window.location.href='/orders/<%= order._id %>/shipped'">Shipped order</button>
-      </div>
+
+      <% if(role==='Shipper' ){ %>
+        <div class="center-content padding-top-20 wrap">
+          <button class="red bold" onclick="window.location.href='/orders/<%= order._id %>/cancel'">Cancel
+            Order</button>
+          <button class="green bold" onclick="window.location.href='/orders/<%= order._id %>/shipped'">Shipped
+            order</button>
+        </div>
+        <% } %>
     </main>
     <!--========== MAIN =========================-->
 

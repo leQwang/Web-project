@@ -40,9 +40,20 @@
 	const addToCart = document.querySelector('.add-to-cart');
 	addToCart.addEventListener('click', ()=>{
 		document.querySelector('.add-to-cart-confirm').style = "display:block";
-		var num = localStorage.length + 1;
-		localStorage.setItem(++num, '<%-JSON.stringify(product)%>');
-		console.log(localStorage);
+		var added = false;
+		for (let i = 0; i < localStorage.length; i++) {
+            var key = localStorage.key(i);
+            console.log(localStorage.getItem(key));
+            var addedProduct = JSON.parse(localStorage.getItem(key));
+			if(addedProduct._id === '<%= product._id %>'){
+				added = true;
+				break;
+			}
+		}
+		if(!added){
+			var num = localStorage.length;
+			localStorage.setItem(++num, '<%-JSON.stringify(product)%>');
+		}
 	})
 </script>
 </body>

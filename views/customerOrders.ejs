@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/default.css" type="text/css">
+  <link rel="stylesheet" href="/css/header.css" type="text/css">
+  <link rel="stylesheet" href="/css/footer.css" type="text/css">
+  <link rel="stylesheet" href="/css/shipper.css" type="text/css">
+
+  <title>Shipper Overview</title>
+</head>
+
+<body>
+  <!--========== HEADER =========================-->
+  <%- include ('partials/header') %>
+  <!--========== HEADER =========================-->
+
+
+
+  <!--========== MAIN =========================-->
+  <main>
+    <div id="overview-headline" class="center">
+      <h1>Overview of all of your orders </h1>
+    </div>
+    <div id="overview">
+      <% orders.forEach((order)=> { %>
+      <a class="order-card" href="orders/<%= order._id %>">
+        <div>
+          <div>OrderID: <%= order._id %></div>
+          <div>Customer: <%= order.customerName %></div>
+          <div>Address: <%= order.address %></div>
+          <div>Price: <%= order.totalPrice %>$</div>
+        </div>
+      </a>
+      <% }); %>
+    </div>
+  </main>
+  <!--========== MAIN =========================-->
+
+
+
+  <!--========== FOOTER =========================-->
+  <%- include ('partials/footer') %>
+  <!--========== FOOTER =========================-->
+
+
+</body>
+
+</html>
