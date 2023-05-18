@@ -63,7 +63,8 @@
         <div class="container-products">
           <% for (let i=0; i < products.length; i++) { %>
             <div class="card">
-              <img class="img margin-bottom-10" src="<%= products[i].image%>" alt="Image of product <%= products[i].name %>">
+              <img class="img margin-bottom-10 " src="<%= products[i].image%>"
+                alt="Image of product <%= products[i].name %>">
               <h3 class="two-line-heading">
                 <%= products[i].name %>
               </h3>
@@ -78,7 +79,7 @@
             <form class="inline-block margin-bottom-10" method="POST" action="/orders/<%= order._id %>/cancel">
               <button class="red bold" type="submit">Cancel Order</button>
             </form>
-            <form  class="inline-block" method="POST" action="/orders/<%= order._id %>/shipped">
+            <form class="inline-block" method="POST" action="/orders/<%= order._id %>/shipped">
               <button class="green bold" type="submit">Order Shipped</button>
             </form>
           </div>
