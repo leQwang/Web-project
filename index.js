@@ -388,16 +388,16 @@ function updateOrder(id, updates, res) {
             if (!order) {
                 res.send('This order does not exist');
             }
-            res.redirect('/shipper');
+            res.redirect(`/orders/${id}`);
         })
         .catch((error) => res.send(error));
 }
 
-app.get('/orders/:id/cancel', (req, res) => {
+app.post('/orders/:id/cancel', (req, res) => {
     updateOrder(req.params.id, { state: 'canceled' }, res);
 });
 
-app.get('/orders/:id/shipped', (req, res) => {
+app.post('/orders/:id/shipped', (req, res) => {
     updateOrder(req.params.id, { state: 'shipped' }, res);
 });
 
