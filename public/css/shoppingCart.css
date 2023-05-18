@@ -1,3 +1,67 @@
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    #purchase-box{
+        width: 25%;
+        height: 50%;
+        margin-left: 100px;
+    }
+
+    #label-box{
+        height: 5%;
+    }
+
+    #cart-box{
+        height: 600px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    #content-box{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #purchase-box{
+        height: 800px;
+        width: 200px;
+        margin-left: 0px;
+        margin-top: 50px;
+    }
+
+    #label-box{
+        height: 10%;
+    }
+
+    #cart-box{
+        height: 1500px;
+        font-size: 14px;
+    }
+
+    #cart-box button{
+        font-size: 14px;
+        padding: 5px;
+    }
+
+    .item-name{
+        margin-left: 3px
+    }
+}
+
+@media screen and (min-width: 1024px){
+    #purchase-box{
+        width: 25%;
+        height: 50%;
+        margin-left: 100px;
+    }
+
+    #label-box{
+        height: 5%;
+    }
+
+    #cart-box{
+        height: 600px;
+    }
+}
+
 main{
     height: 700px;
     width: 100%;
@@ -18,14 +82,11 @@ h1{
 }
 
 #cart-box{
-    width: 70%;
+    width: 90%;
     border: 1px solid black;
 }
 
 #purchase-box{
-    width: 25%;
-    height: 50%;
-    margin-left: 100px;
     border: 1px solid black;
     display: flex;
     flex-direction: column;
@@ -37,7 +98,6 @@ h1{
 
 #label-box{
     width: 100%;
-    height: 5%;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -52,15 +112,14 @@ h1{
 
 .item{
     width: 100%;
-    height: 200px;
+    height: 50%;
     border-bottom: 1px solid black;
     display: flex;
     justify-content: center;
 }
 
 .item-image{
-    width: 100px;
-    height: 100px;
+    width: 50%;
 }
 
 .item-display, .item-price, .action-display{
@@ -71,7 +130,11 @@ h1{
 }
 
 .item-name{
-    margin-left: 25px;
+    margin-left: 5px;
+}
+
+.delete-button{
+    width: fit-content;
 }
 
 #order-button{

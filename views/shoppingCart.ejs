@@ -48,7 +48,7 @@
         var products = new Array();
         if(localStorage.length == 0){
             document.querySelector('#item-box').innerText = "Your cart is empty";
-            document.querySelector('#item-box').style ="padding-top : 200px";
+            document.querySelector('#item-box').style ="padding-top : 100px";
             document.querySelector('#order-button').disabled = true;
             document.querySelector('#order-button').style = "background-color:grey";
         }
@@ -60,7 +60,7 @@
             const item = document.createElement('div');
             const itemDisplay = document.createElement('div');
             const itemImg = document.createElement('img');
-            const itemName = document.createElement('label');
+            const itemName = document.createElement('div');
             const itemPrice = document.createElement('div')
             const itemActionDisplay = document.createElement('div');
             const itemAction = document.createElement('button');
