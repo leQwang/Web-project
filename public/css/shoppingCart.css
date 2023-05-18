@@ -5,6 +5,10 @@
         align-items: center;
     }
 
+    #item-box{
+        height: 90%;
+    }
+
     #purchase-box{
         height: 800px;
         width: 200px;
@@ -45,6 +49,11 @@
     #cart-box{
         height: 600px;
     }
+
+    #item-box{
+        height: 90%;
+    }
+
 }
 
 main{
@@ -90,7 +99,6 @@ h1{
 }
 
 #item-box{
-    height: 95%;
     overflow-y: auto;
     text-align: center;
 }
