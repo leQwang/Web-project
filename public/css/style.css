@@ -37,6 +37,10 @@ button.green {
     background-color: #4CBB17;
 }
 
+button.red:hover{
+    background-color: rgb(189, 75, 75) !important;
+}
+
 button:hover {
     background-color: silver;
 }
