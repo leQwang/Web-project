@@ -15,6 +15,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
  }
 
  .grey-background{
@@ -55,14 +56,20 @@
   .grey-background{
       max-width: 100%;
   }
-
-  #edit-profile-pic-box{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-  }
  }
 
+#open-edit-menu-button{
+   width: 250px;
+}
 
+#profile-pic-upload{
+   width: 250px;
+}
+
+#edit-profile-pic-box{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
 
 

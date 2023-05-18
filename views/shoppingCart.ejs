@@ -50,6 +50,7 @@
             document.querySelector('#item-box').innerText = "Your cart is empty";
             document.querySelector('#item-box').style ="padding-top : 200px";
             document.querySelector('#order-button').disabled = true;
+            document.querySelector('#order-button').style = "background-color:grey";
         }
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
