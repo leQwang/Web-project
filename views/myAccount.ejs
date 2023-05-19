@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/css/myAccount.css">
-    <link rel="stylesheet" href="/css/style.css" type="text/css">
-    <link rel="stylesheet" href="/css/form.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../css/myAccount.css">
+    <link rel="stylesheet" href="../css/style.css" type="text/css">
+    <link rel="stylesheet" href="../css/form.css" type="text/css">
 
-    <link rel="stylesheet" href="/css/footer.css" type="text/css">
-    <link rel="stylesheet" href="/css/header.css" type="text/css">
+    <link rel="stylesheet" href="../css/footer.css" type="text/css">
+    <link rel="stylesheet" href="../css/header.css" type="text/css">
     <script src="../index.js"></script>
     <title>My Account Page</title>
 </head>
@@ -22,11 +22,11 @@
             <div class="box">
                 <div class="section">
                     <div>
-                        <img class="border-color" src="<%= user.profilePic%>" alt="User profile picture" width=250px>
+                        <img class="border-color width-250" src="<%= user.profilePic%>" alt="User profile picture" />
                     </div>
-                    <button id="open-edit-menu-button"onclick="showUpload()">Edit profile picture</button>
+                    <button id="open-edit-menu-button" onclick="showUpload()">Edit profile picture</button>
                     <form action="/myAccount" id="edit-profile-pic-box" style="display:none;" method="post">
-                        <input type="file" id="profile-pic-upload" accept="image" required onchange="getImage()">
+                        <input type="file" id="profile-pic-upload" accept="image/*" required onchange="getImage()">
                         <input type="text" id="encoded-pic" style="display:none" name="profilePic">
                         <button>Submit</button>
                     </form>
@@ -35,25 +35,23 @@
                 <div class="section">
                     <% if (user.role=='Customer' ) { %>
                         <div class="input-section grey-background">
-                            <label for="username">Username: <%= user.username %> </label>
-
-                            <label for="name">Name: <%= user.customerName %> </label>
-                            <label for="address">Address: <%= user.customerAddress %></label>
+                            <span>Username: <%= user.username %> </span>
+                            <span>Name: <%= user.customerName %> </span>
+                            <span>Address: <%= user.customerAddress %></span>
                         </div>
 
                         <% } %>
                             <% if (user.role=='Vendor' ) { %>
                                 <div class="input-section grey-background">
-                                    <label for="username">Username: <%= user.username %> </label>
-
-                                    <label for="business-name">Business Name: <%= user.businessName %> </label>
-                                    <label for="business-address">Business Address: <%= user.businessAddress %></label>
+                                    <span>Username: <%= user.username %> </span>
+                                    <span>Business Name: <%= user.businessName %> </span>
+                                    <span>Business Address: <%= user.businessAddress %></span>
                                 </div>
                                 <% } %>
                                     <% if (user.role=='Shipper' ) { %>
                                         <div class="input-section grey-background">
-                                            <label for="username">Username: <%= user.username %> </label>
-                                            <label for="distribution-hub">Distribution Hub: <%= user.distributionHub %></label>
+                                            <span>Username: <%= user.username %> </span>
+                                            <span>Distribution Hub: <%= user.distributionHub %></span>
                                         </div>
 
                                         <% } %>
@@ -84,9 +82,9 @@
         }
     }
 
-    document.querySelector('#log-out-button').addEventListener('click', () =>{
-                localStorage.clear();
-            })
+    document.querySelector('#log-out-button').addEventListener('click', () => {
+        localStorage.clear();
+    })
 </script>
 
 </html>
