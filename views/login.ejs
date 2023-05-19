@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="..\css\form.css">
-    <link rel="stylesheet" type="text/css" href="..\css\style.css">
-    <link rel="stylesheet" type="text/css" href="..\css\login.css">
+    <link rel="stylesheet" type="text/css" href="../css/form.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="../css/login.css">
 
     <title>Login</title>
 </head>
@@ -15,34 +15,34 @@
 <body>
     <main>
         <h1>Good to see you!</h1>
-        <section class="card">
-        <section class="login-fields">
-            <form action="\login-processing" method="post" id="login">
-                <fieldset>
-                    <div class="input-section">
-                        <label for="Username">Username: </label>
-                        <input type="text" id="username" name="username" required>
-                    </div>
-                    <div class="input-section">
-                        <label for="password">Password </label>
-                        <input type="password" id="password" name="password" required>
-                    </div>
-                    <div class="input-section">
-                        <button type="submit">Login</button>
-                    </div>
-                </fieldset>
-            </form>
-        </section>
-        <section class="registration-nav login-fields">
-            <h2>Don't have an account? Register here</h2>
-            <nav class="registration-navbar">
-                <button onclick="window.location.href='/registerVendor'">Vendor</button>
-                <button onclick="window.location.href='/registerCustomer'">Customer</button>
-                <button onclick="window.location.href='/registerShipper'">Shipper</button>
-                
-            </nav>
-        </section>
-    </section>
+        <div class="card">
+            <div class="login-fields">
+                <form action="/login-processing" method="post" id="login">
+                    <fieldset>
+                        <div class="input-section">
+                            <label for="username">Username: </label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        <div class="input-section">
+                            <label for="password">Password </label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <div class="input-section">
+                            <button type="submit">Login</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <section class="registration-nav login-fields">
+                <h2>Don't have an account? Register here</h2>
+                <nav class="registration-navbar">
+                    <button onclick="window.location.href='/registerVendor'">Vendor</button>
+                    <button onclick="window.location.href='/registerCustomer'">Customer</button>
+                    <button onclick="window.location.href='/registerShipper'">Shipper</button>
+
+                </nav>
+            </section>
+        </div>
     </main>
 
 </body>
