@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="..\css\registration.css">
-    <link rel="stylesheet" type="text/css" href="..\css\form.css">
-    <link rel="stylesheet" type="text/css" href="..\css\style.css">
+    <link rel="stylesheet" type="text/css" href="../css/registration.css">
+    <link rel="stylesheet" type="text/css" href="../css/form.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
 
 
     <title>Shipper Registration</title>
@@ -16,7 +16,7 @@
 <body>
     <main>
         <h1>Shipper Registration </h1>
-        <section class="card">
+        <div class="card">
             <form class="registration" action="/registerShipper" method="post" id="registerShipper-form">
                 <fieldset>
                     <div class="input-section">
@@ -66,9 +66,9 @@
                     <div id="error-message"><%= error %></div>
                 </fieldset>
             </form>
-        </section>
+        </div>
     </main>
-    <script src="..\js\valShipperReqForm.js"></script>
+    <script src="../js/valShipperReqForm.js"></script>
     <script>
         function getImage() {
         var fr = new FileReader();
