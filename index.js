@@ -226,8 +226,6 @@ app.post("/shoppingCart", async (req, res) => {
     res.redirect("/products")
 })
 
-
-
 app.post("/hub", (req, res) => {
     const hub = new DistributionHub(req.body);
     hub.save()
@@ -281,7 +279,6 @@ app.get("/product/:id", (req, res) => {
         .catch((error) => res.send(error));
 });
 
-
 app.get("/myAccount", (req, res) => {
     User.findById(req.session.userId)
         .then((user) => {
@@ -289,8 +286,6 @@ app.get("/myAccount", (req, res) => {
         })
         .catch((error) => res.send(error))
 })
-
-
 
 app.get("/shoppingCart", (req, res) => {
     User.findById(req.session.userId)
