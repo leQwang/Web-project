@@ -53,8 +53,12 @@
 			}
 		}
 		if(!added){
-			var num = localStorage.length;
-			localStorage.setItem(++num, '<%-JSON.stringify(product)%>');
+			var num = 0;
+			while(localStorage.getItem(num) !== null){
+				num++;
+			}
+			localStorage.setItem(num, '<%-JSON.stringify(product)%>');
+			console.log(localStorage)
 		}
 	})
 </script>

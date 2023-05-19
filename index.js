@@ -300,13 +300,10 @@ app.get("/shoppingCart", (req, res) => {
 
 });
 
-app.get('/customerOrders', async (req, res) => {
+app.get('/myOrders', async (req, res) => {
     const current = await User.findById(req.session.userId);
-    Order.find({username : current.username})
-        .then((orders) => {
-            res.render('customerOrders', {orders: orders, role: req.session.role });
-        })
-    .catch((error) => res.send(error));
+    const orders = await Order.find({username : current.username})
+    res.render('shipper', {orders: orders, role: req.session.role })
 });
 
 app.get('/shipper', (req, res) => {
