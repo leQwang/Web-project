@@ -23,7 +23,7 @@
     <!--========== MAIN =========================-->
     <main>
       <div id="overview-headline" class="center-text">
-        <h1>Overview of all Orders <%= hub.name %>
+        <h1>Overview of all <% if(role === 'Shipper') { %> orders on <%= hub.name %> <% } else { %> orders <% } %>
         </h1>
       </div>
       <div id="overview">
@@ -43,7 +43,7 @@
               </div>
             </div>
             <div class="pair">
-              <div class="key center-text">Adress:</div>
+              <div class="key center-text">Address:</div>
               <div class="value center-text">
                 <%= order.address %>
               </div>

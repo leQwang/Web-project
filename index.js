@@ -62,15 +62,28 @@ const isAuthenticated = (req, res, next) => {
     }
 };
 
-
-app.get("/products", (req, res) => {
-    Product.find()
-        .then((products) => {
-            res.render('productPage', { products: products, role: req.session.role });
-        })
-        .catch((error) => console.log(error.message));
+//ROUTE TO LOGIN AND REGISTRATION
+app.get("/login", (req, res) => {
+    res.render('login', {});
 });
 
+app.get("/registerCustomer", (req, res) => {
+    res.render('registerCustomer', { error: "" });
+});
+
+app.get("/registerShipper", (req, res) => {
+    DistributionHub.find()
+        .then((hubs) => {
+            res.render('registerShipper', { hubs: hubs, error: "" })
+        })
+        .catch((error) => console.log(error))
+});
+
+app.get("/registerVendor", (req, res) => {
+    res.render('registerVendor', { error: "" });
+});
+
+//METHOD TO PROCESS LOGIN VALIDATION
 app.post("/login-processing", async (req, res) => {
     const username = req.body.username;
     const passwordPlain = req.body.password;
@@ -104,6 +117,7 @@ app.post("/login-processing", async (req, res) => {
     }
 })
 
+//METHOD TO REGISTER A CUSTOMER
 app.post("/registerCustomer", async (req, res) => {
     req.body.role = 'Customer';
     const defaultPic = fs.readFileSync('public/images/placeholder.png', {encoding: 'base64'});
@@ -133,6 +147,7 @@ app.post("/registerCustomer", async (req, res) => {
     }
 })
 
+//METHOD TO REGISTER A SHIPPER
 app.post("/registerShipper", async (req, res) => {
     req.body.role = 'Shipper';
     const defaultPic = fs.readFileSync('public/images/placeholder.png', {encoding: 'base64'});
@@ -166,6 +181,7 @@ app.post("/registerShipper", async (req, res) => {
     }
 })
 
+//METHOD TO REGISTER A VENDOR
 app.post("/registerVendor", async (req, res) => {
     req.body.role = 'Vendor';
     const defaultPic = fs.readFileSync('public/images/placeholder.png', {encoding: 'base64'});
@@ -213,6 +229,84 @@ app.post("/registerVendor", async (req, res) => {
 
 })
 
+//ROUTE TO CUSTOMER PRODUCT PAGE
+app.get("/products", (req, res) => {
+    Product.find()
+        .then((products) => {
+            res.render('productPage', { products: products, role: req.session.role });
+        })
+        .catch((error) => console.log(error.message));
+});
+
+//METHOD TO FILTER PRODUCT
+app.get("/products/filter", (req, res) => {
+    const minPrice = req.query['min-price'];
+    const maxPrice = req.query['max-price'];
+
+    Product.find({ price: { $gte: minPrice, $lte: maxPrice } })
+        .then((products) => {
+            res.render('productPage', { products: products, role: req.session.role  });
+        })
+        .catch((error) => console.log(error.message));
+
+});
+
+//METHOD TO SEARCH FOR PRODUCT BY NAME
+app.get("/products/search", (req, res) => {
+    const searchWord = req.query['search-word'];
+    const regexPattern = new RegExp(searchWord, 'i');
+
+    Product.find({ name: { $regex: regexPattern } })
+        .then((products) => {
+            res.render('productPage', { products: products, role: req.session.role  });
+        })
+        .catch((error) => console.log(error.message));
+});
+
+//ROUTE TO PRODUCT DETAIL PAGE
+app.get("/product/:id", (req, res) => {
+    Product.findById(req.params.id)
+        .then((product) => {
+            if (!product) {
+                return res.send("Cannot find that ID!");
+            }
+            res.render('productDetail', { product: product, role: req.session.role  });
+        })
+        .catch((error) => res.send(error));
+});
+
+//ROUTE TO MY ACCOUNT PAGE
+app.get("/myAccount", (req, res) => {
+    User.findById(req.session.userId)
+        .then((user) => {
+            res.render('myAccount', { user: user, role: req.session.role  });
+        })
+        .catch((error) => res.send(error))
+})
+
+//METHOD TO UPDATE USER PROFILE PICTURE
+app.post("/myAccount", (req, res) => {
+    const user = new User(req.body);
+    User.findByIdAndUpdate(req.session.userId, req.body)
+        .then(() => {
+            User.findById(req.session.userId)
+                .then((user) => {
+                    res.render('myAccount', { user: user, role: req.session.role  });
+                })
+                .catch((error) => res.send(error));
+        })
+});
+
+//ROUTE TO SHOPPING CART PAGE
+app.get("/shoppingCart", (req, res) => {
+    User.findById(req.session.userId)
+        .then((user) => {
+            res.render('shoppingCart', { user: user, role: req.session.role  });
+        })
+
+});
+
+//METHOD TO CREATE A NEW ORDER
 app.post("/shoppingCart", async (req, res) => {
     var arr = req.body.productList.split(",");
     req.body.productList = arr;
@@ -226,84 +320,14 @@ app.post("/shoppingCart", async (req, res) => {
     res.redirect("/products")
 })
 
-app.post("/hub", (req, res) => {
-    const hub = new DistributionHub(req.body);
-    hub.save()
-        .then((hub) => res.send(hub))
-        .catch((error) => res.send(error));
-})
-
-app.post("/myAccount", (req, res) => {
-    const user = new User(req.body);
-    User.findByIdAndUpdate(req.session.userId, req.body)
-        .then(() => {
-            User.findById(req.session.userId)
-                .then((user) => {
-                    res.render('myAccount', { user: user, role: req.session.role  });
-                })
-                .catch((error) => res.send(error));
-        })
-});
-
-app.get("/products/filter", (req, res) => {
-    const minPrice = req.query['min-price'];
-    const maxPrice = req.query['max-price'];
-
-    Product.find({ price: { $gte: minPrice, $lte: maxPrice } })
-        .then((products) => {
-            res.render('productPage', { products: products, role: req.session.role  });
-        })
-        .catch((error) => console.log(error.message));
-
-});
-
-app.get("/products/search", (req, res) => {
-    const searchWord = req.query['search-word'];
-    const regexPattern = new RegExp(searchWord, 'i');
-
-    Product.find({ name: { $regex: regexPattern } })
-        .then((products) => {
-            res.render('productPage', { products: products, role: req.session.role  });
-        })
-        .catch((error) => console.log(error.message));
-});
-
-app.get("/product/:id", (req, res) => {
-    Product.findById(req.params.id)
-        .then((product) => {
-            if (!product) {
-                return res.send("Cannot find that ID!");
-            }
-            res.render('productDetail', { product: product, role: req.session.role  });
-        })
-        .catch((error) => res.send(error));
-});
-
-app.get("/myAccount", (req, res) => {
-    User.findById(req.session.userId)
-        .then((user) => {
-            res.render('myAccount', { user: user, role: req.session.role  });
-        })
-        .catch((error) => res.send(error))
-})
-
-app.get("/shoppingCart", (req, res) => {
-    User.findById(req.session.userId)
-        .then((user) => {
-            res.render('shoppingCart', { user: user, role: req.session.role  });
-        })
-
-});
-
-app.get('/customerOrders', async (req, res) => {
+//ROUTE TO MY ORDERS PAGE
+app.get('/myOrders', async (req, res) => {
     const current = await User.findById(req.session.userId);
-    Order.find({username : current.username})
-        .then((orders) => {
-            res.render('customerOrders', {orders: orders, role: req.session.role });
-        })
-    .catch((error) => res.send(error));
+    const orders = await Order.find({username : current.username})
+    res.render('shipper', {orders: orders, role: req.session.role })
 });
 
+//ROUTE TO SHIPPER HUB PAGE
 app.get('/shipper', (req, res) => {
     shipperID = req.session.userId;
     DistributionHub.findOne({ 'shipperID': shipperID, },)
@@ -317,6 +341,7 @@ app.get('/shipper', (req, res) => {
     });
 });
 
+//ROUTE TO ORDER DETAIL PAGE
 app.get("/orders/:id", (req, res) => {
     Order.findById(req.params.id)
         .then((order) => {
@@ -331,26 +356,27 @@ app.get("/orders/:id", (req, res) => {
         .catch((error) => console.log(error.message));
 });
 
-app.get("/login", (req, res) => {
-    res.render('login', {});
+//METHODS TO UPDATE ORDER STATUS
+app.post('/orders/:id/cancel', (req, res) => {
+    updateOrder(req.params.id, { state: 'canceled' }, res);
 });
 
-app.get("/registerCustomer", (req, res) => {
-    res.render('registerCustomer', { error: "" });
+app.post('/orders/:id/shipped', (req, res) => {
+    updateOrder(req.params.id, { state: 'shipped' }, res);
 });
 
-app.get("/registerShipper", (req, res) => {
-    DistributionHub.find()
-        .then((hubs) => {
-            res.render('registerShipper', { hubs: hubs, error: "" })
+function updateOrder(id, updates, res) {
+    Order.findByIdAndUpdate(id, updates, { new: true })
+        .then((order) => {
+            if (!order) {
+                res.send('This order does not exist');
+            }
+            res.redirect(`/orders/${id}`);
         })
-        .catch((error) => console.log(error))
-});
+        .catch((error) => res.send(error));
+}
 
-app.get("/registerVendor", (req, res) => {
-    res.render('registerVendor', { error: "" });
-});
-
+//ROUTE TO VENDOR VIEW PRODUCT PAGE
 app.get("/vendorProductView", (req, res) => {
     Product.find()
         .then((products) => {
@@ -365,6 +391,7 @@ app.get("/vendorProductView", (req, res) => {
         .catch((error) => console.log(error.message));
 });
 
+//METHOD TO DELETE A PRODUCT
 app.get('/:id/delete', (req, res) => {
     Product.findByIdAndDelete(req.params.id)
         .then((product) => {
@@ -376,6 +403,7 @@ app.get('/:id/delete', (req, res) => {
         .catch((error) => res.send(error));
 });
 
+//ROUTE TO VENDOR ADD PRODUCT PAGE
 app.get("/vendorAddProduct", (req, res) => {
     res.render('vendorAddProduct', {role: req.session.role});
 });
@@ -394,25 +422,6 @@ app.post("/vendorAddProduct", (req, res) => {
         });
 });
 
-function updateOrder(id, updates, res) {
-    Order.findByIdAndUpdate(id, updates, { new: true })
-        .then((order) => {
-            if (!order) {
-                res.send('This order does not exist');
-            }
-            res.redirect(`/orders/${id}`);
-        })
-        .catch((error) => res.send(error));
-}
-
-app.post('/orders/:id/cancel', (req, res) => {
-    updateOrder(req.params.id, { state: 'canceled' }, res);
-});
-
-app.post('/orders/:id/shipped', (req, res) => {
-    updateOrder(req.params.id, { state: 'shipped' }, res);
-});
-
 app.post('/register', (req, res) => {
     // Log the form data received from the client
     console.log("Data received from the frontend for POST form:");
@@ -420,14 +429,14 @@ app.post('/register', (req, res) => {
     res.render('registrationSuccesfull', { name: `${req.body.name}` });
 });
 
+//METHOD TO LOG OUT
 app.get('/logout', (req, res) => {
     delete req.session.userId
     res.redirect('/login');
 })
 
 
-//STATIC PAGES
-
+//ROUTE TO STATIC PAGES
 app.get('/about', (req, res) => {
     res.render('about.ejs', {role: req.session.role} );
 })
