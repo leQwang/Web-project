@@ -54,7 +54,7 @@
         }
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
-            console.log(localStorage.getItem(key));
+            console.log(key);
             const product = JSON.parse(localStorage.getItem(key));
             totalPrice += product.price;
             const item = document.createElement('div');
@@ -90,7 +90,6 @@
             document.querySelectorAll('.item').item(i).appendChild(itemActionDisplay);
             document.querySelectorAll('.action-display').item(i).appendChild(itemAction);
             products.push(product._id);
-            
         }
         document.querySelector('#total-price').innerText = 'Total price: $' + totalPrice.toFixed(2); 
         document.querySelector('#total-price-field').value = totalPrice.toFixed(2);
