@@ -1,7 +1,19 @@
+/* RMIT University Vietnam
+Course: COSC2430 Web Programming
+Semester: 2023A
+Assessment: Assignment 2
+Author/ID: 
+Celina Vangstrup s3993395
+Doan Tran Thien Phuc s3926377
+Le Duy Quang s3912105
+Gustav Joachim Elbroend s3995055
+Damien Vincent Voelker s3995378
+Acknowledgement: RMIT Lecture Slide, Express-session*/
+
+
 // static data for testing
 //const orders = require('./orders');
 //const products = require('./products.js');
-const users = require('./users.js');
 
 const express = require("express");
 const session = require('express-session');
@@ -14,15 +26,11 @@ const Order = require('./model/Order');
 const Product = require('./model/Product');
 const DistributionHub = require('./model/DistributionHub');
 const { Schema, default: mongoose } = require('mongoose');
-const user = require('./users.js');
 const { error } = require('console');
 const { hashPassword, decryptHashedPassword } = require('./public/js/hashing');
 
 app.set('view engine', 'ejs');
-
 app.use(express.static("Public"));
-
-const currentUser = "645cce8b020e3bde5c979c79";
 
 // Use the `express.urlencoded` middleware to parse incoming form data
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
@@ -43,12 +51,13 @@ app.use((req, res, next) => {
     }
 });
 
+//Check if the user is valid to proceed or display access denied
 const isAuthenticated = (req, res, next) => {
     if (!req.session.userId ) {
         res.redirect('/login');
     }else if(req.session.userId && req.session.role === "Customer" && req.path.startsWith('/orders/')){
         next();
-    }else if(req.session.userId && req.session.role !== "Customer" && (req.path=== '/customerOrders' ||req.path=== '/shoppingCart')){
+    }else if(req.session.userId && req.session.role !== "Customer" && (req.path=== '/myOrders' ||req.path=== '/shoppingCart')){
         res.send("<center><h1>Access Denied! Please go back.</h1></center>")
     }else if(req.session.userId && req.session.role !== "Vendor" && (req.path=== '/vendorAddProduct' || req.path=== '/vendorProductView')) {
         //if you are not a vendor user, you can't access vendorProductView and vendorAddProduct page
