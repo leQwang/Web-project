@@ -20,3 +20,5 @@ P@ssw0rd1
 npm install
 
 node index.js
+
+#Link to the login page: http://localhost:4200/login
