@@ -2,7 +2,7 @@
 
 # GitHub URL: https://github.com/leQwang/Web-project.git
 
-# Video demo: 
+# Video demo: https://www.youtube.com/watch?v=a6ifFw4c5L4
 
 # Usernames and passwords:
 
