@@ -121,11 +121,11 @@ app.post("/login-processing", async (req, res) => {
 app.post("/registerCustomer", async (req, res) => {
     req.body.role = 'Customer';
     const defaultPic = fs.readFileSync('public/images/placeholder.png', {encoding: 'base64'});
-    if(req.body.profilePic === undefined){
-        req.body.profilePic = "data:image/png;base64," + defaultPic;
-    }
     console.log(req.body.profilePic);
     const data = req.body;
+    if(data['profile-picture'] === ""){
+        data['profile-picture'] = "data:image/png;base64," + defaultPic;
+    }
     const password = req.body.password;
     const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,20}/;
     const hashedPassword = await hashPassword(password);
@@ -133,7 +133,7 @@ app.post("/registerCustomer", async (req, res) => {
     if (dupUsername === null) {
         if (regex.test(password)) {
             console.log(hashedPassword);
-            const user = new User({ username: data.username, password: hashedPassword, profilePic: data.profilePic, customerName: data['name'], customerAddress: data['address'], role: data.role });
+            const user = new User({ username: data.username, password: hashedPassword, profilePic: data['profile-picture'], customerName: data['name'], customerAddress: data['address'], role: data.role });
             console.log(user)
             user.save()
                 .then(() => res.render('registrationSuccesfull', { name: `${req.body.username}` }))
@@ -151,11 +151,11 @@ app.post("/registerCustomer", async (req, res) => {
 app.post("/registerShipper", async (req, res) => {
     req.body.role = 'Shipper';
     const defaultPic = fs.readFileSync('public/images/placeholder.png', {encoding: 'base64'});
-    if(req.body.profilePic === undefined){
-        req.body.profilePic = "data:image/png;base64," + defaultPic;
-    }
     console.log(req.body.profilePic);
     const data = req.body;
+    if(data['profile-picture'] === ""){
+        data['profile-picture'] = "data:image/png;base64," + defaultPic;
+    }
     const password = req.body.password;
     const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,20}/;
     const hashedPassword = await hashPassword(password);
@@ -164,7 +164,7 @@ app.post("/registerShipper", async (req, res) => {
     if (dupUsername === null) {
         if (regex.test(password)) {
             console.log(hashedPassword);
-            const user = new User({ username: data.username, password: hashedPassword, profilePic: data.profilePic, distributionHub: data['distribution-hub'], role: data.role });
+            const user = new User({ username: data.username, password: hashedPassword, profilePic: data['profile-picture'], distributionHub: data['distribution-hub'], role: data.role });
             console.log(user)
             user.save()
                 .then(async (user) => {
@@ -185,11 +185,11 @@ app.post("/registerShipper", async (req, res) => {
 app.post("/registerVendor", async (req, res) => {
     req.body.role = 'Vendor';
     const defaultPic = fs.readFileSync('public/images/placeholder.png', {encoding: 'base64'});
-    if(req.body.profilePic === undefined){
-        req.body.profilePic = "data:image/png;base64," + defaultPic;
-    }
     console.log(req.body.profilePic);
     const data = req.body;
+    if(data['profile-picture'] === ""){
+        data['profile-picture'] = "data:image/png;base64," + defaultPic;
+    }
     const password = req.body.password;
     const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,20}/;
     const hashedPassword = await hashPassword(password);
@@ -214,7 +214,7 @@ app.post("/registerVendor", async (req, res) => {
         if (regex.test(password)) {
             console.log(hashedPassword);
             console.log(req.body);
-            const user = new User({ username: data.username, password: hashedPassword, profilePic: data.profilePic, businessName: data['business-name'], businessAddress: data['business-address'], role: data.role });
+            const user = new User({ username: data.username, password: hashedPassword, profilePic: data['profile-picture'], businessName: data['business-name'], businessAddress: data['business-address'], role: data.role });
 
             user.save()
                 .then(() => res.render('registrationSuccesfull', { name: `${req.body.username}` }))
