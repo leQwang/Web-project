@@ -83,7 +83,7 @@ button:hover {
 }
 
 .info p {
-    padding: 40px;
+    padding: 10px 40px 40px 40px;
     text-align: center;
     line-height: 2;
     color: silver;
@@ -95,9 +95,25 @@ button:hover {
     align-items: center;
 }
 
+.white {
+    color: white;
+}
+
+.margin-top-10 {
+    margin-top: 10px;
+}
+
+.width-250 {
+    width: 250px
+}
+
 /* --------- SMARTPHONE TWEAKS ----------- */
 @media only screen and (max-width: 767px) {
     body {
         padding-bottom: 80px;
+    }
+
+    .info p {
+        padding: 10px;
     }
 }
