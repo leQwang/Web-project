@@ -9,8 +9,8 @@
 TestCustomer
 P@ssw0rd1
 
-TestVendor
-P@ssw0rd1
+GShockLover
+#Zxcvbnm1234567
 
 TestShipper
 P@ssw0rd1
