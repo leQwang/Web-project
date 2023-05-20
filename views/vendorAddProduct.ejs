@@ -22,7 +22,7 @@
 
             <h1>Add product</h1>
             <div class="card">
-                <form action="/vendorAddProduct" method="POST"">
+                <form action="/vendorAddProduct" method="POST">
                         <fieldset>
                 <div class=" input-section">
                     <label for="name">Product Name:</label>
@@ -37,13 +37,13 @@
 
             <div class="input-section">
                 <label for="description"> Description:</label>
-                <textarea name="description" rows="3" maxlength="500" required></textarea>
+                <textarea id="description" name="description" rows="3" maxlength="500" required></textarea>
             </div>
 
 
             <div class="input-section">
                 <label for="profile-pic-upload">Image:</label>
-                <input type="file" id="profile-pic-upload" accept="image" required onchange="getImage()">
+                <input type="file" id="profile-pic-upload" accept="image/*" required onchange="getImage()">
                 <input type="text" id="encoded-pic" style="display:none" name="image">
             </div>
 

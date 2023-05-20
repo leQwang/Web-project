@@ -19,9 +19,9 @@
         <div id="content-box">
             <div id="cart-box">
                 <div id="label-box">
-                    <label for="display">Item</label>
-                    <label for="price">Price</label>
-                    <label for="action">Action</label>
+                    <span>Item</span>
+                    <span>Price</span>
+                    <span>Action</span>
                 </div>
                 <div id="item-box">
                 </div>
@@ -67,8 +67,9 @@
             item.setAttribute('class','item');
             item.setAttribute('id', i);
             itemDisplay.setAttribute('class','item-display');
-            itemDisplay.setAttribute('id', i);
+            //itemDisplay.setAttribute('id', i);
             itemImg.setAttribute('class','item-image');
+            itemImg.setAttribute('alt', `Image of product ${product.name}`)
             itemName.setAttribute('class','item-name');
             itemPrice.setAttribute('class','item-price');
             itemActionDisplay.setAttribute('class','action-display');
