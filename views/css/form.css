@@ -1,0 +1,90 @@
+/* RMIT University Vietnam
+Course: COSC2430 Web Programming
+Semester: 2023A
+Assessment: Assignment 2
+Author/ID: 
+Celina Vangstrup s3993395
+Doan Tran Thien Phuc s3926377
+Le Duy Quang s3912105
+Gustav Joachim Elbroend s3995055
+Damien Vincent Voelker s3995378
+Acknowledgement: RMIT Lecture Slide*/
+
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card{
+    background-color: rgb(220, 212, 212);
+    width: 60%;
+    margin: 0 auto;
+    border-radius: 5px;
+    padding: 8px;
+}
+
+h1{
+    font-size: 50px;
+    margin: 20px auto;
+}
+
+fieldset{
+    border: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-fields{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 40px;
+}
+
+.input-section{
+    margin: 5px;
+    display: flex;
+    flex-direction: column;   
+    width: 60%;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px; 
+    font-weight: bold; 
+  }
+  
+  input {
+    width: 100%; 
+    padding: 8px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    box-sizing: border-box; 
+  }
+  
+  input:required:invalid {
+    border-color: red;
+  }
+
+  @media screen and (min-width: 768px) and (max-width: 1023px) {
+
+    .card{
+        width: 100%;
+    }
+}
+
+  @media (max-width: 768px) {
+
+    .card{
+        width: 100%;
+    }
+
+    .input-section{
+        width: 100%;
+    }
+  }
+  
+  
